@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Library</string>
+    <string name="JJS_exitToast">再按一次退出程序</string>
+    <item name="tag_banner_url" type="id"/>
+</resources>

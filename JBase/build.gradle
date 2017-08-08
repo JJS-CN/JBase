@@ -1,0 +1,81 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.JJS-CN'
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 18
+        renderscriptSupportModeEnabled true
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    testCompile 'junit:junit:4.12'
+    //底部导航栏
+    compile 'com.ashokvarma.android:bottom-navigation-bar:1.4.3'
+    //注解框架(注意！！！所有model和app都必须添加此 annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0')
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    //列表展示
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    //列表展示适配器
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
+    //65535分包
+    compile 'com.android.support:multidex:1.0.0'
+    //okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    //rxjava2
+    compile 'io.reactivex.rxjava2:rxjava:2.0.7'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //retrofit2
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    //解决rxjava和retrofit2内存溢出问题
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+    //常用工具类(已带log--ALog)
+    compile 'com.blankj:utilcode:1.7.1'
+    //图片加载框架
+    compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
+}
+/*publish {
+    //提交代码：gradlew clean build bintrayUpload -PbintrayUser=jjs19930123 -PbintrayKey=68176f4ec5dbe1be2d575917f799b7e5f787b811 -PdryRun=false
+    userOrg = 'jbase'//组织名（注意不是用户名）
+    groupId = 'com.jjs'//路径，自己设置（随意,下载链接会自动拼接artifactId，形成'com.jjs.JBase:0.0.2')
+    artifactId = 'JBase'//项目名称（需和Jcenter上面的一样）
+    publishVersion = '0.0.3'//版本号（自己设置，但是上传1个之后，不可重复上传）
+    desc = 'Android开发所需基础必须工具的封装'//描述，不重要
+    website = 'https://git.oschina.net/jjsCN/JBase'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+}*/
