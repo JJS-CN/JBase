@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.jjs.base.JJsActivity;
 import com.jjs.base.R;
+import com.jjs.base.bean.HashBean;
 import com.jjs.base.widget.BaseDialog;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MvpActivityDemo extends JJsActivity<PP> implements VV {
     @Override
     public void onCreateView(@Nullable Bundle savedInstanceState) {
         mPersenter = new PP(this);//进行实例化，this为PP编写时填入的view接口
-        mPersenter.cccc();//之后进行具体操作即可
+        mPersenter.cccc(new HashBean(1));//之后进行具体操作即可
         Dialog dialog = new BaseDialog(this)
                 .setView(R.layout.layout_load)
                 .setClick(R.id.background_style_ripple, R.id.background_style_default)
@@ -56,5 +57,10 @@ public class MvpActivityDemo extends JJsActivity<PP> implements VV {
 
     @Override
     public void aa() {
+    }
+
+    @Override
+    public void ResponseSuccess(int requestCode, String data) {
+
     }
 }
