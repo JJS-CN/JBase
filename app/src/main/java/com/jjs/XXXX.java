@@ -1,7 +1,9 @@
+/*
 package com.jjs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,10 +23,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+*/
 /**
  * 说明：
  * Created by aa on 2017/6/29.
- */
+ *//*
+
 
 public class XXXX extends JJsActivity implements BaseView {
     @BindView(R.id.rv_list)
@@ -83,6 +87,11 @@ public class XXXX extends JJsActivity implements BaseView {
     }
 
     @Override
+    public void onCreateView(@Nullable Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, Intent data) {
 
     }
@@ -101,4 +110,10 @@ public class XXXX extends JJsActivity implements BaseView {
     @OnClick(R.id.iv_toTop)
     public void onViewClicked() {
     }
+
+    @Override
+    public void ResponseSuccess(int requestCode, String data) {
+
+    }
 }
+*/

@@ -1,9 +1,11 @@
+/*
 package com.jjs;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.JJsActivity;
@@ -11,6 +13,7 @@ import com.jjs.base.Permission.PermissionListener;
 import com.jjs.base.Permission.PermissionSteward;
 import com.jjs.base.a_demo.PP;
 import com.jjs.base.bean.BusBean;
+import com.jjs.base.bean.HashBean;
 import com.jjs.base.http.RetrofitUtils;
 import com.jjs.base.mvp.RxBus;
 
@@ -22,6 +25,15 @@ import butterknife.OnClick;
 
 public class MainActivity extends JJsActivity<PP> implements PermissionListener {
 
+
+    @Override
+    public void onCreateView(@Nullable Bundle savedInstanceState) {
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        RetrofitUtils.init("http://www.baidu.com/");
+        RetrofitUtils.updateHeaders(new HashMap<String, String>());
+        mPersenter.cccc(new HashBean(1));
+    }
 
     @Override
     public void onActivityResult(int requestCode, Intent data) {
@@ -38,15 +50,6 @@ public class MainActivity extends JJsActivity<PP> implements PermissionListener 
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        RetrofitUtils.init("http://www.baidu.com/");
-        RetrofitUtils.updateHeaders(new HashMap<String, String>());
-        mPersenter.cccc();
-    }
 
 
 
@@ -82,3 +85,4 @@ public class MainActivity extends JJsActivity<PP> implements PermissionListener 
         PermissionSteward.requestPermission(this, 1, Manifest.permission.CALL_PHONE);
     }
 }
+*/
