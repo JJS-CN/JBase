@@ -19,8 +19,7 @@ import java.util.List;
 
 public class MvpActivityDemo extends JJsActivity<PP> implements VV {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreateView(@Nullable Bundle savedInstanceState) {
         mPersenter = new PP(this);//进行实例化，this为PP编写时填入的view接口
         mPersenter.cccc();//之后进行具体操作即可
         Dialog dialog = new BaseDialog(this)
@@ -37,7 +36,6 @@ public class MvpActivityDemo extends JJsActivity<PP> implements VV {
                 .setCancelable(true)
                 .setCanceledOnTouchOutside(false)
                 .create();
-
     }
 
     @Override

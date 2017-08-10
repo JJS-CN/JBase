@@ -41,6 +41,13 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     public P mPersenter;//P层，具体aty中直接实例化即可
 
     /**
+     * onCreate方法抽象
+     *
+     * @param savedInstanceState
+     */
+    public abstract void onCreateView(@Nullable Bundle savedInstanceState);
+
+    /**
      * 对activity跳转返回进行判断，resultCode属于-1才处理
      *
      * @param requestCode
@@ -71,6 +78,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         LoadingDialog.init(this);//创建dialog
         mFragmentManager = getFragmentManager();
         mFragmentListMap = new HashMap<>();//创建一个fragment集合，根据viewID保存hash集合中，可以根据viewid进行操作而不乱
+        onCreateView(savedInstanceState);
     }
 
     @Override

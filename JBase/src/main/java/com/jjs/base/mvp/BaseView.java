@@ -9,4 +9,6 @@ import com.trello.rxlifecycle2.LifecycleTransformer;
 
 public interface BaseView {
      <T> LifecycleTransformer<T> bindToLifecycle();
+
+     void ResponseSuccess(int requestCode,String data);
 }
