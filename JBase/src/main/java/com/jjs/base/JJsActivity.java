@@ -186,7 +186,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Store.TAG.RESULT_OK) {
+        if (resultCode == JJsStore.TAG.RESULT_OK) {
             onActivityResult(requestCode, data);
         } else {
             Log.i("JJsActivity", "resultCode don't  -1");

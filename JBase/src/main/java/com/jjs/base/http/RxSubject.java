@@ -2,6 +2,8 @@ package com.jjs.base.http;
 
 import android.util.Log;
 
+import com.jjs.base.widget.LoadingDialog;
+
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -72,6 +74,7 @@ public abstract class RxSubject<T> extends Subject<T> {
     @Override
     public void onComplete() {
         Log.i(this.getClass().getName(), "结束，关闭加载动画");
+        LoadingDialog.hide();
         _onComplete();
     }
 
@@ -80,5 +83,9 @@ public abstract class RxSubject<T> extends Subject<T> {
     protected abstract void _onComplete();
 
     protected abstract void _onError(String msg);
+
+    public boolean showToast() {
+        return true;
+    }
 
 }

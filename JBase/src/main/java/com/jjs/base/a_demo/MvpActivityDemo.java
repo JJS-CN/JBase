@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.jjs.base.JJsActivity;
 import com.jjs.base.R;
+import com.jjs.base.bean.BusBean;
 import com.jjs.base.bean.HashBean;
 import com.jjs.base.widget.BaseDialog;
 
@@ -37,6 +38,17 @@ public class MvpActivityDemo extends JJsActivity<PP> implements VV {
                 .setCancelable(true)
                 .setCanceledOnTouchOutside(false)
                 .create();
+        new RxSubjectDemo<BusBean>() {
+            @Override
+            protected void _onSuccess(BusBean busBean) {
+
+            }
+
+            @Override
+            public boolean showToast() {
+                return false;
+            }
+        };
     }
 
     @Override

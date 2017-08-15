@@ -1,5 +1,6 @@
 package com.jjs.base.a_demo;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.http.RxSubject;
 import com.jjs.base.widget.LoadingDialog;
 
@@ -29,9 +30,12 @@ public abstract class RxSubjectDemo<T> extends RxSubject<HttpResultDemo<T>> {
 
     @Override
     protected void _onError(String msg) {
-        //失败调用
+        //失败调用,判断是否展示失败toast
+        if (showToast())
+            ToastUtils.showShort(msg);
     }
 
     //请求成功后调用
     protected abstract void _onSuccess(T t);
+
 }

@@ -19,8 +19,10 @@ import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
 import com.jjs.base.activity.LoadResActivity;
+import com.jjs.base.http.RetrofitUtils;
 
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -28,7 +30,8 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 public class MultiDexAPP extends Application {
-    public static final String KEY_DEX2_SHA1 = "dex2-SHA1-Digest";
+    private static final String KEY_DEX2_SHA1 = "dex2-SHA1-Digest";
+    public static boolean isDebug = false;
 
     /**
      * 一些不影响性能的工具类初始化操作
@@ -40,6 +43,8 @@ public class MultiDexAPP extends Application {
             return;
         }
         Utils.init(this);
+        new LogUtils.Builder().setLogSwitch(isDebug);
+        RetrofitUtils.init(isDebug ? JJsStore.HTTP.URL_debug : JJsStore.HTTP.URL_release);
     }
 
     /**

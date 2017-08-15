@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.jjs.base.JJsActivity;
 
 /**
  * 作者： Jacky
@@ -12,7 +12,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
  * 静态启动页面
  */
 
-public abstract class JJsStartActivity extends RxAppCompatActivity {
+public abstract class JJsStartActivity extends JJsActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
