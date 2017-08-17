@@ -20,11 +20,11 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxSchedulers {
-    public static ObservableTransformer io_main(final LifecycleTransformer lifecycle) {
+    public static <T> ObservableTransformer<T, T> io_main(final LifecycleTransformer lifecycle) {
         return createObservable(true, lifecycle);
     }
 
-    public static ObservableTransformer io_main(final boolean showLoading, final LifecycleTransformer lifecycle) {
+    public static <T> ObservableTransformer<T, T> io_main(final boolean showLoading, final LifecycleTransformer lifecycle) {
         return createObservable(showLoading, lifecycle);
     }
 
@@ -32,7 +32,7 @@ public class RxSchedulers {
      * @param showLoading 是否展示loading窗
      * @param lifecycle   解决rxjava的lifecycle内存溢出问题
      */
-    private static ObservableTransformer createObservable(final boolean showLoading, final LifecycleTransformer lifecycle) {
+    private static <T> ObservableTransformer<T, T> createObservable(final boolean showLoading, final LifecycleTransformer lifecycle) {
         return new ObservableTransformer() {
             @Override
             public ObservableSource apply(Observable upstream) {

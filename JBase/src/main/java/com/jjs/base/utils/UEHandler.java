@@ -19,6 +19,17 @@ public class UEHandler implements Thread.UncaughtExceptionHandler {
     public UEHandler(Application app, Class aClass) {
         this.app = app;
         this.mClass = aClass;
+
+    }
+
+    /**
+     * 将UEhandler设置为app默认异常处理方法
+     *
+     * @param app
+     * @param aClass
+     */
+    public static void init(Application app, Class aClass) {
+        Thread.setDefaultUncaughtExceptionHandler(new UEHandler(app, aClass));
     }
 
     @Override

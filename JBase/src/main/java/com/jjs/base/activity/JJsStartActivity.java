@@ -1,10 +1,14 @@
 package com.jjs.base.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.jjs.base.JJsActivity;
+
+import java.util.List;
 
 /**
  * 作者： Jacky
@@ -14,8 +18,7 @@ import com.jjs.base.JJsActivity;
 
 public abstract class JJsStartActivity extends JJsActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreateView(@Nullable Bundle bundle) {
         //设置标题栏隐藏
         this.getSupportActionBar().hide();
         //设置window显示背景图片,页面销毁后，会自动gc此处消耗的大量内存；
@@ -28,6 +31,7 @@ public abstract class JJsStartActivity extends JJsActivity {
         //判断是否位于栈中，因为如果使用全局异常捕获，会造成启动多个页面，所以需要判断
         if (!isTaskRoot()) {
             finish();
+            return;
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -40,6 +44,21 @@ public abstract class JJsStartActivity extends JJsActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int i, Intent intent) {
+
+    }
+
+    @Override
+    public void onPermissionFailed(int i, List list) {
+
+    }
+
+    @Override
+    public void onPermissionSucceed(int i, List list) {
+
     }
 
     /**
@@ -66,4 +85,6 @@ public abstract class JJsStartActivity extends JJsActivity {
     private boolean boolFirst() {
         return getSharedPreferences("app", Context.MODE_PRIVATE).getBoolean("isFirst", true);
     }
+
+
 }
