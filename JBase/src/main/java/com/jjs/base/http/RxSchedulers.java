@@ -20,43 +20,40 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class RxSchedulers {
-    public static <T> ObservableTransformer<T, T> io_main(final LifecycleTransformer lifecycle) {
-        return createObservable(true, lifecycle);
+    //是否展示loading窗
+   private boolean showLoading=true;
+    //解决rxjava的lifecycle内存溢出问题
+    private  LifecycleTransformer lifecycle;
+
+    public RxSchedulers(LifecycleTransformer lifecycle){
+        this.lifecycle=lifecycle;
+    }
+    public static RxSchedulers getInstance(LifecycleTransformer lifecycle){
+        return new RxSchedulers(lifecycle);
     }
 
-    public static <T> ObservableTransformer<T, T> io_main(final boolean showLoading, final LifecycleTransformer lifecycle) {
-        return createObservable(showLoading, lifecycle);
+    public RxSchedulers showLoading(boolean show){
+        showLoading=show;
+        return this;
     }
 
-    /**
-     * @param showLoading 是否展示loading窗
-     * @param lifecycle   解决rxjava的lifecycle内存溢出问题
-     */
-    private static <T> ObservableTransformer<T, T> createObservable(final boolean showLoading, final LifecycleTransformer lifecycle) {
-        return new ObservableTransformer() {
+
+    public  <T> ObservableTransformer<T, T> io_main() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public ObservableSource apply(Observable upstream) {
-                return upstream.subscribeOn(Schedulers.newThread()).doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        //设定是否开启dialog窗
-                        if (showLoading)
-                            LoadingDialog.show();
-                    }
-                }).compose(lifecycle)//绑定Lifecycle,解决网络请求内存溢出问题
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return upstream.subscribeOn(Schedulers.newThread())
+                        .doOnSubscribe(new Consumer<Disposable>() {
+                            @Override
+                            public void accept(@NonNull Disposable disposable) throws Exception {
+                                //设定是否开启dialog窗
+                                if (showLoading)
+                                    LoadingDialog.show();
+                            }
+                        }).compose(lifecycle)//绑定Lifecycle,解决网络请求内存溢出问题
                         .subscribeOn(AndroidSchedulers.mainThread()) // 指定主线程
                         .observeOn(AndroidSchedulers.mainThread());
             }
         };
     }
-      /*     return upstream=new ObservableTransformer<T,T>()
-                upstream.subscribeOn(Schedulers.newThread())
-                        .doOnSubscribe(new Consumer<Disposable>() {
-                            @Override
-                            public void accept(@NonNull Disposable disposable) throws Exception {
-                                LoadingDialog.show();
-                            }
-                        })
-                        .subscribeOn(AndroidSchedulers.mainThread()) // 指定主线程
-                        .observeOn(AndroidSchedulers.mainThread());*/
 }

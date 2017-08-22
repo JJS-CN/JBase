@@ -56,7 +56,7 @@ public abstract class BasePersenter<V extends BaseView> {
      *
      * @param hash
      */
-    public void invokeMethod(HashBean hash) {
+    private void invokeMethod(HashBean hash) {
         //有发起请求时，遍历所有数据
         for (int i = 0; i < methods.length; i++) {
             //遍历方法中是否包含此注解，切判断注解中值是否为对应值
@@ -78,7 +78,7 @@ public abstract class BasePersenter<V extends BaseView> {
      *
      * @param hash
      */
-    public void sendHttp(final HashBean hash) {
+    private void sendHttp(final HashBean hash) {
         JJsApiService.Request request;
         Observable<String> observable;
         if (hash.isHasHeader()) {
@@ -91,7 +91,7 @@ public abstract class BasePersenter<V extends BaseView> {
         } else {
             observable = request.sendPost(hash.getUrl(), hash.getHashMap());
         }
-        observable.compose(RxSchedulers.io_main(hash.isShowLoading(), mView.bindToLifecycle()))
+        observable.compose(RxSchedulers.getInstance(mView.bindToLifecycle()).showLoading(hash.isShowLoading()).<String>io_main())
                 .subscribe(new RxSubject<String>() {
                     @Override
                     protected void _onNext(String data) {
@@ -105,7 +105,8 @@ public abstract class BasePersenter<V extends BaseView> {
 
                     @Override
                     protected void _onError(String msg) {
-                        ToastUtils.showShort(msg);
+                        if (hash.isShowLoading())
+                            ToastUtils.showShort(msg);
                     }
                 });
     }
