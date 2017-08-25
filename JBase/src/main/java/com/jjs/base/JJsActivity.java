@@ -4,12 +4,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.Window;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.Permission.PermissionListener;
@@ -25,6 +28,13 @@ import java.util.Map;
 
 /**
  * 说明：基础activity，fragment添加隐藏显示操作、回退栈操作、防止多次按下操作,返回2次退出，返回监听
+ * 过渡动画准备：Pair.create(view, key); 创建一条Pair 或只有一个view时直接设置name
+ * activity需要设定theme，theme继承AppCompat,默认空白，v21以上设置 <item name="android:windowContentTransitions">true</item>
+ * 这样设置theme准备后，api21以下为默认跳转，以上为动画
+ * 将Pair准备成bundle： ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairA, pairB).toBundle()
+ * 发送过渡动画： ActivityCompat.startActivity(this, intent, bundle);
+ * 接收过渡动画：ViewCompat.setTransitionName(view, key); 这里key值必须和发送放一致
+ * 过渡动画注意：接受方从intent拿到view展示内容已达到效果；activity需要配置theme
  * Created by aa on 2017/6/13.
  */
 
@@ -74,6 +84,10 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setExitTransition(new Explode());
+        }
         super.onCreate(savedInstanceState);
         LoadingDialog.init(this);//创建dialog
         mFragmentManager = getFragmentManager();
