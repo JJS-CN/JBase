@@ -3,6 +3,7 @@ package com.jjs.base;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.transition.Explode;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.Permission.PermissionListener;
@@ -205,6 +207,19 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         } else {
             Log.i("JJsActivity", "resultCode don't  -1");
         }
+    }
+
+    /********************************************************  点击空白隐藏软键盘  *****************************************************************/
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+        return super.onTouchEvent(event);
     }
 
     /********************************************************  权限申请方法  *****************************************************************/

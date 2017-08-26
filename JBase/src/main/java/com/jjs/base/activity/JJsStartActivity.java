@@ -20,7 +20,8 @@ public abstract class JJsStartActivity extends JJsActivity {
     @Override
     public void onCreateView(@Nullable Bundle bundle) {
         //设置标题栏隐藏
-        this.getSupportActionBar().hide();
+        if (getSupportActionBar() != null)
+            this.getSupportActionBar().hide();
         //设置window显示背景图片,页面销毁后，会自动gc此处消耗的大量内存；
         if (setSplshBackground() != 0) {
             this.getWindow().setBackgroundDrawableResource(setSplshBackground());
