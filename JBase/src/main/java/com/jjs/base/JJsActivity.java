@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.Explode;
@@ -27,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 说明：基础activity，fragment添加隐藏显示操作、回退栈操作、防止多次按下操作,返回2次退出，返回监听
@@ -51,6 +55,15 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     private boolean hasCheckDouble = true;
     private static int CheckDoubleMillis = 200;
     public P mPersenter;//P层，具体aty中直接实例化即可
+
+    // butterKinfe注解的对象
+    private Unbinder mButterKnifeBind;
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        mButterKnifeBind = ButterKnife.bind(this);
+    }
 
     /**
      * onCreate方法抽象
@@ -105,11 +118,14 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         LoadingDialog.dissmiss();//关闭页面时释放dialog
         //清除P层对view的引用
         if (mPersenter != null)
             mPersenter.destroy();
+        if (mButterKnifeBind != null)
+            mButterKnifeBind.unbind();
+        super.onDestroy();
+
     }
 
     long exitMillis;//上次返回键点击时间

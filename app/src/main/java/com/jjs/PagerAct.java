@@ -1,8 +1,6 @@
 package com.jjs;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -12,8 +10,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.blankj.utilcode.util.ImageUtils;
 
 import java.util.List;
 
@@ -48,9 +44,7 @@ public class PagerAct extends Activity {
         }
         new PagerUtils().setView(vp, llDots, null, views).setPageTransformer(true, new ParallaxPageTransformer(R.id.background_style_default)).create();*/
         long curr = System.currentTimeMillis();
-        Bitmap bitmap = ImageUtils.fastBlur(BitmapFactory.decodeResource(getResources(), R.drawable.aa1), 1, 25);
         Log.e("log", (System.currentTimeMillis() - curr) + "");
-        iv_img.setImageBitmap(bitmap);
 
 
     }

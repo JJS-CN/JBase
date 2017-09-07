@@ -8,18 +8,21 @@ import com.jjs.base.http.download.DownLoadObserver;
 import com.jjs.base.http.download.DownloadInfo;
 import com.jjs.base.http.download.DownloadManager;
 
+import butterknife.ButterKnife;
 import io.reactivex.annotations.NonNull;
 
 
 public class XXXX extends Activity {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xxx);
+        ButterKnife.bind(this);
         DownloadManager.getInstance().download("http://gdown.baidu.com/data/wisegame/93812d86a2e7cd82/aiqiyi_80910.apk", new DownLoadObserver() {
             @Override
             public void _onNext(DownloadInfo downloadInfo) {
-                Log.e("download", downloadInfo.getProgress() + "/" + downloadInfo.getTotal()  + "");
+                Log.e("download", downloadInfo.getProgress() + "/" + downloadInfo.getTotal() + "");
             }
 
             @Override
