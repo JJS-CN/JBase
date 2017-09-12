@@ -2,4 +2,7 @@
     <string name="app_name">My Library</string>
     <string name="JJS_exitToast">再按一次退出程序</string>
     <item name="tag_banner_url" type="id"/>
+    <!--折叠textview的默认按钮文本-->
+    <string name="read_more">show more</string>
+    <string name="read_less">show less</string>
 </resources>
