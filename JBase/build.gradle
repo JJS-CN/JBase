@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.JJS-CN'
+group = 'com.github.JJS-CN'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -41,6 +41,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-annotations:26.0.2'
     testCompile 'junit:junit:4.12'
     //底部导航栏
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.4.3'
@@ -50,9 +51,9 @@ dependencies {
     //列表展示
     compile 'com.android.support:recyclerview-v7:25.3.1'
     //列表展示适配器
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.28'
     //65535分包
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     //okhttp
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     //rxjava2
@@ -67,10 +68,10 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     //常用工具类(已带log--ALog )
     //网址 https://github.com/Blankj/AndroidUtilCode/blob/master/README-CN.md
-    compile 'com.blankj:utilcode:1.8.1'
+    compile 'com.blankj:utilcode:1.9.0'
     //图片加载框架
-    compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
+    compile 'com.github.bumptech.glide:glide:4.1.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
 }
 /*publish {
     //提交代码：gradlew clean build bintrayUpload -PbintrayUser=jjs19930123 -PbintrayKey=68176f4ec5dbe1be2d575917f799b7e5f787b811 -PdryRun=false

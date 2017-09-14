@@ -1,4 +1,4 @@
-package com.jjs.base.a_demo;
+package com.jjs.demo;
 
 import com.jjs.base.bean.HashBean;
 import com.jjs.base.mvp.BasePersenter;

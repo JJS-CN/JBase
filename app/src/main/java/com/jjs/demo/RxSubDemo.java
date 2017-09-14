@@ -1,6 +1,5 @@
 package com.jjs.demo;
 
-import com.jjs.base.a_demo.HttpResultDemo;
 import com.jjs.base.http.RxSubject;
 
 /**

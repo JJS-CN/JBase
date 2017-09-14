@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".base.a_demo.ViewPagerDemo">
+        <activity android:name=".demo.ViewPagerDemo">
 
         </activity>
         <activity android:name=".PagerAct">

@@ -11,7 +11,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.JJsActivity;
 import com.jjs.base.Permission.PermissionListener;
 import com.jjs.base.Permission.PermissionSteward;
-import com.jjs.base.a_demo.PP;
+import com.jjs.demo.PP;
 import com.jjs.base.bean.BusBean;
 import com.jjs.base.bean.HashBean;
 import com.jjs.base.http.RetrofitUtils;

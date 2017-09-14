@@ -18,7 +18,8 @@ import java.util.List;
 
 public abstract class JJsStartActivity extends JJsActivity {
     @Override
-    public void onCreateView(@Nullable Bundle bundle) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //设置标题栏隐藏
         if (getSupportActionBar() != null)
             this.getSupportActionBar().hide();
@@ -68,17 +69,17 @@ public abstract class JJsStartActivity extends JJsActivity {
      *
      * @return 传入具体的drawableId
      */
-    public abstract int setSplshBackground();
+    protected abstract int setSplshBackground();
 
     /**
      * 判断为是第一次启动app，应跳转轮播APP介绍页面
      */
-    public abstract void isFirst();
+    protected abstract void isFirst();
 
     /**
      * 判断为是第一次启动app，应启动注册页面或main页面
      */
-    public abstract void notFirst();
+    protected abstract void notFirst();
 
     /**
      * 判断app是否是第一次进入

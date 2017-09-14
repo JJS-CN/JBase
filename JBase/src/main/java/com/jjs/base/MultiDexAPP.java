@@ -43,7 +43,7 @@ public class MultiDexAPP extends Application {
             return;
         }
         Utils.init(this);
-        new LogUtils.Builder().setLogSwitch(isDebug);
+        LogUtils.getConfig().setLogSwitch(isDebug);
         RetrofitUtils.init(isDebug ? JJsStore.HTTP.URL_debug : JJsStore.HTTP.URL_release);
     }
 

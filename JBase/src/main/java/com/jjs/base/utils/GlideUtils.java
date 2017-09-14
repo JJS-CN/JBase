@@ -18,6 +18,8 @@ import java.security.MessageDigest;
  */
 
 public class GlideUtils {
+
+
     /**
      * 处理圆形图片
      */

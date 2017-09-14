@@ -1,4 +1,4 @@
-package com.jjs.base.a_demo;
+package com.jjs.demo;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.http.RxSubject;

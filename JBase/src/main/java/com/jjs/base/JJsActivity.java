@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.Explode;
@@ -29,12 +28,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * 说明：基础activity，fragment添加隐藏显示操作、回退栈操作、防止多次按下操作,返回2次退出，返回监听
- * 过渡动画准备：Pair.create(view, key); 创建一条Pair 或只有一个view时直接设置name
+ * 说明：基础activity，fragment添加隐藏显示操作、回退栈操作、防止多次按下操作,返回2次退出，返回监听；
+ * 手动实例化P层并赋予给mPersenter变量，然后调用；
+ * Butterkinfe.bind(this); 之后，手动赋予给变量 mUnbinder，将会自动在onDestroy中进行unbind；
+ *
+ * 过渡动画准备：Pair.create(view, key); 创建一条Pair 或只有一个view时直接设置name；
  * activity需要设定theme，theme继承AppCompat,默认空白，v21以上设置 <item name="android:windowContentTransitions">true</item>
  * 这样设置theme准备后，api21以下为默认跳转，以上为动画
  * 将Pair准备成bundle： ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairA, pairB).toBundle()
@@ -54,23 +55,15 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     //是否需要进行判断重复点击
     private boolean hasCheckDouble = true;
     private static int CheckDoubleMillis = 200;
+
+    private long exitMillis;//上次返回键点击时间
+    private String exitToast;//返回提示语，根据是否为null判断是否需要进行判断
+
     public P mPersenter;//P层，具体aty中直接实例化即可
 
     // butterKinfe注解的对象
-    private Unbinder mButterKnifeBind;
+    protected Unbinder mUnbinder;
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-        mButterKnifeBind = ButterKnife.bind(this);
-    }
-
-    /**
-     * onCreate方法抽象
-     *
-     * @param savedInstanceState
-     */
-    public abstract void onCreateView(@Nullable Bundle savedInstanceState);
 
     /**
      * 对activity跳转返回进行判断，resultCode属于-1才处理
@@ -78,7 +71,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
      * @param requestCode
      * @param data
      */
-    public abstract void onActivityResult(int requestCode, Intent data);
+    protected abstract void onActivityResult(int requestCode, Intent data);
 
     /**
      * 权限申请成功时回调
@@ -86,7 +79,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
      * @param requestCode 请求码
      * @param grantList   申请通过的全部权限
      */
-    public abstract void onPermissionSucceed(int requestCode, List<String> grantList);
+    protected abstract void onPermissionSucceed(int requestCode, List<String> grantList);
 
     /**
      * 权限申请失败时回调
@@ -94,7 +87,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
      * @param requestCode 请求码
      * @param deniedList  没有申请通过的权限
      */
-    public abstract void onPermissionFailed(int requestCode, List<String> deniedList);
+    protected abstract void onPermissionFailed(int requestCode, List<String> deniedList);
 
 
     @Override
@@ -107,7 +100,6 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         LoadingDialog.init(this);//创建dialog
         mFragmentManager = getFragmentManager();
         mFragmentListMap = new HashMap<>();//创建一个fragment集合，根据viewID保存hash集合中，可以根据viewid进行操作而不乱
-        onCreateView(savedInstanceState);
     }
 
     @Override
@@ -122,14 +114,13 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         //清除P层对view的引用
         if (mPersenter != null)
             mPersenter.destroy();
-        if (mButterKnifeBind != null)
-            mButterKnifeBind.unbind();
+        if (mUnbinder != null)
+            mUnbinder.unbind();
         super.onDestroy();
 
     }
 
-    long exitMillis;//上次返回键点击时间
-    String exitToast;//返回提示语，根据是否为null判断是否需要进行判断
+
 
     /**
      * 设置需要进行按2下才推出程序的功能

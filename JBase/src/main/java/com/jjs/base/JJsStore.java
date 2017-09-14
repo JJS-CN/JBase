@@ -10,12 +10,6 @@ public class JJsStore {
         public static final int RESULT_OK = -1;//activity关闭回调统一标识
     }
 
-    public static class LOGIN {
-        public static final int SEND_SMS = 0;
-        public static final int REGISTER = 1;
-        public static final int LOGIN = 2;
-        public static final int RESET_PWD = 3;
-    }
 
     public static class HTTP {
         public static final String URL = "url";

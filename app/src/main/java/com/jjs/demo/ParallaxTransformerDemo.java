@@ -1,4 +1,4 @@
-package com.jjs.base.a_demo;
+package com.jjs.demo;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

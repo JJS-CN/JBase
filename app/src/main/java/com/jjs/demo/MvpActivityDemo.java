@@ -1,11 +1,10 @@
-package com.jjs.base.a_demo;
+package com.jjs.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.jjs.base.JJsActivity;
-import com.jjs.base.bean.BusBean;
 import com.jjs.base.bean.HashBean;
 
 import java.util.List;
@@ -17,21 +16,11 @@ import java.util.List;
 
 public class MvpActivityDemo extends JJsActivity<PP> implements VV {
     @Override
-    public void onCreateView(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mPersenter = new PP(this);//进行实例化，this为PP编写时填入的view接口
         mPersenter.cccc(new HashBean(1));//之后进行具体操作即可
 
-        new RxSubjectDemo<BusBean>() {
-            @Override
-            protected void _onSuccess(BusBean busBean) {
-
-            }
-
-            @Override
-            public boolean showToast() {
-                return false;
-            }
-        };
     }
 
     @Override
