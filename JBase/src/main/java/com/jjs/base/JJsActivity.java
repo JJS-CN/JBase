@@ -178,7 +178,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         if (hasCheckDouble) {
             if (ev.getAction() == MotionEvent.ACTION_DOWN) {
                 if (System.currentTimeMillis() - EventDownTime < CheckDoubleMillis) {
-                    Log.i("JJsActivity", "触摸太过频繁，已屏蔽");
+                    Log.i("JJsActivity", "you Event too more,because is ignore");
                     return true;
                 } else {
                     EventDownTime = System.currentTimeMillis();
