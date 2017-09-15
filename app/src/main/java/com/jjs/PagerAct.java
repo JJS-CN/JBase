@@ -3,14 +3,15 @@ package com.jjs;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.jjs.base.utils.viewpager.PagerUtils;
+import com.jjs.base.widget.CustomViewPager;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,34 +24,32 @@ import butterknife.ButterKnife;
 
 public class PagerAct extends Activity {
     @BindView(R.id.vp)
-    ViewPager vp;
+    CustomViewPager vp;
     @BindView(R.id.ll_dots)
     LinearLayout llDots;
     @BindView(R.id.iv_img)
     ImageView iv_img;
     List<View> views;
-    WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pager);
         ButterKnife.bind(this);
-     /*   views = new ArrayList<>();
+        views = new ArrayList<>();
+        vp.setCanMove(true);
         for (int i = 0; i < 4; i++) {
             ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.drawable.aa1);
+            if (i % 2 == 0)
+                imageView.setImageResource(R.mipmap.ic_launcher);
+            else
+                imageView.setImageResource(R.mipmap.ic_launcher_round);
             views.add(imageView);
         }
-        new PagerUtils().setView(vp, llDots, null, views).setPageTransformer(true, new ParallaxPageTransformer(R.id.background_style_default)).create();*/
+        new PagerUtils().setView(this, vp, llDots, null, views).create();
         long curr = System.currentTimeMillis();
         Log.e("log", (System.currentTimeMillis() - curr) + "");
 
-
-    }
-
-    @JavascriptInterface
-    public void getData() {
 
     }
 }
