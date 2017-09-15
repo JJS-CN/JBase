@@ -41,6 +41,7 @@ public class PagerUtils {
 
     boolean isAutoPlay;//是否自动轮播
     boolean isInfinite;//是否无限轮播
+    boolean isDocCheck;//是否需要doc点击切换效果
     int autoPlayMillis;//轮播间隔
     boolean changeBG = false;//是否修改背景
     float moveBGF;//移动百分比
@@ -69,6 +70,14 @@ public class PagerUtils {
         this.isAutoPlay = isAutoPlay;
         this.isInfinite = isInfinite;
         this.autoPlayMillis = autoPlayMillis;
+        return this;
+    }
+
+    /**
+     * 设置是否点击按钮切换viewpager页签
+     */
+    public PagerUtils setDocCheck(boolean isDocCheck) {
+        this.isDocCheck = isDocCheck;
         return this;
     }
 
@@ -132,6 +141,7 @@ public class PagerUtils {
         dots = new ArrayList<>();
         ll_dot.removeAllViews();
         for (int i = 0; i < views.size(); i++) {
+            final int finalI1 = i;
             ShapeView dotView = new ShapeView(viewPager.getContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) dp2px(dotsData.dotRadius) * 2, (int) dp2px(dotsData.dotRadius) * 2);
             int dotmargin = (int) dp2px(dotsData.dotMargin);
@@ -142,6 +152,13 @@ public class PagerUtils {
             } else {
                 dotView.setShapeType(1).setSolidColor(dotsData.dotDefaultColor).setRadius(dp2px(dotsData.dotRadius)).show();
             }
+            if (isDocCheck)
+                dotView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewPager.setCurrentItem(finalI1);
+                    }
+                });
             ll_dot.setOrientation(LinearLayout.HORIZONTAL);
             ll_dot.addView(dotView);
             if (onItemClickListener != null) {
