@@ -46,6 +46,7 @@
         </attr>
     </declare-styleable>
 
+    <!--四角的标签view-->
     <declare-styleable name="LabelView">
         <!-- 设置文字内容 -->
         <attr name="lv_text" format="string"/>
@@ -72,6 +73,37 @@
         </attr>
         <!-- 设置是否填充三角区域,默认false -->
         <attr name="lv_fill_triangle" format="boolean"/>
+    </declare-styleable>
 
+    <!--流程步骤指示器-->
+    <declare-styleable name="FlowViewHorizontal">
+        <attr name="h_bg_radius" format="dimension" />
+        <attr name="h_pro_radius" format="dimension" />
+        <attr name="h_bg_width" format="dimension" />
+        <attr name="h_bg_color" format="color" />
+        <attr name="h_pro_width" format="dimension" />
+        <attr name="h_pro_color" format="color" />
+        <attr name="h_text_padding" format="dimension" />
+        <attr name="h_time_padding" format="dimension" />
+        <attr name="h_max_step" format="integer" />
+        <attr name="h_textsize" format="dimension" />
+        <attr name="h_pro_step" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="FlowViewVertical">
+        <attr name="v_bg_radius" format="dimension" />
+        <attr name="v_pro_radius" format="dimension" />
+        <attr name="v_bg_width" format="dimension" />
+        <attr name="v_bg_color" format="color" />
+        <attr name="v_pro_width" format="dimension" />
+        <attr name="v_pro_color" format="color" />
+        <attr name="v_interval" format="dimension" />
+        <attr name="v_bgPositionX" format="dimension" />
+        <attr name="v_max_step" format="integer" />
+        <attr name="v_pro_step" format="integer" />
+        <attr name="v_textPaddingLeft" format="dimension" />
+        <attr name="v_timePaddingRight" format="dimension" />
+        <attr name="v_textMoveTop" format="dimension" />
+        <attr name="v_timeMoveTop" format="dimension" />
+        <attr name="v_textsize" format="dimension" />
     </declare-styleable>
 </resources>

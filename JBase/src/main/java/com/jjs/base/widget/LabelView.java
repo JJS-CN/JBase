@@ -41,7 +41,6 @@ public class LabelView extends View {
 
     public LabelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         obtainAttributes(context, attrs);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
     }
@@ -302,12 +301,12 @@ public class LabelView extends View {
         return result;
     }
 
-    protected int dp2px(float dp) {
+    private int dp2px(float dp) {
         final float scale = getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
 
-    protected int sp2px(float sp) {
+    private int sp2px(float sp) {
         final float scale = getResources().getDisplayMetrics().scaledDensity;
         return (int) (sp * scale + 0.5f);
     }

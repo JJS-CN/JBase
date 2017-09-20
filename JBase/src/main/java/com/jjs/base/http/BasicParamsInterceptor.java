@@ -1,9 +1,12 @@
 package com.jjs.base.http;
 
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.blankj.utilcode.util.LogUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +23,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okio.Buffer;
+import okio.BufferedSource;
 
 /**
  * 本页：okhttp拦截器，用来对请求url进行改造，以添加一些固定参数
@@ -39,7 +43,6 @@ public class BasicParamsInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-
         Request request = chain.request();
         Request.Builder requestBuilder = request.newBuilder();
 
@@ -80,10 +83,45 @@ public class BasicParamsInterceptor implements Interceptor {
                 requestBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), postBodyString));
             }
         }
-
         request = requestBuilder.build();
+        /**
+         * 开始解析发送参数
+         */
+        if (request != null && request.body() != null) {
+            Buffer buffer = new Buffer();
+            request.body().writeTo(buffer);
+
+            //编码设为UTF-8
+            Charset charset = Charset.forName("UTF-8");
+            MediaType contentType = request.body().contentType();
+            if (contentType != null) {
+                charset = contentType.charset(Charset.forName("UTF-8"));
+            }
+            LogUtils.i("发送----" + "method:" + request.method() + "  url:" + request.url() + "  body:" + buffer.readString(charset));
+        }
+
+        /**
+         * 开始解析服务器返回参数
+         */
         Response response = chain.proceed(request);
-        Log.e("拦截器", response.message() + "");
+        String rBody = "";
+        if (response != null && response.body() != null) {
+            BufferedSource source = response.body().source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            Buffer buffer = source.buffer();
+
+            Charset charset = Charset.forName("UTF-8");
+            MediaType contentType = response.body().contentType();
+            if (contentType != null) {
+                try {
+                    charset = contentType.charset(Charset.forName("UTF-8"));
+                } catch (UnsupportedCharsetException e) {
+                    e.printStackTrace();
+                }
+            }
+            rBody = buffer.clone().readString(charset);
+        }
+        LogUtils.i("接收：" + rBody.toString());
         return response;
     }
 

@@ -1,18 +1,15 @@
 package com.jjs.demo;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.jjs.base.http.RxSubject;
-import com.jjs.base.widget.LoadingDialog;
+import com.jjs.base.http.JJsObserver;
 
 /**
- * 说明：
- * Created by aa on 2017/6/21.
+ * 说明：统一处理返回和异常
+ * 继承时设定基础类，具体内容由泛型定义，添加abs标签用于每个请求独立处理
+ * Created by aa on 2017/9/20.
  */
 
-public abstract class RxSubjectDemo<T> extends RxSubject<HttpResultDemo<T>> {
-    //继承时设定基础类，具体内容由泛型定义，添加abs标签用于每个请求独立处理
-
-
+public abstract class RxObserverDemo<T> extends JJsObserver<HttpResultDemo<T>> {
     @Override
     protected void _onNext(HttpResultDemo<T> data) {
         if (data.isSuccess()) {
@@ -24,8 +21,7 @@ public abstract class RxSubjectDemo<T> extends RxSubject<HttpResultDemo<T>> {
 
     @Override
     protected void _onComplete() {
-        //流程走完，关闭loading，由于compose时开启了loading窗
-        LoadingDialog.hide();
+
     }
 
     @Override
@@ -37,5 +33,4 @@ public abstract class RxSubjectDemo<T> extends RxSubject<HttpResultDemo<T>> {
 
     //请求成功后调用
     protected abstract void _onSuccess(T t);
-
 }

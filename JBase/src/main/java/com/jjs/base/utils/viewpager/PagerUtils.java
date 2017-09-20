@@ -119,6 +119,7 @@ public class PagerUtils {
     }
 
     public PagerUtils setMoveBG(float moveBGF) {
+        //百分比
         this.moveBGF = moveBGF;
         this.moveBG = 0;
         return this;

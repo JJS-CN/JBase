@@ -9,54 +9,31 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.subjects.Subject;
 
 /**
- * 本页：数据处理，需要在实际项目中创建继承此项。进行自己的判断是否请求工作（比如token校验）
- * Created by jjs on 2017-03-25.
- * Email:994462623@qq.com
+ * 说明：接受消息回调
+ * 注意：在onComplete和onError之间可能只调用其中一个，可能全部都调用，所以注意方法的书写
+ * 这里要把dialog关闭都写上
+ * Created by aa on 2017/9/20.
  */
 
-public abstract class RxSubject<T> extends Subject<T> {
+public abstract class JJsObserver<T> implements Observer<T> {
     @Override
-    public boolean hasObservers() {
-        return false;
+    public void onSubscribe(@NonNull Disposable d) {
+
     }
 
     @Override
-    public boolean hasThrowable() {
-        return false;
+    public void onNext(@NonNull T t) {
+        Log.i(this.getClass().getName(), "拿到数据:" + t.toString());
+        _onNext(t);
     }
 
     @Override
-    public boolean hasComplete() {
-        return false;
-    }
-
-    @Override
-    public Throwable getThrowable() {
-        return null;
-    }
-
-    @Override
-    protected void subscribeActual(Observer<? super T> observer) {
-    }
-
-
-    @Override
-    public void onSubscribe(Disposable d) {
-    }
-
-    @Override
-    public void onNext(T result) {
-        Log.i(this.getClass().getName(), "拿到数据:" + result.toString());
-        _onNext(result);
-    }
-
-
-    @Override
-    public void onError(Throwable e) {
+    public void onError(@NonNull Throwable e) {
+        LoadingDialog.hide();
         String errMsg = "";
         if (e instanceof SocketTimeoutException) {
             errMsg = "网络连接超时，请检查您的网络状态，稍后重试";
@@ -69,6 +46,7 @@ public abstract class RxSubject<T> extends Subject<T> {
         }
         Log.i(this.getClass().getName(), "onError:----" + errMsg);
         _onError(errMsg);
+
     }
 
     @Override
@@ -84,8 +62,10 @@ public abstract class RxSubject<T> extends Subject<T> {
 
     protected abstract void _onError(String msg);
 
+    /**
+     * 外部重写此方法，来控制是否展示错误提示；
+     */
     public boolean showToast() {
         return true;
     }
-
 }

@@ -1,6 +1,7 @@
 package com.jjs.base.http;
 
-import com.blankj.utilcode.util.LogUtils;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -80,11 +81,13 @@ public class RetrofitUtils {
                 .readTimeout(this.DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//设置全局请求的数据读取超时时间，默认为30s
         // 当有数据时，向okhttp中添加公共参数拦截器
         if (headerMap != null) {
-            LogUtils.e("notNull");
+            Log.e("RetrofitUtils","notNull");
             BasicParamsInterceptor interceptor = new BasicParamsInterceptor.Builder().addHeaderParamsMap(headerMap).build();
             builder.addInterceptor(interceptor);
         } else {
-            LogUtils.e("isNull");
+            Log.e("RetrofitUtils","isNull");
+            BasicParamsInterceptor interceptor = new BasicParamsInterceptor.Builder().build();
+            builder.addInterceptor(interceptor);
         }
         //创建okhttp实例
         OkHttpClient client = builder.build();

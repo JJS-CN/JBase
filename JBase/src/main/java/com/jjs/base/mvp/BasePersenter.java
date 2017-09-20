@@ -4,10 +4,10 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.jjs.base.bean.HashBean;
 import com.jjs.base.http.JJsApiService;
+import com.jjs.base.http.JJsObserver;
 import com.jjs.base.http.RequestCode;
 import com.jjs.base.http.RetrofitUtils;
 import com.jjs.base.http.RxSchedulers;
-import com.jjs.base.http.RxSubject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -92,7 +92,7 @@ public abstract class BasePersenter<V extends BaseView> {
             observable = request.sendPost(hash.getUrl(), hash.getHashMap());
         }
         observable.compose(RxSchedulers.getInstance(mView.bindToLifecycle()).showLoading(hash.isShowLoading()).<String>io_main())
-                .subscribe(new RxSubject<String>() {
+                .subscribe(new JJsObserver<String>() {
                     @Override
                     protected void _onNext(String data) {
                         mView.ResponseSuccess(hash.getRequestCode(), data);
@@ -109,6 +109,7 @@ public abstract class BasePersenter<V extends BaseView> {
                             ToastUtils.showShort(msg);
                     }
                 });
+
     }
 
 }
