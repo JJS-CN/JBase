@@ -11,3 +11,4 @@
 <br>
 <br>
 2017.9.14  1：更新ALog的设置log开关方法、2：demo转移至外部、3：更新第三方版本号、4：JJsActivity中删除CreatView方法，修改butterkinfe等使用、5:增加手势图片控制PinchImageView <br>
+2017.9.22  1：增加爆炸view 2：更新请求方法

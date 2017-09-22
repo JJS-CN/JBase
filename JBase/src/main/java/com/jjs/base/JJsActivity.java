@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.Explode;
@@ -28,13 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
  * 说明：基础activity，fragment添加隐藏显示操作、回退栈操作、防止多次按下操作,返回2次退出，返回监听；
  * 手动实例化P层并赋予给mPersenter变量，然后调用；
  * Butterkinfe.bind(this); 之后，手动赋予给变量 mUnbinder，将会自动在onDestroy中进行unbind；
- *
+ * <p>
  * 过渡动画准备：Pair.create(view, key); 创建一条Pair 或只有一个view时直接设置name；
  * activity需要设定theme，theme继承AppCompat,默认空白，v21以上设置 <item name="android:windowContentTransitions">true</item>
  * 这样设置theme准备后，api21以下为默认跳转，以上为动画
@@ -55,6 +57,8 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     //是否需要进行判断重复点击
     private boolean hasCheckDouble = true;
     private static int CheckDoubleMillis = 200;
+    //是否需要进行左滑返回
+    private boolean hasMovePopBack = false;
 
     private long exitMillis;//上次返回键点击时间
     private String exitToast;//返回提示语，根据是否为null判断是否需要进行判断
@@ -89,6 +93,15 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
      */
     protected abstract void onPermissionFailed(int requestCode, List<String> deniedList);
 
+    /**
+     * 重写，默认执行butterkinfe绑定操作。
+     * butterkinfe会自动新建onCreate，所以必须实现onCreate方法
+     */
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        mUnbinder = ButterKnife.bind(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +132,6 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         super.onDestroy();
 
     }
-
 
 
     /**
@@ -186,6 +198,13 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 设置是否打开左侧滑动返回上一层
+     */
+    public void setMovePopBack(boolean hasMovePopBack) {
+        this.hasMovePopBack = hasMovePopBack;
     }
 
     /**
