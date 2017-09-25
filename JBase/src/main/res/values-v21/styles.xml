@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="TransitionTheme" parent="AppTheme">
+    <style name="TransitionTheme" parent="JJsAppTheme">
         <item name="android:windowContentTransitions">true</item>
 
     </style>

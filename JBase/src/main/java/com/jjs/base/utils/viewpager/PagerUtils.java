@@ -142,7 +142,7 @@ public class PagerUtils {
         dots = new ArrayList<>();
         ll_dot.removeAllViews();
         for (int i = 0; i < views.size(); i++) {
-            final int finalI1 = i;
+            final int finalI = i;
             ShapeView dotView = new ShapeView(viewPager.getContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) dp2px(dotsData.dotRadius) * 2, (int) dp2px(dotsData.dotRadius) * 2);
             int dotmargin = (int) dp2px(dotsData.dotMargin);
@@ -157,13 +157,12 @@ public class PagerUtils {
                 dotView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        viewPager.setCurrentItem(finalI1);
+                        viewPager.setCurrentItem(finalI);
                     }
                 });
             ll_dot.setOrientation(LinearLayout.HORIZONTAL);
             ll_dot.addView(dotView);
             if (onItemClickListener != null) {
-                final int finalI = i;
                 views.get(i).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

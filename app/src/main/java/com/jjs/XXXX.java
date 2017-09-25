@@ -1,17 +1,19 @@
 package com.jjs;
 
-import android.app.Activity;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
-import com.jjs.base.widget.BaseDialogFragment;
+import com.jjs.base.JJsActivity;
 
 import butterknife.ButterKnife;
 
 
-public class XXXX extends Activity {
+public class XXXX extends JJsActivity {
+
+    @Override
+    protected void onActivityResult(int requestCode, Intent data) {
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class XXXX extends Activity {
                 .setCanceledOnTouchOutside(false)
                 .create();
         dialog.show();*/
-        BaseDialogFragment.getInstance(R.layout.ccc, Color.MAGENTA)
+       /* BaseDialogFragment.getInstance(R.layout.ccc, Color.MAGENTA)
                 .setInitViewListener(new BaseDialogFragment.OnInitViewListener() {
                     @Override
                     public void onInit(BaseDialogFragment.ViewHolder mHolder) {
@@ -78,7 +80,8 @@ public class XXXX extends Activity {
                 })
                 .hasTranSparent(false)
                 .hasCancelable(false)
-                .show(getFragmentManager(), "1");
+                .show(getFragmentManager(), "1");*/
+        setHasMovePopBack(true);
     }
 
 }

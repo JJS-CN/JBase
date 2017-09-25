@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="JJsAppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <!--设置activity的背景色为透明色-->
+        <item name="android:windowBackground">@color/Null</item>
+        <!--打开透明，否则显示黑色-->
+        <item name="android:windowIsTranslucent">true</item>
         <item name="windowActionBar">false</item>
         <!-- 使用 API Level 22 編譯的話，要拿掉前綴字 -->
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="TransitionTheme" parent="AppTheme"/>
+    <style name="TransitionTheme" parent="JJsAppTheme"/>
 
     <style name="Dialog_notBG">
         <item name="android:windowNoTitle">true</item>

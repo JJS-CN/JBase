@@ -22,7 +22,7 @@ public class LoadResActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        overridePendingTransition(R.anim.null_anim, R.anim.null_anim);
+        overridePendingTransition(R.anim.anim_activity_null, R.anim.anim_activity_null);
         setContentView(R.layout.layout_load);
         new LoadDexTask().execute();
     }

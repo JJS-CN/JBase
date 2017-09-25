@@ -1,5 +1,6 @@
 package com.jjs.base;
 
+import android.animation.ValueAnimator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.AnimRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -14,12 +16,12 @@ import android.support.annotation.Nullable;
 import android.transition.Explode;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 
+import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.jjs.base.Permission.PermissionListener;
-import com.jjs.base.Permission.PermissionSteward;
 import com.jjs.base.mvp.BasePersenter;
 import com.jjs.base.widget.LoadingDialog;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -47,7 +49,7 @@ import butterknife.Unbinder;
  * Created by aa on 2017/6/13.
  */
 
-public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatActivity implements PermissionListener {
+public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatActivity {
     //fragmnet管理器
     private FragmentManager mFragmentManager;
     //所有fragment的集合
@@ -59,6 +61,14 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     private static int CheckDoubleMillis = 200;
     //是否需要进行左滑返回
     private boolean hasMovePopBack = false;
+    private float movePopRangeX = 200;//横向移动多少距离触发返回
+    float popDownX = 10000;//给予初始按下值，为了touch不被误判
+    View prentView;
+    //activity的切换动画
+    private int animActivityOpen = R.anim.anim_activity_open;//默认activity的启动动画
+    private int animActivityClose = R.anim.anim_activity_close;//默认activity的关闭动画
+    private int animOpen;//临时启动动画
+    private int animClose;//临时关闭动画
 
     private long exitMillis;//上次返回键点击时间
     private String exitToast;//返回提示语，根据是否为null判断是否需要进行判断
@@ -77,21 +87,6 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
      */
     protected abstract void onActivityResult(int requestCode, Intent data);
 
-    /**
-     * 权限申请成功时回调
-     *
-     * @param requestCode 请求码
-     * @param grantList   申请通过的全部权限
-     */
-    protected abstract void onPermissionSucceed(int requestCode, List<String> grantList);
-
-    /**
-     * 权限申请失败时回调
-     *
-     * @param requestCode 请求码
-     * @param deniedList  没有申请通过的权限
-     */
-    protected abstract void onPermissionFailed(int requestCode, List<String> deniedList);
 
     /**
      * 重写，默认执行butterkinfe绑定操作。
@@ -113,6 +108,8 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         LoadingDialog.init(this);//创建dialog
         mFragmentManager = getFragmentManager();
         mFragmentListMap = new HashMap<>();//创建一个fragment集合，根据viewID保存hash集合中，可以根据viewid进行操作而不乱
+
+
     }
 
     @Override
@@ -133,6 +130,15 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == JJsStore.TAG.RESULT_OK) {
+            onActivityResult(requestCode, data);
+        } else {
+            Log.i("JJsActivity", "resultCode don't  -1");
+        }
+    }
 
     /**
      * 设置需要进行按2下才推出程序的功能
@@ -175,6 +181,46 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         //否则直接finish
         finish();
     }
+    /*********************************************************  acitivity切换动画相关  *************************************************************/
+    /**
+     * 设置全局activity的启动动画、关闭动画；打开调用、关闭调用
+     */
+    public void initActivityAnim(@AnimRes int animOpen, @AnimRes int animClose) {
+        animActivityOpen = animOpen;
+        animActivityClose = animClose;
+    }
+
+    /**
+     * 设置临时，本activity的启动和关闭动画
+     */
+    public void updateActivityAnim(@AnimRes int animOpen, @AnimRes int animClose) {
+        this.animOpen = animOpen;
+        this.animClose = animClose;
+    }
+
+    /**
+     * 重写start方法，加入启动动画
+     */
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, 0);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, 0);
+    }
+
+    /**
+     * 重写finish方法，键入关闭动画
+     */
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(0, animClose != 0 ? animClose : animActivityClose);
+    }
 
     @Override
     public void onBackPressed() {
@@ -186,24 +232,60 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         //activity的点击事件，触摸事件由此分发，返回true时表示事件已消耗，不再向下传递
-        //得考虑滑动触摸，所以在这里操作很难。
-        if (hasCheckDouble) {
-            if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (hasCheckDouble) {
                 if (System.currentTimeMillis() - EventDownTime < CheckDoubleMillis) {
-                    Log.i("JJsActivity", "you Event too more,because is ignore");
+                    Log.i("JJsActivity", "this Event has ignore,because you touch too much! ");
                     return true;
                 } else {
                     EventDownTime = System.currentTimeMillis();
                 }
             }
+            if (hasMovePopBack && ev.getX() <= movePopRangeX) {
+                popDownX = ev.getX();
+            }
+        } else if (ev.getAction() == MotionEvent.ACTION_UP) {
+            /**
+             * 判断是否需要左滑返回
+             */
+            if (hasMovePopBack && popDownX <= movePopRangeX) {
+                //抬起，判断是否需要返回
+                if (ev.getX() - popDownX > movePopRangeX) {
+                    //执行关闭操作
+                    popBackStackFinish();
+                } else {
+                    //执行回弹操作
+                    if (prentView == null) {
+                        prentView = this.getWindow().getDecorView();
+                    }
+                    ValueAnimator animator = ValueAnimator.ofFloat(prentView.getX(), 0);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            prentView.setX((Float) animation.getAnimatedValue());
+                        }
+                    });
+                    animator.setDuration(200).start();
+                }
+                popDownX = 10000;
+            }
+        } else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+            //左滑返回的拖动效果
+            if (hasMovePopBack) {
+                if (prentView == null) {
+                    prentView = this.getWindow().getDecorView();
+                }
+                prentView.setX(ev.getX() - popDownX < 0 ? 0 : ev.getX() - popDownX);
+            }
         }
+
         return super.dispatchTouchEvent(ev);
     }
 
     /**
      * 设置是否打开左侧滑动返回上一层
      */
-    public void setMovePopBack(boolean hasMovePopBack) {
+    public void setHasMovePopBack(boolean hasMovePopBack) {
         this.hasMovePopBack = hasMovePopBack;
     }
 
@@ -225,15 +307,6 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         this.CheckDoubleMillis = doubleMillis;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == JJsStore.TAG.RESULT_OK) {
-            onActivityResult(requestCode, data);
-        } else {
-            Log.i("JJsActivity", "resultCode don't  -1");
-        }
-    }
 
     /********************************************************  点击空白隐藏软键盘  *****************************************************************/
     @Override
@@ -255,17 +328,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        PermissionSteward.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onSucceed(int requestCode, List<String> grantPermissionList) {
-        onPermissionSucceed(requestCode, grantPermissionList);
-    }
-
-    @Override
-    public void onFailed(int requestCode, List<String> deniedPermissionList) {
-        onPermissionFailed(requestCode, deniedPermissionList);
+        PermissionUtils.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
 

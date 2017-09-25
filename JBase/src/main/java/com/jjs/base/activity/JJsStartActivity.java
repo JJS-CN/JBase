@@ -8,8 +8,6 @@ import android.view.WindowManager;
 
 import com.jjs.base.JJsActivity;
 
-import java.util.List;
-
 /**
  * 作者： Jacky
  * 日期：2017-04-19
@@ -53,15 +51,6 @@ public abstract class JJsStartActivity extends JJsActivity {
 
     }
 
-    @Override
-    public void onPermissionFailed(int i, List list) {
-
-    }
-
-    @Override
-    public void onPermissionSucceed(int i, List list) {
-
-    }
 
     /**
      * 设置app启动时的window背景显示图片

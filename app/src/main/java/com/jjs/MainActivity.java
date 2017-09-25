@@ -40,15 +40,6 @@ public class MainActivity extends JJsActivity<PP> implements PermissionListener 
 
     }
 
-    @Override
-    public void onPermissionSucceed(int requestCode, List<String> grantList) {
-
-    }
-
-    @Override
-    public void onPermissionFailed(int requestCode, List<String> deniedList) {
-
-    }
 
 
 
