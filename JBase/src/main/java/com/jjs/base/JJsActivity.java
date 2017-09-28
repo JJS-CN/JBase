@@ -313,12 +313,15 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     public boolean onTouchEvent(MotionEvent event) {
         // TODO Auto-generated method stub
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
-                InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
+            hideInputMethod();
         }
         return super.onTouchEvent(event);
+    }
+    public void hideInputMethod(){
+        if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /********************************************************  权限申请方法  *****************************************************************/

@@ -41,6 +41,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
+    //此需要谷歌依赖
     compile 'com.android.support:support-annotations:26.0.2'
     testCompile 'junit:junit:4.12'
     //底部导航栏
@@ -51,7 +52,7 @@ dependencies {
     //列表展示
     compile 'com.android.support:recyclerview-v7:25.3.1'
     //列表展示适配器
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.28'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     //65535分包
     compile 'com.android.support:multidex:1.0.1'
     //okhttp
