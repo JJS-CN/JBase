@@ -9,6 +9,7 @@ import java.util.Random;
 
 /**
  * 说明：验证码工具，生成图片、返回字符串进行对比
+ * 每次调用getBitmap()将重置参数，code取值同时改变
  * Created by aa on 2017/9/28.
  */
 

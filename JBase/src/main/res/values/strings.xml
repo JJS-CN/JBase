@@ -3,6 +3,8 @@
     <string name="JJS_exitToast">再按一次退出程序</string>
     <item name="tag_banner_url" type="id"/>
     <!--折叠textview的默认按钮文本-->
-    <string name="read_more">show more</string>
-    <string name="read_less">show less</string>
+    <string name="read_more"> more</string>
+    <string name="read_less"> less</string>
+
+    <drawable name="activity_bg">@color/Beige</drawable>
 </resources>

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.PermissionUtils;
+import com.bumptech.glide.Glide;
 import com.jjs.base.JJsActivity;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
@@ -51,8 +52,9 @@ public class PagerAct extends JJsActivity {
         for (int i = 0; i < 4; i++) {
             ImageView imageView = new ImageView(this);
             if (i % 2 == 0)
-                imageView.setImageResource(R.mipmap.ic_launcher);
+                Glide.with(this).load("http://img0.imgtn.bdimg.com/it/u=4204473876,3868286801&fm=214&gp=0.jpg").into(imageView);
             else
+                //GlideApp.with(this).load("http://e.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=1a3963408f94a4c20a76ef2f3bc437e3/e4dde71190ef76c66b5e79649516fdfaae5167f5.jpg").into(imageView);
                 imageView.setImageResource(R.mipmap.ic_launcher_round);
             views.add(imageView);
         }

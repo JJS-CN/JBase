@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.jjs.R;
 import com.jjs.base.widget.BangView;
+import com.jjs.base.widget.ReadMoreTextView;
 
 /**
  * 说明：
@@ -59,5 +60,7 @@ public class ViewDemoActivity extends Activity {
 
             }
         });
+        ReadMoreTextView readMoreTextView = new ReadMoreTextView(this);
+        readMoreTextView.setTrimLines(2);
     }
 }

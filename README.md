@@ -13,3 +13,4 @@
 <br>
 <br>2017.9.14  1：更新ALog的设置log开关方法、2：demo转移至外部、3：更新第三方版本号、4：JJsActivity中删除CreatView方法，修改butterkinfe等使用、5:增加手势图片控制PinchImageView
 <br>2017.9.22  1：增加爆炸view 2：更新请求方法
+<br>2017.9.29  1：解决activity切换黑屏bug（切换动画设置未2个参数都设置）、2：增加activity背景设置方法（setContentView方法中自动设置，可在之前通过init或update更新）、3：新增Rsa加密工具类（已做分段加密处理）4：新增验证码图片工具类CodeImgUtils

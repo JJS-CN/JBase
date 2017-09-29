@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.IntRange;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.SpannableStringBuilder;
@@ -20,6 +21,7 @@ import com.jjs.base.R;
 
 /**
  * 说明：折叠文本的textview，需要运行后才能预览效果，直接设置text文本
+ * trimLines不能小于2，否则报错
  * Created by aa on 2017/9/11.
  */
 
@@ -28,7 +30,7 @@ public class ReadMoreTextView extends AppCompatTextView {
     private static final int TRIM_MODE_LINES = 0;
     private static final int TRIM_MODE_LENGTH = 1;
     private static final int DEFAULT_TRIM_LENGTH = 240;
-    private static final int DEFAULT_TRIM_LINES = 2;
+    private static final int DEFAULT_TRIM_LINES = 2;//默认2行
     private static final int INVALID_END_INDEX = -1;
     private static final boolean DEFAULT_SHOW_TRIM_EXPANDED_TEXT = true;
     private static final String ELLIPSIZE = "... ";
@@ -45,7 +47,7 @@ public class ReadMoreTextView extends AppCompatTextView {
 
     private int trimMode;//折叠模式，默认以行数折叠 2行
     private int lineEndIndex;
-    private int trimLines;//文本行数，默认2行
+    private int trimLines;//文本行数，不能小于2，否则处理时会报错
 
     public ReadMoreTextView(Context context) {
         this(context, null);
@@ -133,6 +135,8 @@ public class ReadMoreTextView extends AppCompatTextView {
 
     private CharSequence updateExpandedText() {
         if (showTrimExpandedText) {
+            //if catch occur,you can inspect "trimLines";
+            //"trimLines" must >=2;
             SpannableStringBuilder s = new SpannableStringBuilder(text, 0, text.length()).append(trimExpandedText);
             return addClickableSpan(s, trimExpandedText);
         }
@@ -165,7 +169,7 @@ public class ReadMoreTextView extends AppCompatTextView {
         this.trimMode = trimMode;
     }
 
-    public void setTrimLines(int trimLines) {
+    public void setTrimLines(@IntRange(from = 2) int trimLines) {
         this.trimLines = trimLines;
     }
 

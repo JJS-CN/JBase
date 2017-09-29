@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -70,6 +71,9 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     private int animOpen;//临时启动动画
     private int animClose;//临时关闭动画
 
+    private int baseActivityBg = R.drawable.activity_bg;//默认activity的背景色
+    private int ActivityBg = 0;//临时activity背景色
+
     private long exitMillis;//上次返回键点击时间
     private String exitToast;//返回提示语，根据是否为null判断是否需要进行判断
 
@@ -96,6 +100,21 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         mUnbinder = ButterKnife.bind(this);
+        /**
+         * 由于activity切换时会有黑屏现象，所以默认theme设置为透明背景
+         * 但在加载完xml之后需要重新设置背景色,通过在setContentView之前调用init或update方法更新背景色
+         */
+        getWindow().setBackgroundDrawable(getResources().getDrawable(ActivityBg == 0 ? baseActivityBg : ActivityBg));
+    }
+
+    //更新全局背景色
+    public void initActivityBg(@DrawableRes int drawableId) {
+        this.baseActivityBg = drawableId;
+    }
+
+    //设置临时背景色，优先于全局背景色
+    public void updateActivityBg(@DrawableRes int drawableId) {
+        this.ActivityBg = drawableId;
     }
 
     @Override
@@ -204,13 +223,14 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, 0);
+        //如果2个不设置全，activity切换时会造成短暂黑屏
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, 0);
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
     }
 
     /**
@@ -219,7 +239,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     @Override
     public void finish() {
         super.finish();
-        this.overridePendingTransition(0, animClose != 0 ? animClose : animActivityClose);
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
     }
 
     @Override
@@ -317,7 +337,8 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         }
         return super.onTouchEvent(event);
     }
-    public void hideInputMethod(){
+
+    public void hideInputMethod() {
         if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
