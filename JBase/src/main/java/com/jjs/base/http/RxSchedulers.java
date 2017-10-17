@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 本页：传入是否显示loading、内存溢出方法   (默认开启loading)
+ * LifecycleTransformer 将在组件停止运行时，自动取消请求，防止内存溢出
  * Created by jjs on 2017-03-24.
  * Email:994462623@qq.com
  */

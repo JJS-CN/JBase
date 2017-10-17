@@ -157,6 +157,25 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         } else {
             Log.i("JJsActivity", "resultCode don't  -1");
         }
+        /**
+         * 进行Fragment的回调处理
+         */
+        try {
+            for (int i = 0; i < mFragmentResultList.size(); i++) {
+                mFragmentResultList.get(i).onActivityResult(requestCode, resultCode, data);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    List<Fragment> mFragmentResultList = new ArrayList<>();
+
+    /**
+     * 设置Fragment的回调
+     */
+    public void addFragmentResult(Fragment fragment) {
+        mFragmentResultList.add(fragment);
     }
 
     /**
