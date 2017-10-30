@@ -1,4 +1,4 @@
-package com.jjs.base.http;
+package com.jjs.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

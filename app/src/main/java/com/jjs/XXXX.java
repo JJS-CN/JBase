@@ -3,12 +3,12 @@ package com.jjs;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.jjs.base.JJsActivity;
+import com.jjs.base.BaseActivity;
 
 import butterknife.ButterKnife;
 
 
-public class XXXX extends JJsActivity {
+public class XXXX extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, Intent data) {

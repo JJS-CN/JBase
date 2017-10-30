@@ -23,28 +23,48 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
 import com.jjs.base.activity.LoadResActivity;
 import com.jjs.base.http.RetrofitUtils;
+import com.jjs.base.utils.UEHandler;
 
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-public class MultiDexAPP extends Application {
+public abstract class MultiDexAPP extends Application {
     private static final String KEY_DEX2_SHA1 = "dex2-SHA1-Digest";
-    public static boolean isDebug = false;
+    private static boolean isDebug = false;
 
-    /**
-     * 一些不影响性能的工具类初始化操作
-     */
-    @Override
     public void onCreate() {
         super.onCreate();
         if (quickStart()) {
             return;
         }
+    }
+
+    /**
+     * 使用此方法来控制debug模式，请务必调用
+     */
+    public void initDebug(boolean debug, String url_debug, String url_release) {
+        isDebug = debug;
+        BaseStore.HTTP.URL_debug = url_debug;
+        BaseStore.HTTP.URL_release = url_release;
+        if (debug) {
+            UEHandler.openDebug();
+        }
+        initUtils();
+    }
+
+    public boolean getDebug() {
+        return isDebug;
+    }
+
+    /**
+     * 进行工具类的一些初始化操作。
+     */
+    private void initUtils() {
         Utils.init(this);
         LogUtils.getConfig().setLogSwitch(isDebug);
-        RetrofitUtils.init(isDebug ? JJsStore.HTTP.URL_debug : JJsStore.HTTP.URL_release);
+        RetrofitUtils.init(isDebug ? BaseStore.HTTP.URL_debug : BaseStore.HTTP.URL_release);
     }
 
     /**

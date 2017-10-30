@@ -56,6 +56,12 @@ public class PagerUtils {
         this.iv_bg = iv_bg;
         this.views = views;
         this.context = context;
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
         return this;
     }
 

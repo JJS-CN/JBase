@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
-import com.jjs.base.JJsActivity;
+import com.jjs.base.BaseActivity;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
 
@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by aa on 2017/7/26.
  */
 
-public class PagerAct extends JJsActivity {
+public class PagerAct extends BaseActivity {
     @BindView(R.id.vp)
     CustomViewPager vp;
     @BindView(R.id.ll_dots)

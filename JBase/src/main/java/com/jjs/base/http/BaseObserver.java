@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
  * Created by aa on 2017/9/20.
  */
 
-public abstract class JJsObserver<T> implements Observer<T> {
+public abstract class BaseObserver<T> implements Observer<T> {
     @Override
     public void onSubscribe(@NonNull Disposable d) {
 

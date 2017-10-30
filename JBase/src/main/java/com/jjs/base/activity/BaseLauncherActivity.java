@@ -1,12 +1,13 @@
 package com.jjs.base.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
-import com.jjs.base.JJsActivity;
+import com.blankj.utilcode.util.SPUtils;
+import com.jjs.base.BaseActivity;
+import com.jjs.base.BaseStore;
 
 /**
  * 作者： Jacky
@@ -14,7 +15,7 @@ import com.jjs.base.JJsActivity;
  * 静态启动页面
  */
 
-public abstract class JJsStartActivity extends JJsActivity {
+public abstract class BaseLauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public abstract class JJsStartActivity extends JJsActivity {
             public void run() {
                 if (boolFirst()) {
                     isFirst();
-                    getSharedPreferences("app", Context.MODE_PRIVATE).edit().putBoolean("isFirst", false).commit();
+                    SPUtils.getInstance().put(BaseStore.TAG.isFirst, false);
                 } else {
                     notFirst();
                 }
@@ -74,7 +75,7 @@ public abstract class JJsStartActivity extends JJsActivity {
      * 判断app是否是第一次进入
      */
     private boolean boolFirst() {
-        return getSharedPreferences("app", Context.MODE_PRIVATE).getBoolean("isFirst", true);
+        return SPUtils.getInstance().getBoolean(BaseStore.TAG.isFirst, true);
     }
 
 

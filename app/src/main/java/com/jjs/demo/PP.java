@@ -1,6 +1,5 @@
 package com.jjs.demo;
 
-import com.jjs.base.bean.HashBean;
 import com.jjs.base.mvp.BasePersenter;
 
 /**
@@ -14,12 +13,5 @@ public class PP extends BasePersenter<VV> {
     }
 
 
-    public void cccc(HashBean hashBean) {
-        mView.aa();
-        //参数取值，进行请求
-        hashBean.getValue("key");
-        //请求成功后，返回code与参数
-        mView.ResponseSuccess(hashBean.getRequestCode(), "");
-    }
 
 }

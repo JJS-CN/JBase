@@ -50,7 +50,7 @@ import butterknife.Unbinder;
  * Created by aa on 2017/6/13.
  */
 
-public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatActivity {
+public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatActivity {
     //fragmnet管理器
     private FragmentManager mFragmentManager;
     //所有fragment的集合
@@ -152,10 +152,10 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == JJsStore.TAG.RESULT_OK) {
+        if (resultCode == BaseStore.TAG.RESULT_OK) {
             onActivityResult(requestCode, data);
         } else {
-            Log.i("JJsActivity", "resultCode don't  -1");
+            Log.i("BaseActivity", "resultCode don't  -1");
         }
         /**
          * 进行Fragment的回调处理
@@ -274,7 +274,7 @@ public abstract class JJsActivity<P extends BasePersenter> extends RxAppCompatAc
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             if (hasCheckDouble) {
                 if (System.currentTimeMillis() - EventDownTime < CheckDoubleMillis) {
-                    Log.i("JJsActivity", "this Event has ignore,because you touch too much! ");
+                    Log.i("BaseActivity", "this Event has ignore,because you touch too much! ");
                     return true;
                 } else {
                     EventDownTime = System.currentTimeMillis();

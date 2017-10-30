@@ -41,7 +41,7 @@ public class SplashAty extends AppCompatActivity {
 
 
     List<String> list;
-    QuickAdapter adapter;
+    QuickAdapter adapter_quick;
 
 
     @Override
@@ -54,29 +54,29 @@ public class SplashAty extends AppCompatActivity {
         */
 /** 1：数据类型、2：item布局、3：数据源 *//*
 
-        adapter = new QuickAdapter<String>(R.layout.ccc, list) {
+        adapter_quick = new QuickAdapter<String>(R.layout.ccc, list) {
             @Override
             public void _convert(QuickHolder holder, String data) {
                 holder.setText(R.id.tv_title, data).addOnClickListener(R.id.iv_head).addOnClickListener(R.id.tv_title);
             }
         };
         rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(adapter);
+        rv.setAdapter(adapter_quick);
         */
 /** 设置单击事件 *//*
 
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        adapter_quick.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter_quick, View view, int position) {
                 ToastUtils.showShort(position + "");
             }
         });
         */
 /** 设置长按事件 *//*
 
-        adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+        adapter_quick.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+            public boolean onItemLongClick(BaseQuickAdapter adapter_quick, View view, int position) {
                 ToastUtils.showShort(list.get(position));
                 //控制是否消耗点击事件，如果为false仍然会出发  单击事件
                 return true;
@@ -85,12 +85,12 @@ public class SplashAty extends AppCompatActivity {
         */
 /** 设置子控件单击监听，需在convert里面add监听对象 *//*
 
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        adapter_quick.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter_quick, View view, int position) {
                 switch (view.getId()) {
                     case R.id.iv_head:
-                        TextView textView = (TextView) adapter.getViewByPosition(rv, position + adapter.getHeaderLayoutCount(), R.id.tv_title);
+                        TextView textView = (TextView) adapter_quick.getViewByPosition(rv, position + adapter_quick.getHeaderLayoutCount(), R.id.tv_title);
                         ToastUtils.showShort("我是iv:" + textView.getText().toString());
                         break;
                     case R.id.tv_title:
@@ -102,7 +102,7 @@ public class SplashAty extends AppCompatActivity {
         */
 /** item入场动画 *//*
 
-        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
+        adapter_quick.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
         */
 /** 添加头部和底部布局，及点击处理方式 *//*
 
@@ -121,19 +121,19 @@ public class SplashAty extends AppCompatActivity {
             }
         });
         //添加
-        adapter.addHeaderView(headView);
-        adapter.addFooterView(footerView);
+        adapter_quick.addHeaderView(headView);
+        adapter_quick.addFooterView(footerView);
         //删除
         */
-/*adapter.removeFooterView(footerView);
-        adapter.removeHeaderView(headView);
-        adapter.removeAllFooterView();
-        adapter.removeAllHeaderView();*//*
+/*adapter_quick.removeFooterView(footerView);
+        adapter_quick.removeHeaderView(headView);
+        adapter_quick.removeAllFooterView();
+        adapter_quick.removeAllHeaderView();*//*
 
         */
 /** 加载更多 *//*
 
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        adapter_quick.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 addList();
@@ -147,10 +147,10 @@ public class SplashAty extends AppCompatActivity {
             @Override
             public void run() {
                 if (list.size() >= 10) {
-                    adapter.loadMoreFail();
+                    adapter_quick.loadMoreFail();
                 } else {
                     list.add("测试数据：" + 0);
-                    adapter.loadMoreComplete();
+                    adapter_quick.loadMoreComplete();
                 }
             }
         }, 1000);
@@ -161,7 +161,7 @@ public class SplashAty extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
     */
 /*    addList();
-        adapter.notifyDataSetChanged();*//*
+        adapter_quick.notifyDataSetChanged();*//*
 
     }
 

@@ -1,7 +1,7 @@
 package com.jjs.demo;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.jjs.base.http.JJsObserver;
+import com.jjs.base.http.BaseObserver;
 
 /**
  * 说明：统一处理返回和异常
@@ -9,7 +9,7 @@ import com.jjs.base.http.JJsObserver;
  * Created by aa on 2017/9/20.
  */
 
-public abstract class RxObserverDemo<T> extends JJsObserver<HttpResultDemo<T>> {
+public abstract class RxObserverDemo<T> extends BaseObserver<HttpResultDemo<T>> {
     @Override
     protected void _onNext(HttpResultDemo<T> data) {
         if (data.isSuccess()) {
