@@ -19,6 +19,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
+import com.jjs.base.utils.recyclerview.DivDecoration;
 import com.jjs.R;
 import com.jjs.base.utils.recyclerview.DraggableAdapter;
 import com.jjs.base.utils.recyclerview.ExpandableAdapter;
@@ -46,7 +47,6 @@ public class BaseQuickAdapterDemo extends Activity {
     List<String> mList = new ArrayList<>();
     QuickAdapter adapter;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +58,10 @@ public class BaseQuickAdapterDemo extends Activity {
         }
         //绑定数据
 
-        //initBaseQuickAdapter();//基础使用
+        initBaseQuickAdapter();//基础使用
         //initMultiType();//基于QuickAdapter实现 多布局
         //initDraggableAdapter();//拖拽布局和右滑删除
-        initExpandableAdapter();
+        //initExpandableAdapter();
     }
 
     /**
@@ -69,6 +69,7 @@ public class BaseQuickAdapterDemo extends Activity {
      */
     private void initBaseQuickAdapter() {
         mRvBase.setLayoutManager(new LinearLayoutManager(this));
+        mRvBase.addItemDecoration(new DivDecoration(this));
         adapter = new QuickAdapter<String>(R.layout.adapter_quick, mList) {
             @Override
             public void _convert(QuickHolder holder, String data) {
@@ -111,7 +112,8 @@ public class BaseQuickAdapterDemo extends Activity {
 
         //无数据时，设置空数据
         //如果用网格布局的话，设置空布局就不能给全屏，可以使用瀑布流布局
-        adapter.setEmptyView(R.layout.activity_view_demo);
+        //使用报 please bind recyclerView first!错误，猜测需要使用到rootView导致的，所以基本无用
+        //adapter.setEmptyView(R.layout.activity_view_demo);
 
         /**
          * 动画（默认渐显）
@@ -159,14 +161,14 @@ public class BaseQuickAdapterDemo extends Activity {
                 //加载完成，还有下页数据
                 //adapter.loadMoreComplete();
                 //加载完成，没有下页数据
-                //adapter.loadMoreEnd();
-                // adapter.loadMoreEnd(true);//设置是否展示end
+                // adapter.loadMoreEnd();
+                //adapter.loadMoreEnd(true);//设置是否展示end
                 //加载失败，再次滑动不会触发，需手动点击
                 //adapter.loadMoreFail();
             }
         }, mRvBase);
         //下拉加载（用于聊天软件的历史纪录）
-        adapter.setUpFetchEnable(true);
+        adapter.setUpFetchEnable(false);
         //下拉加载的触发位置
         adapter.setStartUpFetchPosition(2);
         //下拉加载触发监听
@@ -186,6 +188,7 @@ public class BaseQuickAdapterDemo extends Activity {
             }
         });
         mRvBase.setAdapter(adapter);
+
     }
 
     /**
@@ -360,4 +363,5 @@ public class BaseQuickAdapterDemo extends Activity {
         mRvBase.setAdapter(expandableAdapter);
         expandableAdapter.expandAll();
     }
+
 }

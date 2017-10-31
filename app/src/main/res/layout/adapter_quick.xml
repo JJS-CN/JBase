@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:background="@color/Pink"
+              android:orientation="vertical">
+
     <TextView
-        android:padding="20dp"
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <View
-        android:background="@color/Cyan"
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"/>
-
+        android:layout_height="wrap_content"
+        android:padding="20dp"/>
 </LinearLayout>
