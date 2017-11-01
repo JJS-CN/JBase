@@ -1,4 +1,5 @@
 # JBase
+<br>[![](https://jitpack.io/v/JJS-CN/JBase.svg)](https://jitpack.io/#JJS-CN/JBase)
 <br>##android 自用
 <br>项目层的gradle需要添加这2个库的支持
 <br>        maven { url "https://jitpack.io" }
