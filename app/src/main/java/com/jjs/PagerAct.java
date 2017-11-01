@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
-import com.jjs.base.BaseActivity;
+import com.jjs.base.base.BaseActivity;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
 

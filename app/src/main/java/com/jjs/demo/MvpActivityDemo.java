@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.jjs.base.BaseActivity;
+import com.jjs.base.base.BaseActivity;
 
 /**
  * 说明：aty创建时填入具体P层，并实现具体P层需要的view接口

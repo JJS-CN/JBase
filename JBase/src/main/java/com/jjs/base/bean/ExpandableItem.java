@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
  * Created by aa on 2017/10/30.
  */
 
-public abstract class BaseExpandableItem<T> extends AbstractExpandableItem<T> implements MultiItemEntity {
+public abstract class ExpandableItem<T> extends AbstractExpandableItem<T> implements MultiItemEntity {
     //返回层次，从0开始，如果不在乎请返回负数
     @Override
     public int getLevel() {

@@ -1,4 +1,4 @@
-package com.jjs.base.activity;
+package com.jjs.base.base;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.jjs.base.MultiDexAPP;
 import com.jjs.base.R;
 
 /**
@@ -33,7 +32,7 @@ public class LoadResActivity extends Activity {
             try {
                 MultiDex.install(getApplication());
                 Log.d("loadDex", "install finish");
-                ((MultiDexAPP) getApplication()).installFinish(getApplication());
+                ((BaseApplication) getApplication()).installFinish(getApplication());
             } catch (Exception e) {
                 Log.e("loadDex", e.getLocalizedMessage());
             }

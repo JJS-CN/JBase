@@ -1,4 +1,4 @@
-package com.jjs.base;
+package com.jjs.base.base;
 
 /**
  * 说明：分包方案，未测试：
@@ -21,7 +21,6 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
-import com.jjs.base.activity.LoadResActivity;
 import com.jjs.base.http.RetrofitUtils;
 import com.jjs.base.utils.UEHandler;
 
@@ -30,7 +29,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-public abstract class MultiDexAPP extends Application {
+public abstract class BaseApplication extends Application {
     private static final String KEY_DEX2_SHA1 = "dex2-SHA1-Digest";
     private static boolean isDebug = false;
 

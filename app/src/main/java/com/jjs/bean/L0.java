@@ -1,13 +1,13 @@
 package com.jjs.bean;
 
-import com.jjs.base.bean.BaseExpandableItem;
+import com.jjs.base.bean.ExpandableItem;
 
 /**
  * 说明：
  * Created by aa on 2017/10/30.
  */
 
-public class L0 extends BaseExpandableItem<L1>{
+public class L0 extends ExpandableItem<L1> {
     public L0(String str) {
         this.L0str = str;
     }

@@ -1,4 +1,4 @@
-package com.jjs.base;
+package com.jjs.base.base;
 
 import android.animation.ValueAnimator;
 import android.app.Fragment;
@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.jjs.base.R;
 import com.jjs.base.mvp.BasePersenter;
 import com.jjs.base.widget.LoadingDialog;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;

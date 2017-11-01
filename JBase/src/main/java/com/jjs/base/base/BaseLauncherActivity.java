@@ -1,4 +1,4 @@
-package com.jjs.base.activity;
+package com.jjs.base.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.jjs.base.BaseActivity;
-import com.jjs.base.BaseStore;
 
 /**
  * 作者： Jacky

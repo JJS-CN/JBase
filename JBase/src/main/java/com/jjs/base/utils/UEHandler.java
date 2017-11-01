@@ -3,7 +3,7 @@ package com.jjs.base.utils;
 import android.app.Application;
 import android.content.Intent;
 
-import com.jjs.base.activity.BaseLauncherActivity;
+import com.jjs.base.base.BaseLauncherActivity;
 
 /**
  * 全局异常捕获，不处理系统回收页面早册造成的空指针异常的补丁方案

@@ -1,4 +1,4 @@
-package com.jjs.base.activity;
+package com.jjs.base.base;
 
 import android.content.Intent;
 import android.net.http.SslError;
@@ -8,8 +8,6 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.jjs.base.BaseActivity;
 
 /**
  * 说明：详细：http://blog.csdn.net/carson_ho/article/details/52693322

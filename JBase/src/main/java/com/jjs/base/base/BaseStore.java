@@ -1,4 +1,4 @@
-package com.jjs.base;
+package com.jjs.base.base;
 
 /**
  * 说明：

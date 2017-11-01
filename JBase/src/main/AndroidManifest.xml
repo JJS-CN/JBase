@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         >
         <activity
-            android:name=".activity.LoadResActivity"
+            android:name=".base.LoadResActivity"
             android:alwaysRetainTaskState="false"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
