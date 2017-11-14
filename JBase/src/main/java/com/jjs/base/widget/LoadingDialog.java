@@ -20,23 +20,25 @@ public class LoadingDialog {
      * 初始化dialog数据，可动态设置显示view和style
      */
     public static void init(Context context) {
-        View view = View.inflate(context, R.layout.dialog_loadingview, null);
-        init(context, view, R.style.Dialog_notBG);
+        init(context, null, -1);
     }
 
     public static void init(Context context, View view) {
-        init(context, view, R.style.Dialog_notBG);
+        init(context, view, -1);
     }
 
     public static void init(Context context, View view, int style) {
-        if (mDialog == null) {
+        if (mDialog == null || !context.getClass().equals(mDialog.getContext().getClass())) {
+            if (style == -1)
+                style = R.style.Dialog_notBG;
             mDialog = new Dialog(context, style);
             mDialog.setCancelable(true);//按返回键消失
             mDialog.setCanceledOnTouchOutside(false);//但点击dialog范围外不消失
+            if (view == null)
+                view = View.inflate(context, R.layout.dialog_loadingview, null);
             mDialog.setContentView(view);
         }
     }
-
 
     public static void show() {
         if (mDialog != null) {

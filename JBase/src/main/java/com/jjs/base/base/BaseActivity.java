@@ -156,7 +156,7 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
         if (resultCode == BaseStore.TAG.RESULT_OK) {
             onActivityResult(requestCode, data);
         } else {
-            Log.i("BaseActivity", "resultCode don't  -1");
+            Log.e("BaseActivity", "resultCode don't  -1");
         }
         /**
          * 进行Fragment的回调处理
@@ -275,7 +275,7 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             if (hasCheckDouble) {
                 if (System.currentTimeMillis() - EventDownTime < CheckDoubleMillis) {
-                    Log.i("BaseActivity", "this Event has ignore,because you touch too much! ");
+                    Log.e("BaseActivity", "this Event has ignore,because you touch too much! ");
                     return true;
                 } else {
                     EventDownTime = System.currentTimeMillis();

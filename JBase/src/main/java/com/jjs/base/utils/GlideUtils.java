@@ -5,8 +5,10 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 
+import com.blankj.utilcode.util.ImageUtils;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
@@ -27,7 +29,8 @@ public class GlideUtils {
 
         @Override
         protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
-            if (toTransform == null) return null;
+            if (toTransform == null)
+                return null;
 
             int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
             int x = (toTransform.getWidth() - size) / 2;
@@ -79,7 +82,8 @@ public class GlideUtils {
 
         @Override
         protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
-            if (toTransform == null) return null;
+            if (toTransform == null)
+                return null;
 
             int size = Math.min(toTransform.getWidth(), toTransform.getHeight());
             int x = (toTransform.getWidth() - size) / 2;
@@ -99,6 +103,35 @@ public class GlideUtils {
             RectF rectF = new RectF(0f, 0f, result.getWidth(), result.getHeight());
             canvas.drawRoundRect(rectF, radius, radius, paint);
             return result;
+        }
+
+        @Override
+        public void updateDiskCacheKey(MessageDigest messageDigest) {
+
+        }
+    }
+
+    /**
+     * 处理图片为高斯模糊
+     */
+    public static class GlideBlurformation extends BitmapTransformation {
+        private float scale;
+        private float radius;
+
+        public GlideBlurformation() {
+            this.scale = 0.2f;
+            this.radius = 25;
+        }
+
+        public GlideBlurformation(@FloatRange(from = 0, to = 1, fromInclusive = false) float scale,
+                                  @FloatRange(from = 0, to = 25, fromInclusive = false) float radius) {
+            this.scale = scale;
+            this.radius = radius;
+        }
+
+        @Override
+        protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+            return ImageUtils.fastBlur(toTransform, scale, radius);
         }
 
         @Override

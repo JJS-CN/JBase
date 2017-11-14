@@ -1,9 +1,13 @@
 package com.jjs;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.jjs.base.base.BaseActivity;
+import com.jjs.base.widget.LoadingDialog;
 
 import butterknife.ButterKnife;
 
@@ -20,6 +24,7 @@ public class XXXX extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xxx);
         ButterKnife.bind(this);
+        LoadingDialog.show();
         /*DownloadManager.getInstance().download("http://gdown.baidu.com/data/wisegame/93812d86a2e7cd82/aiqiyi_80910.apk", new DownLoadObserver() {
             @Override
             public void _onNext(DownloadInfo downloadInfo) {
@@ -83,5 +88,20 @@ public class XXXX extends BaseActivity {
                 .show(getFragmentManager(), "1");*/
         setHasMovePopBack(true);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Dialog dialog=new AlertDialog.Builder(this).create();
+        dialog.setContentView(R.layout.adapter_quick);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                LoadingDialog.show();
+            }
+        });
+        dialog.show();
+    }
+
 
 }

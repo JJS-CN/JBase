@@ -9,6 +9,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
+
 /**
  * 说明：详细：http://blog.csdn.net/carson_ho/article/details/52693322
  * 点击不启动系统浏览器、返回不直接关闭activity、加载https、销毁处理、自动回调 标题Title 和 加载进度Progress
@@ -70,6 +73,9 @@ public abstract class BaseH5Activity extends BaseActivity {
                 _onProgressChanged(view, newProgress);
             }
         });
+        if (StringUtils.isEmpty(url)){
+            ToastUtils.showShort("url is null!");
+        }
 
         //开始加载页面
         mWebView.loadUrl(url);

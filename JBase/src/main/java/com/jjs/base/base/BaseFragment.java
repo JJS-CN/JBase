@@ -32,7 +32,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if (getLayoutId() == 0) {
-            throw new RuntimeException("In the Fragment, You must set layoutId !=0");
+            throw new RuntimeException("In the Fragment, You must getLayoutId() return !=0");
         }
         rootView = inflater.inflate(getLayoutId(), container, false);
 

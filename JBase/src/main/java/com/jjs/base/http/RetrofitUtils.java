@@ -81,11 +81,11 @@ public class RetrofitUtils {
                 .readTimeout(this.DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//设置全局请求的数据读取超时时间，默认为30s
         // 当有数据时，向okhttp中添加公共参数拦截器
         if (headerMap != null) {
-            Log.e("RetrofitUtils","notNull");
+            Log.i("RetrofitUtils","retrofit has header");
             BasicParamsInterceptor interceptor = new BasicParamsInterceptor.Builder().addHeaderParamsMap(headerMap).build();
             builder.addInterceptor(interceptor);
         } else {
-            Log.e("RetrofitUtils","isNull");
+            Log.i("RetrofitUtils","retrofit not header");
             BasicParamsInterceptor interceptor = new BasicParamsInterceptor.Builder().build();
             builder.addInterceptor(interceptor);
         }

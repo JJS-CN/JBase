@@ -4,8 +4,11 @@
               android:layout_height="match_parent"
               android:background="#ccc"
               android:orientation="vertical">
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <android.support.v7.widget.RecyclerView
-        android:layout_margin="20dp"
         android:id="@+id/rv_base"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -1,6 +1,6 @@
 package com.jjs.demo;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,12 +19,13 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
-import com.jjs.base.utils.recyclerview.DivDecoration;
 import com.jjs.R;
+import com.jjs.base.utils.recyclerview.DivDecoration;
 import com.jjs.base.utils.recyclerview.DraggableAdapter;
 import com.jjs.base.utils.recyclerview.ExpandableAdapter;
 import com.jjs.base.utils.recyclerview.QuickAdapter;
 import com.jjs.base.utils.recyclerview.QuickHolder;
+import com.jjs.base.widget.LoadingDialog;
 import com.jjs.bean.L0;
 import com.jjs.bean.L1;
 import com.jjs.bean.L3;
@@ -40,12 +41,17 @@ import butterknife.ButterKnife;
  * Created by aa on 2017/10/28.
  */
 
-public class BaseQuickAdapterDemo extends Activity {
+public class BaseQuickAdapterDemo extends com.jjs.base.base.BaseActivity {
     @BindView(R.id.rv_base)
     RecyclerView mRvBase;
 
     List<String> mList = new ArrayList<>();
     QuickAdapter adapter;
+
+    @Override
+    protected void onActivityResult(int requestCode, Intent data) {
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +68,21 @@ public class BaseQuickAdapterDemo extends Activity {
         //initMultiType();//基于QuickAdapter实现 多布局
         //initDraggableAdapter();//拖拽布局和右滑删除
         //initExpandableAdapter();
+        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadingDialog.init(BaseQuickAdapterDemo.this);
+                LoadingDialog.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Intent intent=new Intent(BaseQuickAdapterDemo.this, XXXX.class);
+        //   startActivity(intent);
+        LoadingDialog.show();
     }
 
     /**

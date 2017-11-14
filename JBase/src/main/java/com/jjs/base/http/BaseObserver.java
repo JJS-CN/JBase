@@ -1,7 +1,6 @@
 package com.jjs.base.http;
 
-import android.util.Log;
-
+import com.blankj.utilcode.util.LogUtils;
 import com.jjs.base.widget.LoadingDialog;
 
 import java.net.ConnectException;
@@ -27,7 +26,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onNext(@NonNull T t) {
-        Log.i(this.getClass().getName(), "拿到数据:" + t.toString());
+        LogUtils.i("onNext:" + t.toString());
         _onNext(t);
     }
 
@@ -44,14 +43,13 @@ public abstract class BaseObserver<T> implements Observer<T> {
         } else {
             errMsg = e.getMessage();
         }
-        Log.i(this.getClass().getName(), "onError:----" + errMsg);
+        LogUtils.i("onError:" + errMsg);
         _onError(errMsg);
 
     }
 
     @Override
     public void onComplete() {
-        Log.i(this.getClass().getName(), "结束，关闭加载动画");
         LoadingDialog.hide();
         _onComplete();
     }
