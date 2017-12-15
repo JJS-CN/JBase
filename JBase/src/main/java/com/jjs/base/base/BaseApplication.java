@@ -47,9 +47,7 @@ public abstract class BaseApplication extends Application {
         isDebug = debug;
         BaseStore.HTTP.URL_debug = url_debug;
         BaseStore.HTTP.URL_release = url_release;
-        if (debug) {
-            UEHandler.openDebug();
-        }
+        UEHandler.init(debug);
         initUtils();
     }
 

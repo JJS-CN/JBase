@@ -1,4 +1,5 @@
 package com.jjs.base.bean;
+
 /**
  * 说明：
  * 发送：RxBus.get().toBusBean
@@ -7,9 +8,28 @@ package com.jjs.base.bean;
  */
 
 public class BusBean {
-    String action;//动作
-    int type;//标识
-    Object data;//内容
+    String action;//动作，用于标识一个大致范围
+    int type;//标识，用于具体标识
+    Object data;//内容，用于放置全局传递的内容
+
+    public BusBean(Object data) {
+        new BusBean(null, -1, data);
+    }
+
+    public BusBean(String action, Object data) {
+        new BusBean(action, -1, data);
+    }
+
+    public BusBean(int type, Object data) {
+        new BusBean(null, type, data);
+    }
+
+
+    public BusBean(String action, int type, Object data) {
+        this.action = action;
+        this.type = type;
+        this.data = data;
+    }
 
     public String getAction() {
         return action;

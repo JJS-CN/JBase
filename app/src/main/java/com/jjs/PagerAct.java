@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.jjs.base.base.BaseActivity;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
+import com.jjs.demo.RxObserverDemo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,22 @@ public class PagerAct extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, Intent data) {
+        new RxObserverDemo<String>() {
+            @Override
+            protected void _onSuccess(String s) {
 
+            }
+
+            @Override
+            protected void _onComplete() {
+                super._onComplete();
+            }
+
+            @Override
+            protected void _onError(String msg) {
+                super._onError(msg);
+            }
+        };
     }
 
 

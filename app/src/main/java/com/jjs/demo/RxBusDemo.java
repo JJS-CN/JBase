@@ -1,10 +1,7 @@
 package com.jjs.demo;
 
 import com.jjs.base.bean.BusBean;
-import com.jjs.base.mvp.RxBus;
-
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
+import com.jjs.base.http.RxBus;
 
 /**
  * 说明：
@@ -14,13 +11,15 @@ import io.reactivex.functions.Consumer;
 public class RxBusDemo {
     public void send() {
         //通过busbean发送消息
-        RxBus.get().send(new BusBean().setData("1111"));
+        RxBus.get().send(new BusBean("11111"));
         //接收busbean
-        RxBus.get().toBusBean(new Consumer<BusBean>() {
+        RxBus.get().toBusBean(new RxBus.OnRxListener() {
             @Override
-            public void accept(@NonNull BusBean busBean) throws Exception {
+            public void onRxListener(Object data) {
+
             }
         });
+
         //判断busbean中的action是否一致，判断type是否一致，一致则返回data
         RxBus.get().toBusBean("启动", 11, new RxBus.OnRxListener() {
             @Override
