@@ -32,6 +32,7 @@ import java.util.jar.Manifest;
 public abstract class BaseApplication extends Application {
     private static final String KEY_DEX2_SHA1 = "dex2-SHA1-Digest";
     private static boolean isDebug = false;
+    private boolean hasCrash = true;
 
     public void onCreate() {
         super.onCreate();
@@ -47,8 +48,19 @@ public abstract class BaseApplication extends Application {
         isDebug = debug;
         BaseStore.HTTP.URL_debug = url_debug;
         BaseStore.HTTP.URL_release = url_release;
-        UEHandler.init(debug);
+        if (hasCrash) {
+            UEHandler.init(debug);
+        }
         initUtils();
+    }
+
+    /**
+     * 设置是否打开carsh模式；默认为true；
+     * 为false时不开启。
+     * 为true时根据isDebug设置开启。
+     */
+    public void openCrash(boolean hasCrash) {
+        this.hasCrash = hasCrash;
     }
 
     public boolean getDebug() {

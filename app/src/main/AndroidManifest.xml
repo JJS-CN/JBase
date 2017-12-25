@@ -28,14 +28,14 @@
 
         </activity>
         <activity android:name=".PagerAct">
-
-        </activity>
-        <activity android:name=".demo.BaseQuickAdapterDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".demo.BaseQuickAdapterDemo">
+
         </activity>
     </application>
 

@@ -13,8 +13,11 @@ import android.widget.LinearLayout;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.jjs.base.base.BaseActivity;
+import com.jjs.base.http.RetrofitUtils;
+import com.jjs.base.http.RxSchedulers;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
+import com.jjs.demo.HttpResultDemo;
 import com.jjs.demo.RxObserverDemo;
 
 import java.util.ArrayList;
@@ -81,7 +84,7 @@ public class PagerAct extends BaseActivity {
             }
         }).create();
 
-      /*  RetrofitUtils.getInstance()
+    RetrofitUtils.getInstance()
                 .create(Api.Test.class)
                 .test("ecf9b74c0af93e7ddeadf9f27b65ab4f")
                 // .test("cb34ec5716c8784af02f7f5ca12f55d7","eyJzZXJ2aWNlTmFtZSI6ImdldEhvbWVEYXRhSW50ZlNlcnZpY2VJbXBsIn0=")
@@ -91,7 +94,7 @@ public class PagerAct extends BaseActivity {
                     protected void _onSuccess(String s) {
 
                     }
-                });*/
+                });
         PermissionUtils.requestPermissions(this, 1, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {

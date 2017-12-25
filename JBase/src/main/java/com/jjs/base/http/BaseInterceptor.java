@@ -1,21 +1,19 @@
 package com.jjs.base.http;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import okhttp3.FormBody;
-import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -26,55 +24,54 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
- * 本页：okhttp拦截器，用来对请求url进行改造，以添加一些固定参数
- * Created by jjs on 2017-03-24.
- * Email:994462623@qq.com
+ * 说明：
+ * Created by aa on 2017/12/25.
  */
 
-public class BasicParamsInterceptor implements Interceptor {
+public abstract class BaseInterceptor implements Interceptor {
     Map<String, String> queryParamsMap = new HashMap<>();
-    Map<String, String> paramsMap = new HashMap<>();
+    Map<String, String> fieldParamsMap = new HashMap<>();
     Map<String, String> headerParamsMap = new HashMap<>();
-    List<String> headerLinesList = new ArrayList<>();
 
-    private BasicParamsInterceptor() {
 
+    protected abstract Request _intercept(Request request) throws IOException;
+
+    public static BaseInterceptor getDefault() {
+        return new BaseInterceptor() {
+            @Override
+            protected Request _intercept(Request request) throws IOException {
+                return null;
+            }
+        };
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
+        if (!request.method().toLowerCase().equals("post")) {
+            Log.e("BaseInterceptor", "Please send the [Request.Method] of 'POST',because 'GET' has not body() params!");
+        }
         Request.Builder requestBuilder = request.newBuilder();
-
         // process header params inject
+        //注入header参数
         if (headerParamsMap != null && headerParamsMap.size() > 0) {
             Set<String> keys = headerParamsMap.keySet();
             for (String headerKey : keys) {
                 requestBuilder.addHeader(headerKey, headerParamsMap.get(headerKey)).build();
             }
         }
-
-        Headers.Builder headerBuilder = request.headers().newBuilder();
-        if (headerLinesList.size() > 0) {
-            for (String line : headerLinesList) {
-                headerBuilder.add(line);
-            }
-            requestBuilder.headers(headerBuilder.build());
-        }
-        // process header params end
-
-
         // process queryParams inject whatever it's GET or POST
+        //注入query参数
         if (queryParamsMap.size() > 0) {
             request = injectParamsIntoUrl(request.url().newBuilder(), requestBuilder, queryParamsMap);
         }
-
         // process send body inject
-        if (paramsMap.size() > 0) {
+        //注入params参数
+        if (fieldParamsMap.size() > 0) {
             if (canInjectIntoBody(request)) {
                 FormBody.Builder formBodyBuilder = new FormBody.Builder();
-                for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
-                    formBodyBuilder.add((String) entry.getKey(), (String) entry.getValue());
+                for (Map.Entry<String, String> entry : fieldParamsMap.entrySet()) {
+                    formBodyBuilder.add(entry.getKey(), entry.getValue());
                 }
 
                 RequestBody formBody = formBodyBuilder.build();
@@ -83,27 +80,46 @@ public class BasicParamsInterceptor implements Interceptor {
                 requestBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), postBodyString));
             }
         }
+
         request = requestBuilder.build();
-        /**
-         * 开始解析发送参数
-         */
-        if (request != null && request.body() != null) {
-            Buffer buffer = new Buffer();
-            request.body().writeTo(buffer);
-
-            //编码设为UTF-8
-            Charset charset = Charset.forName("UTF-8");
-            MediaType contentType = request.body().contentType();
-            if (contentType != null) {
-                charset = contentType.charset(Charset.forName("UTF-8"));
-            }
-            LogUtils.i("发送----" + "method:" + request.method() + "  url:" + request.url() + "  body:" + buffer.readString(charset));
+        Request request1 = _intercept(request);
+        if (request1 != null) {
+            request = request1;
         }
+        //打印发送参数
+        sendLogRequest(request);
 
-        /**
-         * 开始解析服务器返回参数
-         */
         Response response = chain.proceed(request);
+        //打印接收参数
+        sendLogResponse(response);
+        return response;
+    }
+
+    /**
+     * 开始解析发送参数
+     */
+    private void sendLogRequest(Request request) throws IOException {
+        if (request != null) {
+            String body = "";
+            if (request.body() != null) {
+                Buffer buffer = new Buffer();
+                request.body().writeTo(buffer);
+                //编码设为UTF-8
+                Charset charset = Charset.forName("UTF-8");
+                MediaType contentType = request.body().contentType();
+                if (contentType != null) {
+                    charset = contentType.charset(Charset.forName("UTF-8"));
+                }
+                body = buffer.readString(charset);
+            }
+            LogUtils.i("发送----" + "method:" + request.method() + "  url:" + request.url() + "  body:" + body);
+        }
+    }
+
+    /**
+     * 开始解析服务器返回参数
+     */
+    private void sendLogResponse(Response response) throws IOException {
         String rBody = "";
         if (response != null && response.body() != null) {
             BufferedSource source = response.body().source();
@@ -122,7 +138,6 @@ public class BasicParamsInterceptor implements Interceptor {
             rBody = buffer.clone().readString(charset);
         }
         LogUtils.i("接收：" + rBody.toString());
-        return response;
     }
 
     private boolean canInjectIntoBody(Request request) {
@@ -175,67 +190,20 @@ public class BasicParamsInterceptor implements Interceptor {
         }
     }
 
-    public static class Builder {
-
-        BasicParamsInterceptor interceptor;
-
-        public Builder() {
-            interceptor = new BasicParamsInterceptor();
-        }
-
-        public Builder addParam(String key, String value) {
-            interceptor.paramsMap.put(key, value);
-            return this;
-        }
-
-        public Builder addParamsMap(Map<String, String> paramsMap) {
-            interceptor.paramsMap.putAll(paramsMap);
-            return this;
-        }
-
-        public Builder addHeaderParam(String key, String value) {
-            interceptor.headerParamsMap.put(key, value);
-            return this;
-        }
-
-        public Builder addHeaderParamsMap(Map<String, String> headerParamsMap) {
-            interceptor.headerParamsMap.putAll(headerParamsMap);
-            return this;
-        }
-
-        public Builder addHeaderLine(String headerLine) {
-            int index = headerLine.indexOf(":");
-            if (index == -1) {
-                throw new IllegalArgumentException("Unexpected header: " + headerLine);
-            }
-            interceptor.headerLinesList.add(headerLine);
-            return this;
-        }
-
-        public Builder addHeaderLinesList(List<String> headerLinesList) {
-            for (String headerLine : headerLinesList) {
-                int index = headerLine.indexOf(":");
-                if (index == -1) {
-                    throw new IllegalArgumentException("Unexpected header: " + headerLine);
-                }
-                interceptor.headerLinesList.add(headerLine);
-            }
-            return this;
-        }
-
-        public Builder addQueryParam(String key, String value) {
-            interceptor.queryParamsMap.put(key, value);
-            return this;
-        }
-
-        public Builder addQueryParamsMap(Map<String, String> queryParamsMap) {
-            interceptor.queryParamsMap.putAll(queryParamsMap);
-            return this;
-        }
-
-        public BasicParamsInterceptor build() {
-            return interceptor;
-        }
-
+    public BaseInterceptor addFieldParam(String key, String value) {
+        this.fieldParamsMap.put(key, value);
+        return this;
     }
+
+    public BaseInterceptor addHeaderParam(String key, String value) {
+        this.headerParamsMap.put(key, value);
+        return this;
+    }
+
+    public BaseInterceptor addQueryParam(String key, String value) {
+        this.queryParamsMap.put(key, value);
+        return this;
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.jjs.demo;
 
 
 import com.jjs.base.base.BaseApplication;
+import com.jjs.base.http.RetrofitUtils;
 
 /**
  * 说明：
@@ -11,6 +12,7 @@ import com.jjs.base.base.BaseApplication;
 public class APPDemo extends BaseApplication {
     @Override
     public void onCreate() {
+        RetrofitUtils.initInterceptor(new YzwInterceptor());
         initDebug(true,
                 "http://116.62.41.38:8072/",
                 "http://apis.baidu.com/idl_baidu/clothing_classification/");
