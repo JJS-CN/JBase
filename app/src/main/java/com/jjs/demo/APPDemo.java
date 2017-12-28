@@ -10,12 +10,18 @@ import com.jjs.base.http.RetrofitUtils;
  */
 
 public class APPDemo extends BaseApplication {
+    public static String BaseUrl = "";
+
     @Override
     public void onCreate() {
-        RetrofitUtils.initInterceptor(new YzwInterceptor());
-        initDebug(true,
-                "http://116.62.41.38:8072/",
-                "http://apis.baidu.com/idl_baidu/clothing_classification/");
         super.onCreate();
+
+        applyDebug();
+        applyRelease();
+        String debugUrl = "http://116.62.41.38:8072/";
+        String releaseUrl = "https://www.yzwptgc.com/";
+        BaseUrl = getDebug() ? debugUrl : releaseUrl;
+        RetrofitUtils.initInterceptor(new YzwInterceptor());
+        initUtils(BaseUrl);
     }
 }

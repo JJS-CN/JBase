@@ -11,10 +11,4 @@ public class BaseStore {
         public static final String isFirst = "isFirst";//是否第一次启动app
     }
 
-    public static class HTTP {
-        public static String URL_release = "";//正式服务器地址
-        public static String URL_debug = "";//测试服务器地址
-    }
-
-
 }

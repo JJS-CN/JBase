@@ -19,6 +19,7 @@ import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
 import com.jjs.base.http.RetrofitUtils;
@@ -42,16 +43,34 @@ public abstract class BaseApplication extends Application {
     }
 
     /**
-     * 使用此方法来控制debug模式，请务必调用
+     * 打开debug模式
      */
-    public void initDebug(boolean debug, String url_debug, String url_release) {
-        isDebug = debug;
-        BaseStore.HTTP.URL_debug = url_debug;
-        BaseStore.HTTP.URL_release = url_release;
+    public void applyDebug() {
+        isDebug = true;
+    }
+
+    /**
+     * 打开release模式
+     */
+    public void applyRelease() {
+        isDebug = false;
+    }
+
+    /**
+     * 传入基础Url服务器地址
+     */
+    public void initUtils(String baseUrl) {
         if (hasCrash) {
-            UEHandler.init(debug);
+            UEHandler.init(isDebug);
         }
-        initUtils();
+        Utils.init(this);
+        LogUtils.getConfig().setLogSwitch(isDebug);
+        RetrofitUtils.init(baseUrl);
+        if (isDebug) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效
+            ARouter.openLog();     // 打印日志
+            ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+        }
+        ARouter.init(this);
     }
 
     /**
@@ -67,14 +86,6 @@ public abstract class BaseApplication extends Application {
         return isDebug;
     }
 
-    /**
-     * 进行工具类的一些初始化操作。
-     */
-    private void initUtils() {
-        Utils.init(this);
-        LogUtils.getConfig().setLogSwitch(isDebug);
-        RetrofitUtils.init(isDebug ? BaseStore.HTTP.URL_debug : BaseStore.HTTP.URL_release);
-    }
 
     /**
      * 主要！！！这个方法会在oncreate之前调用，在此方法中进行dex分包加载
