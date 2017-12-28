@@ -15,6 +15,11 @@ android {
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
         multiDexEnabled true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
     }
     buildTypes {
         release {
