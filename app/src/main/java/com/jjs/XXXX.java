@@ -1,18 +1,33 @@
 package com.jjs;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
 
-import com.jjs.base.base.BaseActivity;
-import com.jjs.base.widget.LoadingDialog;
+import com.jjs.base.base.BaseH5Activity;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class XXXX extends BaseActivity {
+public class XXXX extends BaseH5Activity {
+
+    @BindView(R.id.web)
+    WebView mWeb;
+    @BindView(R.id.btn)
+    Button mBtn;
+
+    @Override
+    protected void _onReceivedTitle(WebView view, String title) {
+
+    }
+
+    @Override
+    protected void _onProgressChanged(WebView view, int newProgress) {
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, Intent data) {
@@ -24,7 +39,13 @@ public class XXXX extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xxx);
         ButterKnife.bind(this);
-        LoadingDialog.show();
+        init(mWeb,"www.baidu.com");
+        mBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         /*DownloadManager.getInstance().download("http://gdown.baidu.com/data/wisegame/93812d86a2e7cd82/aiqiyi_80910.apk", new DownLoadObserver() {
             @Override
             public void _onNext(DownloadInfo downloadInfo) {
@@ -86,10 +107,9 @@ public class XXXX extends BaseActivity {
                 .hasTranSparent(false)
                 .hasCancelable(false)
                 .show(getFragmentManager(), "1");*/
-        setHasMovePopBack(true);
     }
 
-    @Override
+ /*   @Override
     protected void onResume() {
         super.onResume();
         Dialog dialog=new AlertDialog.Builder(this).create();
@@ -101,7 +121,7 @@ public class XXXX extends BaseActivity {
             }
         });
         dialog.show();
-    }
+    }*/
 
 
 }

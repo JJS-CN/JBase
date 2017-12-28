@@ -73,7 +73,7 @@ public abstract class BaseH5Activity extends BaseActivity {
                 _onProgressChanged(view, newProgress);
             }
         });
-        if (StringUtils.isEmpty(url)){
+        if (StringUtils.isEmpty(url)) {
             ToastUtils.showShort("url is null!");
         }
 
@@ -87,9 +87,9 @@ public abstract class BaseH5Activity extends BaseActivity {
 
     }
 
-    @Override
     //设置回退
     //覆盖Activity类的onKeyDown(int keyCoder,KeyEvent event)方法
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (mWebView != null) {
             if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
@@ -97,8 +97,9 @@ public abstract class BaseH5Activity extends BaseActivity {
                 return true;
             }
         }
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
+
 
     //销毁Webview
     @Override
