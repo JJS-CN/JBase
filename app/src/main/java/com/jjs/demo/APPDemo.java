@@ -10,18 +10,13 @@ import com.jjs.base.http.RetrofitUtils;
  */
 
 public class APPDemo extends BaseApplication {
-    public static String BaseUrl = "";
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        applyDebug();
-        applyRelease();
-        String debugUrl = "http://116.62.41.38:8072/";
-        String releaseUrl = "https://www.yzwptgc.com/";
-        BaseUrl = getDebug() ? debugUrl : releaseUrl;
         RetrofitUtils.initInterceptor(new YzwInterceptor());
-        initUtils(BaseUrl);
+        applyDebug("http://116.62.41.38:8072/");
+        applyRelease("https://www.yzwptgc.com/");
+
     }
 }

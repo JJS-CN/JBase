@@ -34,6 +34,7 @@ public abstract class BaseApplication extends Application {
     private static final String KEY_DEX2_SHA1 = "dex2-SHA1-Digest";
     private static boolean isDebug = false;
     private boolean hasCrash = true;
+    public static String BaseUrl = "";
 
     public void onCreate() {
         super.onCreate();
@@ -45,27 +46,30 @@ public abstract class BaseApplication extends Application {
     /**
      * 打开debug模式
      */
-    public void applyDebug() {
-        isDebug = true;
+    public void applyDebug(String baseUrl) {
+        BaseUrl=baseUrl;
+       initUtils(true);
     }
 
     /**
      * 打开release模式
      */
-    public void applyRelease() {
-        isDebug = false;
+    public void applyRelease(String baseUrl) {
+        BaseUrl=baseUrl;
+        initUtils(false);
     }
 
     /**
      * 传入基础Url服务器地址
      */
-    public void initUtils(String baseUrl) {
+    private void initUtils(boolean debug) {
+        isDebug=debug;
         if (hasCrash) {
             UEHandler.init(isDebug);
         }
         Utils.init(this);
         LogUtils.getConfig().setLogSwitch(isDebug);
-        RetrofitUtils.init(baseUrl);
+        RetrofitUtils.init(BaseUrl);
         if (isDebug) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效
             ARouter.openLog();     // 打印日志
             ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
