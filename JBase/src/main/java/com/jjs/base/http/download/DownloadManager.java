@@ -35,7 +35,7 @@ public class DownloadManager {
     private static final AtomicReference<DownloadManager> INSTANCE = new AtomicReference<>();
     private HashMap<String, Call> downCalls;//用来存放各个下载的请求
     private OkHttpClient mClient;//OKHttpClient;
-    private String DownloadFile = SDCardUtils.getSDCardPath();//下载地址
+    private String DownloadFile = SDCardUtils.getSDCardPaths().get(0);//下载地址
 
     //获得一个单例类
     public static DownloadManager getInstance() {
@@ -113,7 +113,7 @@ public class DownloadManager {
                 .flatMap(new Function<DownloadInfo, ObservableSource<DownloadInfo>>() {
                     @Override
                     public ObservableSource<DownloadInfo> apply(@NonNull DownloadInfo downloadInfo) throws Exception {
-                        Log.e("file", SDCardUtils.getSDCardPath());
+                        Log.e("file", SDCardUtils.getSDCardPaths().get(0));
                         return Observable.create(new DownloadSubscribe(downloadInfo));
                     }
                 })
