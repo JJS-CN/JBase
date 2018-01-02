@@ -1,15 +1,15 @@
 # JBase
 <br>[![](https://jitpack.io/v/JJS-CN/JBase.svg)](https://jitpack.io/#JJS-CN/JBase)
 ## android 自用
-<br>  项目层的gradle需要添加这2个库的支持
+<br>  1、项目层的gradle需要添加这2个库的支持
 <br>        maven { url "https://jitpack.io" }
 <br>        maven { url 'https://maven.google.com' }
 <br>
-<br>
-<br>  每个modle需要添加butterkinfe和ARouter支持
+<br>  2、每个modle需要添加butterkinfe和ARouter支持
 <br>        annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 <br>        annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
-<br>  并在每个build.gradle中android->defaultConfig目录下，增加ARouter支持
+<br>
+<br>  3、在每个modle中build.gradle文件android->defaultConfig层级下，增加ARouter支持
 <br>         javaCompileOptions {
 <br>             annotationProcessorOptions {
 <br>                  arguments = [ moduleName : project.getName() ]
