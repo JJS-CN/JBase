@@ -40,6 +40,7 @@ public abstract class BaseFragment extends RxFragment {
         unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -69,6 +70,7 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 在与activity绑定时获取bundle，并进行初始化操作
+     * 频繁切换fragment也只会执行一遍
      */
     protected abstract void initData(Bundle bundle);
 

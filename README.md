@@ -22,7 +22,7 @@
 <br>2017.09.29  1：解决activity切换黑屏bug（切换动画设置未2个参数都设置）、2：增加activity背景设置方法（setContentView方法中自动设置，可在之前通过init或update更新）、3：新增Rsa加密工具类（已做分段加密处理）4：新增验证码图片工具类CodeImgUtils
 <br>2017.12.25  1：优化RetrofitUtils类，简化代码。提供拦截器替换方法
 <br>2018.01.02  1：更新依赖库的版本，修改baseApplication初始化方法
-
+<br>2018.01.03  1：修复fragment的bug，优化抽象方法
 
  # 使用方法
 <br> 1、请将application继承于BaseApplication，调用applyDebug(String baseUrl); 或 applyRelease(String baseUrl);初始化。或者从中抽取实例化代码也可以。
