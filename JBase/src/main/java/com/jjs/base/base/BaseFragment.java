@@ -1,7 +1,6 @@
 package com.jjs.base.base;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.trello.rxlifecycle2.components.support.RxFragment;
+
 /**
  * 说明：消息传递通过rxBus进行交互
  * 或者通过接口回调
  * Created by aa on 2017/11/1.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends RxFragment {
     protected Activity mActivity;
     protected View rootView;
     protected Bundle mBundle;
