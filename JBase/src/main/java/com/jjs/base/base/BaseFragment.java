@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jjs.base.mvp.BasePersenter;
 import com.trello.rxlifecycle2.components.RxFragment;
 
 import butterknife.ButterKnife;
@@ -19,10 +20,11 @@ import butterknife.Unbinder;
  * Created by aa on 2017/11/1.
  */
 
-public abstract class BaseFragment extends RxFragment {
+public abstract class BaseFragment<P extends BasePersenter> extends RxFragment {
     protected Activity mActivity;
     protected View rootView;
     private Unbinder unbinder;
+    public P mPersenter;//P层，具体aty中直接实例化即可
 
     @Override
     public void onAttach(Context context) {
@@ -50,6 +52,8 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mPersenter != null)
+            mPersenter.destroy();
         if (unbinder != null)
             unbinder.unbind();
     }
