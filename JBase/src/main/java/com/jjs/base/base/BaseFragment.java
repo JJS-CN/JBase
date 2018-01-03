@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.trello.rxlifecycle2.components.support.RxFragment;
+import com.trello.rxlifecycle2.components.RxFragment;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * 说明：消息传递通过rxBus进行交互
@@ -19,14 +22,12 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 public abstract class BaseFragment extends RxFragment {
     protected Activity mActivity;
     protected View rootView;
-    protected Bundle mBundle;
+    private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mActivity = (Activity) context;
-        this.mBundle = getArguments();
-
     }
 
     @Nullable
@@ -36,11 +37,39 @@ public abstract class BaseFragment extends RxFragment {
             throw new RuntimeException("In the Fragment, You must getLayoutId() return !=0");
         }
         rootView = inflater.inflate(getLayoutId(), container, false);
-
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initData(getArguments());
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null)
+            unbinder.unbind();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (rootView == null) {
+            super.setUserVisibleHint(false);
+        } else {
+            super.setUserVisibleHint(isVisibleToUser);
+        }
+    }
+
+    /**
+     * 返回view布局id
+     */
     protected abstract int getLayoutId();
 
-    protected abstract void initData();
+    /**
+     * 在与activity绑定时获取bundle，并进行初始化操作
+     */
+    protected abstract void initData(Bundle bundle);
+
 }
