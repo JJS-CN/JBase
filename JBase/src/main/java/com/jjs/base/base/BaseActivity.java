@@ -427,6 +427,20 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     }
 
     /**
+     * 添加多个fragment，默认不设置tag，默认不添加回退栈
+     */
+    public void addFragments(@IdRes int containerViewId, Fragment... fragment) {
+        FragmentTransaction transaction = getTransaction();
+        List<Fragment> fragmentList = getFragmentList(containerViewId);
+        for (int i = 0; i < fragment.length; i++) {
+            transaction.add(containerViewId, fragment[i]);
+            fragmentList.add(fragment[i]);
+        }
+        transaction.commit();
+        mFragmentListMap.put(containerViewId, fragmentList);
+    }
+
+    /**
      * 根据tag和viewId显示一个fragment
      *
      * @param containerViewId fragment添加的viewId
