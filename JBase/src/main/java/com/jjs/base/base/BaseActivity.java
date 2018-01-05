@@ -71,6 +71,7 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     private int animActivityClose = R.anim.anim_activity_close;//默认activity的关闭动画
     private int animOpen;//临时启动动画
     private int animClose;//临时关闭动画
+    private static boolean hasActivityAnim = true;//是否需要启动动画，全局属性建议在application中设定
 
     private int baseActivityBg = R.drawable.activity_bg;//默认activity的背景色
     private int ActivityBg = 0;//临时activity背景色
@@ -238,21 +239,29 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     }
 
     /**
+     * 设置是否需要动画
+     * 可被updateActivityAnim方法绕过，执行动画
+     */
+    public static void setHasActivityAnim(boolean hasAnim) {
+        hasActivityAnim = hasAnim;
+    }
+
+    /**
      * 重写start方法，加入启动动画
      */
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
         //如果2个不设置全，activity切换时会造成短暂黑屏
-        //  this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, R.anim.anim_activity_null);
+        if (animOpen != 0 || hasActivityAnim)
+            this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, R.anim.anim_activity_null);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        // this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, R.anim.anim_activity_null);
+        if (animOpen != 0 || hasActivityAnim)
+            this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, R.anim.anim_activity_null);
     }
 
     /**
@@ -261,8 +270,8 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     @Override
     public void finish() {
         super.finish();
-        //this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
-        this.overridePendingTransition(R.anim.anim_activity_null, animClose != 0 ? animClose : animActivityClose);
+        if (animClose != 0 || hasActivityAnim)
+            this.overridePendingTransition(R.anim.anim_activity_null, animClose != 0 ? animClose : animActivityClose);
     }
 
     @Override
