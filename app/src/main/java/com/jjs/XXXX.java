@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.jjs.base.base.BaseH5Activity;
-import com.jjs.demo.AAFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,11 +46,9 @@ public class XXXX extends BaseH5Activity {
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               startActivity(new Intent(XXXX.this,XXXX.class));
             }
         });
-        addFragment(R.id.frame_xxx,new AAFragment(),"aa",false);
-        showFragmentOne(R.id.frame_xxx,0);
         /*DownloadManager.getInstance().download("http://gdown.baidu.com/data/wisegame/93812d86a2e7cd82/aiqiyi_80910.apk", new DownLoadObserver() {
             @Override
             public void _onNext(DownloadInfo downloadInfo) {

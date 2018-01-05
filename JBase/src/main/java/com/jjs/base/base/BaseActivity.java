@@ -244,13 +244,15 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     public void startActivity(Intent intent) {
         super.startActivity(intent);
         //如果2个不设置全，activity切换时会造成短暂黑屏
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
+        //  this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, R.anim.anim_activity_null);
     }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
+        // this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
+        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, R.anim.anim_activity_null);
     }
 
     /**
@@ -259,7 +261,8 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     @Override
     public void finish() {
         super.finish();
-        this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
+        //this.overridePendingTransition(animOpen != 0 ? animOpen : animActivityOpen, animClose != 0 ? animClose : animActivityClose);
+        this.overridePendingTransition(R.anim.anim_activity_null, animClose != 0 ? animClose : animActivityClose);
     }
 
     @Override

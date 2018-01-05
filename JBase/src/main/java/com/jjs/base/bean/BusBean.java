@@ -13,15 +13,15 @@ public class BusBean {
     Object data;//内容，用于放置全局传递的内容
 
     public BusBean(Object data) {
-        new BusBean(null, -1, data);
+       this(null, -1, data);
     }
 
     public BusBean(String action, Object data) {
-        new BusBean(action, -1, data);
+        this(action, -1, data);
     }
 
     public BusBean(int type, Object data) {
-        new BusBean(null, type, data);
+        this(null, type, data);
     }
 
 
