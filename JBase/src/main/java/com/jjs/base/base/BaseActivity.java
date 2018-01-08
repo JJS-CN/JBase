@@ -126,7 +126,7 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
             getWindow().setExitTransition(new Explode());
         }
         super.onCreate(savedInstanceState);
-        LoadingDialog.init(this);//创建dialog
+        LoadingDialog.init(this);//用户页面返回时重设context
         mFragmentManager = getFragmentManager();
         mFragmentListMap = new HashMap<>();//创建一个fragment集合，根据viewID保存hash集合中，可以根据viewid进行操作而不乱
 
@@ -136,12 +136,30 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     @Override
     protected void onResume() {
         super.onResume();
-        LoadingDialog.init(this);//用户页面返回时重建dialog
+        LoadingDialog.init(this);//用户页面返回时重设context
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStart() {
+        super.onStart();
+        LoadingDialog.init(this);//用户页面返回时重设context
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        LoadingDialog.init(this);//用户页面返回时重设context
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         LoadingDialog.dissmiss();//关闭页面时释放dialog
+    }
+
+
+    @Override
+    protected void onDestroy() {
         //清除P层对view的引用
         if (mPersenter != null)
             mPersenter.destroy();
