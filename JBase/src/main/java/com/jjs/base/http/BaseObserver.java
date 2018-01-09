@@ -32,7 +32,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onError(@NonNull Throwable e) {
-        LoadingDialog.hide();
+        LoadingDialog.dissmiss();
         String errMsg = "";
         if (e instanceof SocketTimeoutException) {
             errMsg = "网络连接超时，请检查您的网络状态，稍后重试";
@@ -50,7 +50,7 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
-        LoadingDialog.hide();
+        LoadingDialog.dissmiss();
         _onComplete();
     }
 
