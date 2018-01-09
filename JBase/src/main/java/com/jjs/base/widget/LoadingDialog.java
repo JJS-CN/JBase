@@ -39,9 +39,13 @@ public class LoadingDialog {
             mDialog = new Dialog(mContext, style);
             mDialog.setCancelable(true);//按返回键消失
             mDialog.setCanceledOnTouchOutside(false);//但点击dialog范围外不消失
-            if (view == null)
+            if (view == null) {
                 view = View.inflate(mContext, R.layout.dialog_loadingview, null);
+            }
             mDialog.setContentView(view);
+
+        }
+        if (mDialog != null && !mDialog.isShowing()) {
             mDialog.show();
         }
     }

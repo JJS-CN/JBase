@@ -37,6 +37,9 @@
         <activity android:name=".demo.BaseQuickAdapterDemo">
 
         </activity>
+        <activity android:name=".demo.MvpActivityDemo">
+
+        </activity>
     </application>
 
 </manifest>

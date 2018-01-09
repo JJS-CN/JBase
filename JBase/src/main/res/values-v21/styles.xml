@@ -4,4 +4,10 @@
         <item name="android:windowContentTransitions">true</item>
 
     </style>
+
+    <style name="MyLoadingProgress" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTintMode">src_atop</item>
+        <item name="android:indeterminateTint">@color/Accent</item>
+
+    </style>
 </resources>

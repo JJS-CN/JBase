@@ -130,7 +130,6 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
         mFragmentManager = getFragmentManager();
         mFragmentListMap = new HashMap<>();//创建一个fragment集合，根据viewID保存hash集合中，可以根据viewid进行操作而不乱
 
-
     }
 
     @Override

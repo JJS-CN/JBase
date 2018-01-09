@@ -1,5 +1,8 @@
 package com.jjs.demo;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.jjs.base.mvp.BasePersenter;
 
 /**
@@ -10,6 +13,10 @@ import com.jjs.base.mvp.BasePersenter;
 public class PP extends BasePersenter<VV> {
     public PP(VV view) {
         super(view);
+    }
+
+    public void show(Context context){
+        Toast.makeText(context,"11111",Toast.LENGTH_SHORT).show();
     }
 
 

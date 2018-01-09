@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.jjs.base.base.BaseH5Activity;
+import com.jjs.base.widget.LoadingDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +50,7 @@ public class XXXX extends BaseH5Activity {
                startActivity(new Intent(XXXX.this,XXXX.class));
             }
         });
+        LoadingDialog.show();
         /*DownloadManager.getInstance().download("http://gdown.baidu.com/data/wisegame/93812d86a2e7cd82/aiqiyi_80910.apk", new DownLoadObserver() {
             @Override
             public void _onNext(DownloadInfo downloadInfo) {
