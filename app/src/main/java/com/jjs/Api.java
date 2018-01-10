@@ -1,10 +1,9 @@
 package com.jjs;
 
-import com.jjs.demo.HttpResultDemo;
-
 import io.reactivex.Observable;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 /**
  * 说明：
@@ -13,7 +12,8 @@ import retrofit2.http.Query;
 
 public class Api  {
     public interface Test {
-        @GET("clothing_classificati")
-        Observable<HttpResultDemo<String>> test(@Query("apikey") String sign);
+        @FormUrlEncoded
+        @POST("clothing_classificati")
+        Observable<String> test(@Field("apikey") String sign,@Field("apikeys") String signs);
     }
 }

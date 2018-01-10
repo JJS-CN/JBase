@@ -26,7 +26,6 @@ public class YzwInterceptor extends BaseInterceptor {
         if (request != null && request.body() != null) {
             Buffer buffer = new Buffer();
             request.body().writeTo(buffer);
-
             //编码设为UTF-8
             Charset charset = Charset.forName("UTF-8");
             MediaType contentType = request.body().contentType();
@@ -35,13 +34,14 @@ public class YzwInterceptor extends BaseInterceptor {
             }
             String body = buffer.readString(charset);
             LogUtils.i("发送----" + "method:" + request.method() + "  url:" + request.url() + "  body:" + body);
-           /* String[] bodys = body.split("&");
+           String[] bodys = body.split("&");
             for (int i = 0; i < bodys.length; i++) {
+                LogUtils.e(bodys[i]);
                 String str = bodys[i];
                 int start = str.indexOf("=");
                 String key = str.substring(0, start);
                 String value = str.substring(start + 1, str.length());
-            }*/
+            }
             FormBody.Builder formBody = new FormBody.Builder();
             formBody.add("sign", "111111111111");
             formBody.add("data", "222222222222");
@@ -49,7 +49,7 @@ public class YzwInterceptor extends BaseInterceptor {
             RequestBody requestBody = formBody.build();
             // 构建 budler
             Request.Builder builder = new Request.Builder();
-            request = builder.url(request.url()).post(requestBody).build();
+          //  request = builder.url(request.url()).post(requestBody).build();
 
         }
         return request;

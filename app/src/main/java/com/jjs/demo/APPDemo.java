@@ -16,7 +16,7 @@ public class APPDemo extends BaseApplication {
         super.onCreate();
         RetrofitUtils.initInterceptor(new YzwInterceptor());
         applyDebug("http://116.62.41.38:8072/");
-        applyRelease("https://www.yzwptgc.com/");
+       // applyRelease("https://www.yzwptgc.com/");
 
     }
 }

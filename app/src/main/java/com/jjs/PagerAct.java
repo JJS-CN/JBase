@@ -17,7 +17,6 @@ import com.jjs.base.http.RetrofitUtils;
 import com.jjs.base.http.RxSchedulers;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
-import com.jjs.demo.HttpResultDemo;
 import com.jjs.demo.RxObserverDemo;
 
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 /**
  * 说明：
@@ -84,17 +84,52 @@ public class PagerAct extends BaseActivity {
             }
         }).create();
 
-    RetrofitUtils.getInstance()
+        RetrofitUtils.getInstance()
                 .create(Api.Test.class)
-                .test("ecf9b74c0af93e7ddeadf9f27b65ab4f")
+                .test("中文乱码a1A","asjdfij11")
                 // .test("cb34ec5716c8784af02f7f5ca12f55d7","eyJzZXJ2aWNlTmFtZSI6ImdldEhvbWVEYXRhSW50ZlNlcnZpY2VJbXBsIn0=")
-                .compose(RxSchedulers.getInstance(this.bindToLifecycle()).<HttpResultDemo<String>>io_main())
-                .subscribe(new RxObserverDemo<String>() {
+                .compose(RxSchedulers.getInstance(this.bindToLifecycle()).<String>io_main())
+                .subscribe(new Consumer<String>() {
                     @Override
-                    protected void _onSuccess(String s) {
+                    public void accept(String stringHttpResultDemo) throws Exception {
 
                     }
                 });
+     /*   Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://116.62.41.38:8072/")
+                .build();
+        retrofit.create(Api.Test.class)
+                .test("中文乱码")
+                .compose(RxSchedulers.getInstance(this.bindToLifecycle()).<String>io_main())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+
+                    }
+                });*/
+    /*    OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(10, TimeUnit.SECONDS)//设置全局请求的连接超时时间，默认为15s
+                .writeTimeout(10, TimeUnit.SECONDS)//写操作 超时时间
+                .readTimeout(10, TimeUnit.SECONDS);//设置全局请求的数据读取超时时间，默认为30s
+        // 向okhttp中添加公共参数拦截器
+        builder.addInterceptor(BaseInterceptor.getDefault());
+        //创建okhttp实例
+        final OkHttpClient client = builder.build();
+        RequestBody body = new FormBody.Builder().add("useName", "中午呢乱码").add("pwd", "乱码乱码").build();
+        final Request request=new Request.Builder().url("http://116.62.41.38:8072/LoginServlet").post(body).build();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    client.newCall(request).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+*/
+
         PermissionUtils.requestPermissions(this, 1, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionUtils.OnPermissionListener() {
             @Override
             public void onPermissionGranted() {

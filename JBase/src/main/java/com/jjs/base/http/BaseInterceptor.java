@@ -1,11 +1,11 @@
 package com.jjs.base.http;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.blankj.utilcode.util.LogUtils;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.HashMap;
@@ -29,6 +29,7 @@ import okio.BufferedSource;
  */
 
 public abstract class BaseInterceptor implements Interceptor {
+    private final Charset UTF8 = Charset.forName("UTF-8");
     Map<String, String> queryParamsMap = new HashMap<>();
     Map<String, String> fieldParamsMap = new HashMap<>();
     Map<String, String> headerParamsMap = new HashMap<>();
@@ -48,9 +49,7 @@ public abstract class BaseInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (!request.method().toLowerCase().equals("post")) {
-            Log.e("BaseInterceptor", "Please send the [Request.Method] of 'POST',because 'GET' has not body() params!");
-        }
+        RequestBody requestBody = request.body();
         Request.Builder requestBuilder = request.newBuilder();
         // process header params inject
         //注入header参数
@@ -88,7 +87,6 @@ public abstract class BaseInterceptor implements Interceptor {
         }
         //打印发送参数
         sendLogRequest(request);
-
         Response response = chain.proceed(request);
         //打印接收参数
         sendLogResponse(response);
@@ -111,6 +109,8 @@ public abstract class BaseInterceptor implements Interceptor {
                     charset = contentType.charset(Charset.forName("UTF-8"));
                 }
                 body = buffer.readString(charset);
+                //如果你出现中文参数乱码情况，请进行URL解码处理！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+                body = URLEncoder.encode(body, "UTF-8");
             }
             LogUtils.i("发送----" + "method:" + request.method() + "  url:" + request.url() + "  body:" + body);
         }
