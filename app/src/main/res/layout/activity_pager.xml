@@ -9,6 +9,11 @@
         android:layout_height="match_parent">
 
     </com.jjs.base.widget.CustomViewPager>
+    <com.jjs.base.widget.ReadMoreTextView
+        android:id="@+id/read"
+        android:background="@color/White"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <ImageView
         android:id="@+id/iv_img"

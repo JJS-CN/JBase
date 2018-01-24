@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.jjs.base.R;
 
 
@@ -87,29 +88,40 @@ public class ReadMoreTextView extends AppCompatTextView {
 
     @Override
     public void setText(CharSequence text, BufferType type) {
+        if (!text.equals(this.text)) {
+            onGlobalLayoutLineEndIndex();
+        }
         this.text = text;
         bufferType = type;
+
         setText();
+
     }
 
+
     private CharSequence getTrimmedText(CharSequence text) {
-        if (trimMode == TRIM_MODE_LENGTH) {
-            if (text != null && text.length() > trimLength) {
-                if (readMore) {
-                    return updateCollapsedText();
-                } else {
-                    return updateExpandedText();
+        try {
+            if (trimMode == TRIM_MODE_LENGTH) {
+                if (text != null && text.length() > trimLength) {
+                    if (readMore) {
+                        return updateCollapsedText();
+                    } else {
+                        return updateExpandedText();
+                    }
                 }
             }
-        }
-        if (trimMode == TRIM_MODE_LINES) {
-            if (text != null && lineEndIndex > 0) {
-                if (readMore) {
-                    return updateCollapsedText();
-                } else {
-                    return updateExpandedText();
+            if (trimMode == TRIM_MODE_LINES) {
+
+                if (text != null && lineEndIndex > 0) {
+                    if (readMore) {
+                        return updateCollapsedText();
+                    } else {
+                        return updateExpandedText();
+                    }
                 }
             }
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
         return text;
     }
@@ -208,7 +220,7 @@ public class ReadMoreTextView extends AppCompatTextView {
         try {
             if (trimLines == 0) {
                 lineEndIndex = getLayout().getLineEnd(0);
-            } else if (trimLines > 0 && getLineCount() >= trimLines) {
+            } else if (trimLines > 0 && getLineCount() > trimLines) {
                 lineEndIndex = getLayout().getLineEnd(trimLines - 1);
             } else {
                 lineEndIndex = INVALID_END_INDEX;
@@ -216,5 +228,6 @@ public class ReadMoreTextView extends AppCompatTextView {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        LogUtils.e(trimLines + "==" + getLineCount() + "===" + lineEndIndex);
     }
 }
