@@ -16,7 +16,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.jjs.base.R;
 
 
@@ -93,9 +92,7 @@ public class ReadMoreTextView extends AppCompatTextView {
         }
         this.text = text;
         bufferType = type;
-
         setText();
-
     }
 
 
@@ -111,7 +108,6 @@ public class ReadMoreTextView extends AppCompatTextView {
                 }
             }
             if (trimMode == TRIM_MODE_LINES) {
-
                 if (text != null && lineEndIndex > 0) {
                     if (readMore) {
                         return updateCollapsedText();
@@ -220,7 +216,7 @@ public class ReadMoreTextView extends AppCompatTextView {
         try {
             if (trimLines == 0) {
                 lineEndIndex = getLayout().getLineEnd(0);
-            } else if (trimLines > 0 && getLineCount() > trimLines) {
+            } else if (trimLines > 0 && getLineCount() >= trimLines) {
                 lineEndIndex = getLayout().getLineEnd(trimLines - 1);
             } else {
                 lineEndIndex = INVALID_END_INDEX;
@@ -228,6 +224,5 @@ public class ReadMoreTextView extends AppCompatTextView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LogUtils.e(trimLines + "==" + getLineCount() + "===" + lineEndIndex);
     }
 }
