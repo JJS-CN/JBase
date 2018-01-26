@@ -1,10 +1,13 @@
 package com.jjs.base.http;
 
-import com.jjs.base.bean.BusBean;
+import com.blankj.utilcode.util.StringUtils;
+import com.jjs.base.bean.RxBusBean;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle2.components.support.RxFragment;
 
-import io.reactivex.Flowable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
 
@@ -16,8 +19,6 @@ import io.reactivex.processors.PublishProcessor;
 public class RxBus {
 
     private final FlowableProcessor<Object> mBus;
-    private int noType = -1;
-    //private static volatile RxBus mRxBus;
 
     private RxBus() {
         // toSerialized method made bus thread safe
@@ -25,80 +26,67 @@ public class RxBus {
     }
 
     /**
-     * 获取单例实体
+     * 发送
      */
-    @Deprecated
-    public static RxBus get() {
-        //双重校验锁方式
-       /* if (mRxBus == null) {
-            synchronized (RxBus.class) {
-                if (mRxBus == null) {
-                    mRxBus = new RxBus();
-                }
-            }
-        }*/
-        //静态内部类方式
-        return Holder.BUS;
-    }
-
-    public static RxBus getInstance() {
-        //静态内部类方式
-        return Holder.BUS;
+    public static void send(int code, String action, Object data) {
+        Holder.BUS.mBus.onNext(new RxBusBean(code, action, data));
     }
 
     /**
-     * 调取发送方法
+     * 接收
      */
-    public void send(String action, int type, Object data) {
-        this.send(new BusBean(action, type, data));
+    public static ClassBind with(RxAppCompatActivity activity) {
+        return new ClassBind(activity);
     }
 
-    public void send(BusBean busBean) {
-        mBus.onNext(busBean);
+    public static ClassBind with(RxFragment fragment) {
+        return new ClassBind(fragment);
     }
 
-    /**
-     * 调用接收方法
-     */
-    public void toBusBean(OnRxListener onRxListener) {
-        // mBus.ofType(BusBean.class).subscribe(onNext);
-        this.toBusBean(null, noType, onRxListener);
-    }
+    public static class ClassBind {
+        private RxAppCompatActivity mActivity;
+        private RxFragment mFragment;
+        private int code;
+        private String action;
 
-    public void toBusBean(String action, OnRxListener onRxListener) {
-        this.toBusBean(action, noType, onRxListener);
-    }
+        public ClassBind(RxAppCompatActivity activity) {
+            this.mActivity = activity;
+        }
 
-    public void toBusBean(int type, OnRxListener onRxListener) {
-        this.toBusBean(null, type, onRxListener);
-    }
+        public ClassBind(RxFragment fragment) {
+            this.mFragment = fragment;
+        }
 
-    public void toBusBean(final String action, final int type, final OnRxListener onRxListener) {
-        mBus.ofType(BusBean.class).subscribe(new Consumer<BusBean>() {
-            @Override
-            public void accept(@NonNull BusBean busBean) throws Exception {
-                if (onRxListener != null && (action == null && busBean.getAction() == null || action != null && busBean.getAction() != null && action.equals(busBean.getAction())) && type == busBean.getType()) {
-                    onRxListener.onRxListener(busBean.getData());
-                }
-            }
-        });
-    }
+        public ClassBind setCode(int code) {
+            this.code = code;
+            return this;
+        }
 
-    /**
-     * 基础方法，toBusBean方法的原型。
-     * 将接收到的数据，转换为某class类型
-     */
-    public <T> Flowable<T> toFlowable(Class<T> tClass) {
-        return mBus.ofType(tClass);
-    }
+        public ClassBind setAction(String action) {
+            this.action = action;
+            return this;
+        }
 
-
-    public Flowable<Object> toFlowable() {
-        return mBus;
-    }
-
-    public boolean hasSubscribers() {
-        return mBus.hasSubscribers();
+        public void setListener(final OnRxBusListener listener) {
+            Holder.BUS.mBus.ofType(RxBusBean.class)
+                    .filter(new Predicate<RxBusBean>() {
+                        @Override
+                        public boolean test(@NonNull RxBusBean rxBusBean) throws Exception {
+                            //code相同，并且action都为空 或 action都不为空且相同
+                            return rxBusBean.getCode() == code
+                                    && (StringUtils.isEmpty(rxBusBean.getAction()) && StringUtils.isEmpty(action) || !StringUtils.isEmpty(rxBusBean.getAction()) && !StringUtils.isEmpty(action) && rxBusBean.getAction().equals(action));
+                        }
+                    })
+                    .compose(mActivity != null ? mActivity.<RxBusBean>bindToLifecycle() : mFragment.<RxBusBean>bindToLifecycle())
+                    .subscribe(new Consumer<RxBusBean>() {
+                        @Override
+                        public void accept(RxBusBean rxBusBean) throws Exception {
+                            if (listener != null) {
+                                listener.onBusListener(rxBusBean);
+                            }
+                        }
+                    });
+        }
     }
 
     /**
@@ -112,8 +100,8 @@ public class RxBus {
     /**
      * 监听方法
      */
-    public interface OnRxListener {
-        void onRxListener(Object data);
+    public interface OnRxBusListener {
+        void onBusListener(RxBusBean busBean);
     }
 
 }

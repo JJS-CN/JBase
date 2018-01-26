@@ -43,11 +43,11 @@ public class XXXX extends BaseH5Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.xxx);
         ButterKnife.bind(this);
-        init(mWeb,"www.baidu.com");
+        init(mWeb, "www.baidu.com");
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               startActivity(new Intent(XXXX.this,XXXX.class));
+                startActivity(new Intent(XXXX.this, XXXX.class));
             }
         });
         LoadingDialog.show();
