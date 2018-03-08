@@ -3,7 +3,6 @@ package com.jjs.base.http;
 import com.blankj.utilcode.util.StringUtils;
 import com.jjs.base.bean.RxBusBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -39,13 +38,18 @@ public class RxBus {
         return new ClassBind(activity);
     }
 
-    public static ClassBind with(RxFragment fragment) {
+    public static ClassBind with(com.trello.rxlifecycle2.components.RxFragment fragment) {
+        return new ClassBind(fragment);
+    }
+
+    public static ClassBind with(com.trello.rxlifecycle2.components.support.RxFragment fragment) {
         return new ClassBind(fragment);
     }
 
     public static class ClassBind {
         private RxAppCompatActivity mActivity;
-        private RxFragment mFragment;
+        private com.trello.rxlifecycle2.components.RxFragment mFragment;
+        private com.trello.rxlifecycle2.components.support.RxFragment mSupportFragment;
         private int code;
         private String action;
 
@@ -53,8 +57,12 @@ public class RxBus {
             this.mActivity = activity;
         }
 
-        public ClassBind(RxFragment fragment) {
+        public ClassBind(com.trello.rxlifecycle2.components.RxFragment fragment) {
             this.mFragment = fragment;
+        }
+
+        public ClassBind(com.trello.rxlifecycle2.components.support.RxFragment fragment) {
+            this.mSupportFragment = fragment;
         }
 
         public ClassBind setCode(int code) {
@@ -77,7 +85,7 @@ public class RxBus {
                                     && (StringUtils.isEmpty(rxBusBean.getAction()) && StringUtils.isEmpty(action) || !StringUtils.isEmpty(rxBusBean.getAction()) && !StringUtils.isEmpty(action) && rxBusBean.getAction().equals(action));
                         }
                     })
-                    .compose(mActivity != null ? mActivity.<RxBusBean>bindToLifecycle() : mFragment.<RxBusBean>bindToLifecycle())
+                    .compose(mActivity != null ? mActivity.<RxBusBean>bindToLifecycle() : (mFragment != null ? mFragment.<RxBusBean>bindToLifecycle() : mSupportFragment.<RxBusBean>bindToLifecycle()))
                     .subscribe(new Consumer<RxBusBean>() {
                         @Override
                         public void accept(RxBusBean rxBusBean) throws Exception {
