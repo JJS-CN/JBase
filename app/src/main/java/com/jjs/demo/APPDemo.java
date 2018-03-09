@@ -32,6 +32,14 @@ public class APPDemo extends BaseApplication {
                         RxBus.send(0, "1", null);
                     }
                 });
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LogUtils.e("send");
+                        RxBus.send(0, null, null);
+                        RxBus.send(0, "1", null);
+                    }
+                },5000);
             }
         }).start();
     }

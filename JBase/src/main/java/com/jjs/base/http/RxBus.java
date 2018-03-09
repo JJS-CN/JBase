@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.jjs.base.bean.RxBusBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -86,10 +87,12 @@ public class RxBus {
 
                             boolean b = rxBusBean.getCode() == code
                                     && (StringUtils.isEmpty(rxBusBean.getAction()) && StringUtils.isEmpty(action) || !StringUtils.isEmpty(rxBusBean.getAction()) && !StringUtils.isEmpty(action) && rxBusBean.getAction().equals(action));
-                            Log.e("rxBus", code + "=" + rxBusBean.getCode() + "===" + action + "=" + rxBusBean.getAction() + "==" + b);
+                            Log.i("rxBus", b + "");
                             return b;
                         }
                     })
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .compose(mActivity != null ? mActivity.<RxBusBean>bindToLifecycle() : (mFragment != null ? mFragment.<RxBusBean>bindToLifecycle() : mSupportFragment.<RxBusBean>bindToLifecycle()))
                     .subscribe(new Consumer<RxBusBean>() {
                         @Override
