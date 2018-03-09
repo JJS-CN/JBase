@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.jjs.base.base.BaseActivity;
-import com.jjs.base.bean.RxBusBean;
 import com.jjs.base.http.RxBus;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
@@ -109,12 +107,7 @@ public class PagerAct extends BaseActivity {
             }
         });
         addFragment(R.id.fff, new AAFragment(), "", false);
-        RxBus.with(this).setListener(new RxBus.OnRxBusListener() {
-            @Override
-            public void onBusListener(RxBusBean busBean) {
-                LogUtils.e("bus1");
-            }
-        });
+
 
     }
 
