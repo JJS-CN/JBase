@@ -1,5 +1,7 @@
 package com.jjs.base.http;
 
+import android.util.Log;
+
 import com.blankj.utilcode.util.StringUtils;
 import com.jjs.base.bean.RxBusBean;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -81,8 +83,11 @@ public class RxBus {
                         @Override
                         public boolean test(@NonNull RxBusBean rxBusBean) throws Exception {
                             //code相同，并且action都为空 或 action都不为空且相同
-                            return rxBusBean.getCode() == code
+
+                            boolean b = rxBusBean.getCode() == code
                                     && (StringUtils.isEmpty(rxBusBean.getAction()) && StringUtils.isEmpty(action) || !StringUtils.isEmpty(rxBusBean.getAction()) && !StringUtils.isEmpty(action) && rxBusBean.getAction().equals(action));
+                            Log.e("rxBus", code + "=" + rxBusBean.getCode() + "===" + action + "=" + rxBusBean.getAction() + "==" + b);
+                            return b;
                         }
                     })
                     .compose(mActivity != null ? mActivity.<RxBusBean>bindToLifecycle() : (mFragment != null ? mFragment.<RxBusBean>bindToLifecycle() : mSupportFragment.<RxBusBean>bindToLifecycle()))

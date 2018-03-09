@@ -10,12 +10,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.jjs.base.base.BaseActivity;
+import com.jjs.base.bean.RxBusBean;
+import com.jjs.base.http.RxBus;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
 import com.jjs.base.widget.ReadMoreTextView;
+import com.jjs.demo.AAFragment;
 import com.jjs.demo.RxObserverDemo;
 
 import java.util.ArrayList;
@@ -72,6 +76,7 @@ public class PagerAct extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mRead.setText("123");
+                RxBus.send(0, null, null);
             }
         });
         vp.setCanMove(true);
@@ -101,6 +106,13 @@ public class PagerAct extends BaseActivity {
             @Override
             public void onPermissionDenied(String[] deniedPermissions) {
                 Log.e("2222222222222222", "222222222222222");
+            }
+        });
+        addFragment(R.id.fff, new AAFragment(), "", false);
+        RxBus.with(this).setListener(new RxBus.OnRxBusListener() {
+            @Override
+            public void onBusListener(RxBusBean busBean) {
+                LogUtils.e("bus1");
             }
         });
 
