@@ -14,30 +14,20 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 全局异常捕获，不处理系统回收页面早册造成的空指针异常的补丁方案
+ * 全局异常捕获，不处理系统回收页面造成的空指针异常的补丁方案
  * 在application中调用：
  * Thread.setDefaultUncaughtExceptionHandler(new UEHandler(this, WelcomeActivity.class));
  */
 public class UEHandler implements Thread.UncaughtExceptionHandler {
     //错误监听
     static OnUEListener onUEListener;
-    /**
-     * applicaiton启动源
-     * activity系统第一个页面(需要在oncrate中判断isTaskRoot，是否位于栈底，false直接finish)
-     */
-   /* public UEHandler(Application app, Class<? extends BaseLauncherActivity> aClass) {
-        this.app = app;
-        this.mClass = aClass;
-
-    }*/
 
     /**
      * 将UEhandler设置为app默认异常处理方法
      * 初始化方法
      */
-    public static void init(boolean isDebug) {
-        if (!isDebug)
-            Thread.setDefaultUncaughtExceptionHandler(new UEHandler());
+    public static void init() {
+        Thread.setDefaultUncaughtExceptionHandler(new UEHandler());
     }
 
     /**
@@ -47,6 +37,7 @@ public class UEHandler implements Thread.UncaughtExceptionHandler {
         onUEListener = ueListener;
     }
 
+    //捕获到异常之后，启动到首页重走逻辑为好
     public static void openLauncher(Application app, Class aClass) {
         Intent intent = new Intent(app, aClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP

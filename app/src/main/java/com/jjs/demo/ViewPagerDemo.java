@@ -1,16 +1,22 @@
 package com.jjs.demo;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.blankj.rxbus.RxBus;
+import com.jjs.R;
+import com.jjs.base.base.BaseActivity;
+import com.jjs.base.base.ChoosePhotoActivity;
+import com.jjs.base.entity.ChoosePhotoEntity;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 作者： Jacky
@@ -18,39 +24,53 @@ import java.util.ArrayList;
  * 轮播引导页页面
  */
 
-public class ViewPagerDemo extends AppCompatActivity {
+public class ViewPagerDemo extends BaseActivity {
 
+    @BindView(R.id.tv_Camera)
+    TextView mTvCamera;
+    @BindView(R.id.tv_Album)
+    TextView mTvAlbum;
+    @BindView(R.id.ll_bg)
+    LinearLayout mLlBg;
 
-    // 引导页图片资源
-    ArrayList<View> views;
-
-    ViewPager viewPager;//滑动轮播
-    LinearLayout ll_dot;//小圆点显示控件
-    ImageView iv_bg;//整体背景图片
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //设置画布可以延伸到屏幕外.
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-       // setContentView(R.layout.layout_guide);
-      //  iv_bg = (ImageView) findViewById(R.id.iv_guide_bg);
-      // viewPager = (ViewPager) findViewById(R.id.pager_guide);
-       // ll_dot = (LinearLayout) findViewById(R.id.ll_guide_dots);
-        //获得视差动画控件
+    protected void onActivityResult(int requestCode, Intent data) {
 
-        views = new ArrayList<>();
-        //views.add(View.inflate(this, R.layout.guide_1, null));
-        //views.add(View.inflate(this, R.layout.guide_2, null));
-       // views.add(View.inflate(this, R.layout.guide_3, null));
-        //views.add(View.inflate(this, R.layout.guide_4, null));
-
-       /* new PagerUtils().setView(viewPager, ll_dot, iv_bg, views).setMoveBG(40).setAutoPlay(true, true, 2000).setPageTransformer(true, new ParallaxTransformerDemo(0.5f, 0.5f)).setOnItemClickListener(new PagerUtils.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-            }
-        }).create();*/
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_choose_photo);
+        RxBus.getDefault().subscribe(this, R.id.tv_Album + "", new RxBus.Callback<ChoosePhotoEntity>() {
+            @Override
+            public void onEvent(ChoosePhotoEntity strings) {
+                int size = (int) (strings.getOriginalFile().length() / 1024);
+                int size2 = (int) (strings.getCompressFile().length() / 1024);
+                Log.e("aaaa", strings.getOriginalFile().getPath() + "==" + size);
+                Log.e("eeee", strings.getCompressFile().getPath() + "==" + size2);
+            }
+        });
+        RxBus.getDefault().subscribe(this, R.id.tv_Camera + "", new RxBus.Callback<ChoosePhotoEntity>() {
+            @Override
+            public void onEvent(ChoosePhotoEntity strings) {
+                int size = (int) (strings.getOriginalFile().length() / 1024);
+                int size2 = (int) (strings.getCompressFile().length() / 1024);
+                Log.e("assss", strings.getOriginalFile().getPath() + "==" + size);
+                Log.e("asdasf", strings.getCompressFile().getPath() + "==" + size2);
+            }
+        });
+    }
 
+    @OnClick({R.id.tv_Camera, R.id.tv_Album})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_Camera:
+                ChoosePhotoActivity.start(this, R.id.tv_Camera + "", true,1,1);
+                break;
+            case R.id.tv_Album:
+                ChoosePhotoActivity.start(this, R.id.tv_Album + "", false,16,9);
+                break;
+        }
+    }
 }

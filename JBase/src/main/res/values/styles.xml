@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!--设置activity的背景色为透明色-->
-        <item name="android:windowBackground">@color/Null</item>
+        <item name="android:windowBackground">@color/Transparent</item>
         <!--打开透明，否则显示黑色-->
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowActionBar">false</item>
@@ -17,9 +17,9 @@
 
     <style name="TransitionTheme" parent="JJsAppTheme"/>
 
-    <style name="Dialog_notBG">
+    <style name="Dialog_notBG" parent="TransitionTheme">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/Null</item>
+        <item name="android:windowBackground">@color/Transparent</item>
     </style>
 
 </resources>

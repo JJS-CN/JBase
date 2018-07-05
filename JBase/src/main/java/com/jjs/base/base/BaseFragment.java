@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import butterknife.Unbinder;
 
 public abstract class BaseFragment<P extends BasePersenter> extends RxFragment {
     protected Activity mActivity;
-    protected View rootView;
+    protected View mRootView;
     private Unbinder unbinder;
     public P mPersenter;//P层，具体aty中直接实例化即可
 
@@ -35,12 +36,14 @@ public abstract class BaseFragment<P extends BasePersenter> extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        if (getLayoutId() == 0) {
-            throw new RuntimeException("In the Fragment, You must getLayoutId() return !=0");
+        if (getLayoutId() != 0) {
+            mRootView = inflater.inflate(getLayoutId(), container, false);
+            unbinder = ButterKnife.bind(this, mRootView);
+        } else {
+            String className = this.getClass().getName();
+            Log.e(className, "In the " + className + ", You must getLayoutId() return !=0");
         }
-        rootView = inflater.inflate(getLayoutId(), container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -60,7 +63,7 @@ public abstract class BaseFragment<P extends BasePersenter> extends RxFragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (rootView == null) {
+        if (mRootView == null) {
             super.setUserVisibleHint(false);
         } else {
             super.setUserVisibleHint(isVisibleToUser);

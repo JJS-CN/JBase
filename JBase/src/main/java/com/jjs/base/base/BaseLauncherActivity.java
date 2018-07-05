@@ -1,11 +1,8 @@
 package com.jjs.base.base;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.WindowManager;
-
-import com.blankj.utilcode.util.SPUtils;
 
 /**
  * 作者： Jacky
@@ -14,6 +11,7 @@ import com.blankj.utilcode.util.SPUtils;
  */
 
 public abstract class BaseLauncherActivity extends BaseActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,22 +30,6 @@ public abstract class BaseLauncherActivity extends BaseActivity {
             finish();
             return;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (boolFirst()) {
-                    isFirst();
-                    SPUtils.getInstance().put(BaseStore.TAG.isFirst, false);
-                } else {
-                    notFirst();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int i, Intent intent) {
-
     }
 
 
@@ -59,22 +41,6 @@ public abstract class BaseLauncherActivity extends BaseActivity {
      */
     protected abstract int setSplshBackground();
 
-    /**
-     * 判断为是第一次启动app，应跳转轮播APP介绍页面
-     */
-    protected abstract void isFirst();
-
-    /**
-     * 判断为是第一次启动app，应启动注册页面或main页面
-     */
-    protected abstract void notFirst();
-
-    /**
-     * 判断app是否是第一次进入
-     */
-    private boolean boolFirst() {
-        return SPUtils.getInstance().getBoolean(BaseStore.TAG.isFirst, true);
-    }
 
 
 }

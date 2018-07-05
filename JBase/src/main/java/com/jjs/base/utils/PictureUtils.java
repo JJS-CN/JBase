@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * 已更换为Luban进行压缩
  * 图片压缩处理方法，判断处理图片旋转问题，默认压缩宽度1080，只进行了图片尺寸的压缩
  * 步骤：拿到图片先判断旋转角度，如果旋转了就开始旋转处理，正常之后只进行图片尺寸的压缩，压缩至1080宽度
  * Created by jjs on 2016/9/5.

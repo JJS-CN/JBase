@@ -1,6 +1,6 @@
 package com.jjs.bean;
 
-import com.jjs.base.bean.ExpandableItem;
+import com.jjs.base.entity.ExpandableItem;
 
 /**
  * 说明：

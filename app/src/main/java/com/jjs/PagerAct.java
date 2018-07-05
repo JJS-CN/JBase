@@ -1,19 +1,15 @@
 package com.jjs;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.blankj.utilcode.util.PermissionUtils;
 import com.bumptech.glide.Glide;
 import com.jjs.base.base.BaseActivity;
-import com.jjs.base.http.RxBus;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
 import com.jjs.base.widget.ReadMoreTextView;
@@ -74,7 +70,6 @@ public class PagerAct extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mRead.setText("123");
-                RxBus.send(0, null, null);
             }
         });
         vp.setCanMove(true);
@@ -93,19 +88,6 @@ public class PagerAct extends BaseActivity {
                 startActivity(new Intent(PagerAct.this, XXXX.class));
             }
         }).create();
-
-
-        PermissionUtils.requestPermissions(this, 1, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, new PermissionUtils.OnPermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                Log.e("111111111", "111111111");
-            }
-
-            @Override
-            public void onPermissionDenied(String[] deniedPermissions) {
-                Log.e("2222222222222222", "222222222222222");
-            }
-        });
         addFragment(R.id.fff, new AAFragment(), "", false);
 
 

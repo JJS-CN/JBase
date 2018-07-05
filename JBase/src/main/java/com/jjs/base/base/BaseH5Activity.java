@@ -1,6 +1,5 @@
 package com.jjs.base.base;
 
-import android.content.Intent;
 import android.net.http.SslError;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
@@ -79,12 +78,6 @@ public abstract class BaseH5Activity extends BaseActivity {
 
         //开始加载页面
         mWebView.loadUrl(url);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, Intent data) {
-
     }
 
     //设置回退

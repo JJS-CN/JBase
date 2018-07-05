@@ -18,7 +18,6 @@ public class MvpActivityDemo extends BaseActivity<PP> implements VV {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_demo);
           mPersenter = new PP(this);//进行实例化，this为PP编写时填入的view接口
-
     }
 
     @Override

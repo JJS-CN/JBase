@@ -36,6 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 /**
  * 说明：使用文档：http://www.jianshu.com/p/b343fcff51b0
  * Created by aa on 2017/10/28.
@@ -173,7 +174,6 @@ public class BaseQuickAdapterDemo extends com.jjs.base.base.BaseActivity {
         //预加载、当滑动到倒数第几个item触发刷新监听（默认为1）
         adapter.setPreLoadNumber(1);
         //设置自定义上拉加载布局
-        adapter.setLoadMoreView(new CustomLoadMoreView());
         //上拉加载监听
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override

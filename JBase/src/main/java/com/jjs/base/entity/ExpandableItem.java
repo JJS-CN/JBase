@@ -1,4 +1,4 @@
-package com.jjs.base.bean;
+package com.jjs.base.entity;
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;

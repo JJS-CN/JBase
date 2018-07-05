@@ -6,65 +6,79 @@ package com.jjs.base.base;
  * Created by aa on 2017/6/19.
  */
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
-import com.jjs.base.http.RetrofitUtils;
 import com.jjs.base.utils.UEHandler;
 
+import java.lang.ref.WeakReference;
+
 public abstract class BaseApplication extends Application {
-    private static boolean isDebug = false;
-    private boolean hasCrash = true;
-    public static String BaseUrl = "";
+    public static boolean isDebug = false;//是否是debug模式，开关log打印信息
+    public boolean hasCrash = false;//是否需要全局异常捕获
+    public static String BaseUrl = ""; //服务器地址
+    private static Application sInstance;
+    private static WeakReference<Activity> mCurrentActivityWeakRef;
 
-
-    /**
-     * 打开debug模式
-     */
-    public void applyDebug(String baseUrl) {
-        BaseUrl=baseUrl;
-       initUtils(true);
+    public static Application get() {
+        return sInstance;
     }
 
-    /**
-     * 打开release模式
-     */
-    public void applyRelease(String baseUrl) {
-        BaseUrl=baseUrl;
-        initUtils(false);
-    }
-
-    /**
-     * 传入基础Url服务器地址
-     */
-    private void initUtils(boolean debug) {
-        isDebug=debug;
-        if (hasCrash) {
-            UEHandler.init(isDebug);
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sInstance = this;
         Utils.init(this);
         LogUtils.getConfig().setLogSwitch(isDebug);
-        RetrofitUtils.init(BaseUrl);
-        if (isDebug) {           // 这两行必须写在init之前，否则这些配置在init过程中将无效
-            ARouter.openLog();     // 打印日志
-            ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+        if (hasCrash) {
+            UEHandler.init();
         }
-        ARouter.init(this);
+        //监听会被add到list集合中，走生命周期时会被遍历调用
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                mCurrentActivityWeakRef = new WeakReference<Activity>(activity);
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
     }
 
-    /**
-     * 设置是否打开carsh模式；默认为true；
-     * 为false时不开启。
-     * 为true时根据isDebug设置开启。
-     */
-    public void openCrash(boolean hasCrash) {
-        this.hasCrash = hasCrash;
+    public static Activity getActivity() {
+        if (mCurrentActivityWeakRef != null) {
+            return mCurrentActivityWeakRef.get();
+        }
+        return null;
     }
-
-    public boolean getDebug() {
-        return isDebug;
-    }
-
 }

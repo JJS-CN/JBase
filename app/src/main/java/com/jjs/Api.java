@@ -1,5 +1,7 @@
 package com.jjs;
 
+import com.jjs.demo.HttpResultDemo;
+
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -14,6 +16,6 @@ public class Api  {
     public interface Test {
         @FormUrlEncoded
         @POST("clothing_classificati")
-        Observable<String> test(@Field("apikey") String sign,@Field("apikeys") String signs);
+        Observable<HttpResultDemo<Object>> test(@Field("apikey") String sign, @Field("apikeys") String signs);
     }
 }

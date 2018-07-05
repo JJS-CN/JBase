@@ -39,7 +39,7 @@ public class RandomUtil {
      * 获取随机验证码，位数不够自动补0。
      * @param length 想要生成的随机数长度
      */
-    public static String getRandomCode(int length) {
+    public static String getRandomSMSCode(int length) {
         StringBuffer sb = new StringBuffer("1");
         for (int i = 0; i < length; i++) {
             sb.append(0);

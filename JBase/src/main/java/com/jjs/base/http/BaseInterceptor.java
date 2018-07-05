@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import okhttp3.FormBody;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -29,29 +28,25 @@ import okio.BufferedSource;
  */
 
 public abstract class BaseInterceptor implements Interceptor {
-    private final Charset UTF8 = Charset.forName("UTF-8");
-    Map<String, String> queryParamsMap = new HashMap<>();
-    Map<String, String> fieldParamsMap = new HashMap<>();
-    Map<String, String> headerParamsMap = new HashMap<>();
+    private Map<String, String> fieldParamsMap = new HashMap<>();
+    private Map<String, String> headerParamsMap = new HashMap<>();
 
 
-    protected abstract Request _intercept(Request request) throws IOException;
+    protected abstract void _intercept(Request request) throws IOException;
 
-    public static BaseInterceptor getDefault() {
-        return new BaseInterceptor() {
-            @Override
-            protected Request _intercept(Request request) throws IOException {
-                return null;
-            }
-        };
+    public void addFieldParam(String key, String value) {
+        fieldParamsMap.put(key, value);
+    }
+
+    public void addHeaderParam(String key, String value) {
+        headerParamsMap.put(key, value);
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        RequestBody requestBody = request.body();
         Request.Builder requestBuilder = request.newBuilder();
-        // process header params inject
+        _intercept(request);
         //注入header参数
         if (headerParamsMap != null && headerParamsMap.size() > 0) {
             Set<String> keys = headerParamsMap.keySet();
@@ -59,12 +54,6 @@ public abstract class BaseInterceptor implements Interceptor {
                 requestBuilder.addHeader(headerKey, headerParamsMap.get(headerKey)).build();
             }
         }
-        // process queryParams inject whatever it's GET or POST
-        //注入query参数
-        if (queryParamsMap.size() > 0) {
-            request = injectParamsIntoUrl(request.url().newBuilder(), requestBuilder, queryParamsMap);
-        }
-        // process send body inject
         //注入params参数
         if (fieldParamsMap.size() > 0) {
             if (canInjectIntoBody(request)) {
@@ -77,14 +66,18 @@ public abstract class BaseInterceptor implements Interceptor {
                 String postBodyString = bodyToString(request.body());
                 postBodyString += ((postBodyString.length() > 0) ? "&" : "") + bodyToString(formBody);
                 requestBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), postBodyString));
+            } else {
+                Iterator iterator = fieldParamsMap.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    request.url().newBuilder().addQueryParameter((String) entry.getKey(), (String) entry.getValue());
+                }
+                requestBuilder.url(request.url().newBuilder().build());
             }
         }
 
         request = requestBuilder.build();
-        Request request1 = _intercept(request);
-        if (request1 != null) {
-            request = request1;
-        }
+
         //打印发送参数
         sendLogRequest(request);
         Response response = chain.proceed(request);
@@ -140,7 +133,7 @@ public abstract class BaseInterceptor implements Interceptor {
         LogUtils.i("接收：" + rBody.toString());
     }
 
-    private boolean canInjectIntoBody(Request request) {
+    protected boolean canInjectIntoBody(Request request) {
         if (request == null) {
             return false;
         }
@@ -161,21 +154,6 @@ public abstract class BaseInterceptor implements Interceptor {
         return true;
     }
 
-    // func to inject params into url
-    private Request injectParamsIntoUrl(HttpUrl.Builder httpUrlBuilder, Request.Builder requestBuilder, Map<String, String> paramsMap) {
-        if (paramsMap.size() > 0) {
-            Iterator iterator = paramsMap.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry entry = (Map.Entry) iterator.next();
-                httpUrlBuilder.addQueryParameter((String) entry.getKey(), (String) entry.getValue());
-            }
-            requestBuilder.url(httpUrlBuilder.build());
-            return requestBuilder.build();
-        }
-
-        return null;
-    }
-
     private static String bodyToString(final RequestBody request) {
         try {
             final RequestBody copy = request;
@@ -188,21 +166,6 @@ public abstract class BaseInterceptor implements Interceptor {
         } catch (final IOException e) {
             return "did not work";
         }
-    }
-
-    public BaseInterceptor addFieldParam(String key, String value) {
-        this.fieldParamsMap.put(key, value);
-        return this;
-    }
-
-    public BaseInterceptor addHeaderParam(String key, String value) {
-        this.headerParamsMap.put(key, value);
-        return this;
-    }
-
-    public BaseInterceptor addQueryParam(String key, String value) {
-        this.queryParamsMap.put(key, value);
-        return this;
     }
 
 

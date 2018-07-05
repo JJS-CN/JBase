@@ -21,8 +21,6 @@
     <color name="Green">#008000</color><!--绿色 -->
     <color name="Silver">#C0C0C0</color><!--银色 -->
     <color name="Blue">#007AFF</color><!--蓝色-->
-    <color name="Null">#00000000</color><!--透明色-->
-    <!--<color name="Transparent">#00000000</color>-->
-    <!--折叠textview的默认按钮文本的颜色-->
+    <color name="Transparent">#00000000</color><!--透明色-->
     <color name="Accent">#FF4081</color>
 </resources>
