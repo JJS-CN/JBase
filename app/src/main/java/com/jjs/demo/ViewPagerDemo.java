@@ -10,9 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.blankj.rxbus.RxBus;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.jjs.R;
 import com.jjs.base.base.BaseActivity;
 import com.jjs.base.base.ChoosePhotoActivity;
+import com.jjs.base.dialog.BaseDialog;
 import com.jjs.base.entity.ChoosePhotoEntity;
 
 import butterknife.BindView;
@@ -42,6 +44,14 @@ public class ViewPagerDemo extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_photo);
+        BaseDialog baseDialog = new BaseDialog(this, R.layout.head);
+        baseDialog.setCustomListener(new BaseDialog.OnCustomListener() {
+            @Override
+            public void onCustom(BaseViewHolder holder, BaseDialog dialog) {
+                holder.setImageResource(R.id.iv_1,R.mipmap.ic_launcher);
+            }
+        });
+        baseDialog.show();
         RxBus.getDefault().subscribe(this, R.id.tv_Album + "", new RxBus.Callback<ChoosePhotoEntity>() {
             @Override
             public void onEvent(ChoosePhotoEntity strings) {
@@ -66,10 +76,10 @@ public class ViewPagerDemo extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_Camera:
-                ChoosePhotoActivity.start(this, R.id.tv_Camera + "", true,1,1);
+                ChoosePhotoActivity.start(this, R.id.tv_Camera + "", true, 1, 1);
                 break;
             case R.id.tv_Album:
-                ChoosePhotoActivity.start(this, R.id.tv_Album + "", false,16,9);
+                ChoosePhotoActivity.start(this, R.id.tv_Album + "", false, 16, 9);
                 break;
         }
     }

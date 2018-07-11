@@ -19,7 +19,8 @@ import com.bumptech.glide.request.RequestOptions;
 import java.security.MessageDigest;
 
 /**
- * 说明：要先crop再圆角，否则看不出效果
+ * 说明：基于glide常用操作进行简单封装
+ * 暴露as(@NonNull RequestOptions options) 方法进行自定义
  * Created by aa on 2017/6/23.
  */
 

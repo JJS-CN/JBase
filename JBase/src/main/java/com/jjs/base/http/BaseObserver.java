@@ -1,6 +1,5 @@
 package com.jjs.base.http;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.jjs.base.widget.LoadingDialog;
 
 import java.net.ConnectException;
@@ -26,7 +25,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onNext(@NonNull T t) {
-        LogUtils.i("onNext:" + t.toString());
         _onNext(t);
     }
 
@@ -43,7 +41,6 @@ public abstract class BaseObserver<T> implements Observer<T> {
         } else {
             errMsg = e.getMessage();
         }
-        LogUtils.i("onError:" + errMsg);
         _onError(errMsg);
 
     }

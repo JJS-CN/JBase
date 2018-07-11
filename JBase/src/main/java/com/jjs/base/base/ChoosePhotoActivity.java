@@ -21,7 +21,7 @@ import android.view.WindowManager;
 
 import com.blankj.rxbus.RxBus;
 import com.blankj.utilcode.constant.PermissionConstants;
-import com.blankj.utilcode.util.PermissionUtils;
+import com.jjs.base.annotation.NeedPermission;
 import com.jjs.base.entity.ChoosePhotoEntity;
 import com.jjs.base.mvp.BasePersenter;
 import com.yalantis.ucrop.UCrop;
@@ -36,7 +36,7 @@ import top.zibin.luban.OnCompressListener;
  * 说明：
  * Created by jjs on 2018/7/4.
  */
-
+@NeedPermission({PermissionConstants.CAMERA, PermissionConstants.STORAGE})
 public class ChoosePhotoActivity<P extends BasePersenter> extends BaseActivity<P> {
 
     private final int Request_Camera = 1;
@@ -126,49 +126,28 @@ public class ChoosePhotoActivity<P extends BasePersenter> extends BaseActivity<P
 
     /***  开启相机  ***/
     private void openCamera() {
-        PermissionUtils.permission(PermissionConstants.CAMERA, PermissionConstants.STORAGE)
-                .callback(new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //指定拍照图片地址
-                        mOriginalFile = getImageFile();
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, file2Uri(mOriginalFile));
-                        startActivityForResult(intent, ChoosePhotoActivity.this.Request_Camera);
-                    }
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //指定拍照图片地址
+        mOriginalFile = getImageFile();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, file2Uri(mOriginalFile));
+        startActivityForResult(intent, ChoosePhotoActivity.this.Request_Camera);
 
-                    @Override
-                    public void onDenied() {
-                        finish();
-                    }
-                }).request();
 
     }
 
     /***  开启相册  ***/
     private void openAlbum() {
-        PermissionUtils.permission(PermissionConstants.STORAGE)
-                .callback(new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        Intent intent = new Intent();
-                        intent.addCategory(Intent.CATEGORY_OPENABLE);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setType("image/*");
-                        //根据版本号不同使用不同的Action
-                        if (Build.VERSION.SDK_INT < 19) {
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                        } else {
-                            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                        }
-                        startActivityForResult(intent, ChoosePhotoActivity.this.Request_Album);
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        finish();
-                    }
-                }).request();
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setType("image/*");
+        //根据版本号不同使用不同的Action
+        if (Build.VERSION.SDK_INT < 19) {
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+        } else {
+            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        }
+        startActivityForResult(intent, ChoosePhotoActivity.this.Request_Album);
     }
 
     @Override
@@ -220,7 +199,6 @@ public class ChoosePhotoActivity<P extends BasePersenter> extends BaseActivity<P
                     @Override
                     public void onSuccess(File file) {
                         //执行裁剪
-                        chooseSuccess(file);
                         if (mAspectX > 0 && mAspectY > 0) {
                             openCrop(getImageContentUri(file), mAspectX, mAspectY);
                         } else {

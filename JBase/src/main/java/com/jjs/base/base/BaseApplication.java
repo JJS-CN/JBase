@@ -8,15 +8,18 @@ package com.jjs.base.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ComponentName;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
+import com.jjs.base.Hook.HookFactory;
 import com.jjs.base.utils.UEHandler;
 
 import java.lang.ref.WeakReference;
 
 public abstract class BaseApplication extends Application {
+    public Class mLoginActivity;
     public static boolean isDebug = false;//是否是debug模式，开关log打印信息
     public boolean hasCrash = false;//是否需要全局异常捕获
     public static String BaseUrl = ""; //服务器地址
@@ -35,6 +38,12 @@ public abstract class BaseApplication extends Application {
         LogUtils.getConfig().setLogSwitch(isDebug);
         if (hasCrash) {
             UEHandler.init();
+        }
+        if (mLoginActivity != null) {
+            // hook 登录跳转
+            ComponentName componentName = new ComponentName(getPackageName(), mLoginActivity.getName());
+            HookFactory.hookIActivityManager(Thread.currentThread().getContextClassLoader()
+                    , componentName);
         }
         //监听会被add到list集合中，走生命周期时会被遍历调用
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
