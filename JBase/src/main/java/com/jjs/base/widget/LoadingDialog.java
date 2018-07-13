@@ -17,39 +17,25 @@ import com.jjs.base.R;
 
 public class LoadingDialog {
     private static Dialog mDialog;
-    private static Context mContext;
 
     /**
      * 初始化dialog数据，可动态设置显示view和style
      */
-    public static void init(Context context) {
-        mContext = context;
-    }
-
-    public static void show() {
-        show(null);
-    }
-
-    public static void show(View view) {
-        show(view, -1);
-    }
-
-    public static void show(View view, int style) {
-        if (mDialog == null) {
-            if (style == -1)
-                style = R.style.Dialog_notBG;
-            mDialog = new Dialog(mContext, style);
-            mDialog.setCancelable(true);//按返回键消失
-            mDialog.setCanceledOnTouchOutside(false);//但点击dialog范围外不消失
-            if (view == null) {
-                view = View.inflate(mContext, R.layout.dialog_loadingview, null);
-            }
-            mDialog.setContentView(view);
-
+    public static void show(Context context) {
+        if (context == null) {
+            return;
         }
-        if (mDialog != null && !mDialog.isShowing()) {
+        if (mDialog != null && mDialog.getContext() == context) {
             mDialog.show();
+            return;
         }
+        dissmiss();
+        mDialog = new Dialog(context, R.style.Dialog_notBG);
+        mDialog.setCancelable(true);//按返回键消失
+        mDialog.setCanceledOnTouchOutside(true);//但点击dialog范围外不消失
+        View mView = View.inflate(context, R.layout.dialog_loadingview, null);
+        mDialog.setContentView(mView);
+        mDialog.show();
     }
 
     public static void dissmiss() {

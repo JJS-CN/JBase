@@ -10,6 +10,18 @@ import com.jjs.base.http.BaseObserver;
  */
 
 public abstract class RxObserverDemo<T> extends BaseObserver<HttpResultDemo<T>> {
+   /* public RxObserverDemo(RxAppCompatActivity activity) {
+        super(activity);
+    }
+
+    public RxObserverDemo(RxFragment rxFragment) {
+        super(rxFragment);
+    }
+
+    public RxObserverDemo(RxDialogFragment dialogFragment) {
+        super(dialogFragment);
+    }*/
+
     @Override
     protected void _onNext(HttpResultDemo<T> data) {
         //HttpResultDemo需要根据服务器返回方式自定义，

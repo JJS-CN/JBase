@@ -4,21 +4,22 @@ package com.jjs.demo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.rxbus.RxBus;
-import com.chad.library.adapter.base.BaseViewHolder;
 import com.jjs.R;
 import com.jjs.base.base.BaseActivity;
 import com.jjs.base.base.ChoosePhotoActivity;
-import com.jjs.base.dialog.BaseDialog;
-import com.jjs.base.entity.ChoosePhotoEntity;
+import com.jjs.base.http.RxHelper;
+import com.jjs.base.http.RxSchedulers;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * 作者： Jacky
@@ -44,32 +45,35 @@ public class ViewPagerDemo extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_photo);
-        BaseDialog baseDialog = new BaseDialog(this, R.layout.head);
-        baseDialog.setCustomListener(new BaseDialog.OnCustomListener() {
-            @Override
-            public void onCustom(BaseViewHolder holder, BaseDialog dialog) {
-                holder.setImageResource(R.id.iv_1,R.mipmap.ic_launcher);
-            }
-        });
-        baseDialog.show();
-        RxBus.getDefault().subscribe(this, R.id.tv_Album + "", new RxBus.Callback<ChoosePhotoEntity>() {
-            @Override
-            public void onEvent(ChoosePhotoEntity strings) {
-                int size = (int) (strings.getOriginalFile().length() / 1024);
-                int size2 = (int) (strings.getCompressFile().length() / 1024);
-                Log.e("aaaa", strings.getOriginalFile().getPath() + "==" + size);
-                Log.e("eeee", strings.getCompressFile().getPath() + "==" + size2);
-            }
-        });
-        RxBus.getDefault().subscribe(this, R.id.tv_Camera + "", new RxBus.Callback<ChoosePhotoEntity>() {
-            @Override
-            public void onEvent(ChoosePhotoEntity strings) {
-                int size = (int) (strings.getOriginalFile().length() / 1024);
-                int size2 = (int) (strings.getCompressFile().length() / 1024);
-                Log.e("assss", strings.getOriginalFile().getPath() + "==" + size);
-                Log.e("asdasf", strings.getCompressFile().getPath() + "==" + size2);
-            }
-        });
+        Observable.timer(3, TimeUnit.SECONDS)
+                .compose(RxSchedulers.<Long>io_main())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        ApiClient.getApi().test("", "")
+                                .compose(RxHelper.getNewInstance(ViewPagerDemo.this).<HttpResultDemo<EntityJ>>bind())
+                                .subscribe(new RxObserverDemo<EntityJ>() {
+                                    @Override
+                                    protected void _onSuccess(EntityJ entityJ) {
+
+                                    }
+
+                                    @Override
+                                    public boolean showToast() {
+                                        return false;
+                                    }
+                                });
+                    }
+                });
+
+ /*       ApiClient.getApi().test("", "")
+                .compose(RxHelper.getNewInstance(this).<HttpResultDemo<EntityJ>>bind())
+                .subscribe(new RxObserverDemo<EntityJ>() {
+                    @Override
+                    protected void _onSuccess(EntityJ entityJ) {
+
+                    }
+                });*/
     }
 
     @OnClick({R.id.tv_Camera, R.id.tv_Album})

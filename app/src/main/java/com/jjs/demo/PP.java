@@ -15,10 +15,9 @@ public class PP extends BasePersenter<VV> {
         super(view);
     }
 
-    public void show(Context context){
-        Toast.makeText(context,"11111",Toast.LENGTH_SHORT).show();
+    public void show(Context context) {
+        Toast.makeText(context, "11111", Toast.LENGTH_SHORT).show();
     }
-
 
 
 }

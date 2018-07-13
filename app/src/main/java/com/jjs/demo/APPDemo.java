@@ -10,7 +10,7 @@ import com.jjs.base.base.BaseApplication;
 
 public class APPDemo extends BaseApplication {
     {
-        BaseUrl="https://www.yzwptgc.com/";
+        BaseUrl="http://192.168.1.61:8920/";
     }
     @Override
     public void onCreate() {

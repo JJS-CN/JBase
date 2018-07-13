@@ -1,9 +1,6 @@
 package com.jjs.base.http;
 
-import android.app.Activity;
-
-import com.jjs.base.base.BaseApplication;
-import com.trello.rxlifecycle2.components.RxActivity;
+import android.util.Log;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -30,16 +27,25 @@ public class RxJavaAdapter implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object invoke = method.invoke(mCallAdapter, args);
         if (invoke instanceof Observable) {
+          Log.e("eeee", "1");
             Observable observable = (Observable) invoke;
-            Activity act = BaseApplication.getActivity();
-            if (act != null && act instanceof RxActivity) {
+           /*   LifecycleTransformer transformer = null;
+            if (BaseObserver.mRxActivity != null) {
+                transformer = BaseObserver.mRxActivity.bindToLifecycle();
+            } else if (BaseObserver.mRxFragment != null) {
+                transformer = BaseObserver.mRxFragment.bindToLifecycle();
+            } else if (BaseObserver.mRxDialogFragment != null) {
+                transformer = BaseObserver.mRxDialogFragment.bindToLifecycle();
+            }
+            if (transformer != null) {
                 invoke = observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(((RxActivity) act).bindToLifecycle());//绑定Lifecycle,解决网络请求内存溢出问题
+                        .compose(transformer);//绑定Lifecycle,解决网络请求内存溢出问题
             } else {
-                invoke = observable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-            }
+
+            }*/
+            invoke = observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
 
         }
         return invoke;

@@ -25,7 +25,6 @@ import com.jjs.base.utils.recyclerview.DraggableAdapter;
 import com.jjs.base.utils.recyclerview.ExpandableAdapter;
 import com.jjs.base.utils.recyclerview.QuickAdapter;
 import com.jjs.base.utils.recyclerview.QuickHolder;
-import com.jjs.base.widget.LoadingDialog;
 import com.jjs.bean.L0;
 import com.jjs.bean.L1;
 import com.jjs.bean.L3;
@@ -72,8 +71,6 @@ public class BaseQuickAdapterDemo extends com.jjs.base.base.BaseActivity {
         findViewById(R.id.btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadingDialog.init(BaseQuickAdapterDemo.this);
-                LoadingDialog.show();
             }
         });
     }
@@ -83,7 +80,6 @@ public class BaseQuickAdapterDemo extends com.jjs.base.base.BaseActivity {
         super.onResume();
         // Intent intent=new Intent(BaseQuickAdapterDemo.this, XXXX.class);
         //   startActivity(intent);
-        LoadingDialog.show();
     }
 
     /**

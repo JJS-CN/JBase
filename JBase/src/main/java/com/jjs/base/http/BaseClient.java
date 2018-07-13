@@ -29,7 +29,7 @@ public class BaseClient {
 
     private OkHttpClient buildOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.addInterceptor(new FixedInterceptor());
+      //  builder.addInterceptor(new FixedInterceptor());
         builder.cookieJar(new NovateCookieManger(BaseApplication.get()));
         return builder.build();
     }

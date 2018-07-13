@@ -13,8 +13,6 @@ import com.jjs.base.base.BaseActivity;
 import com.jjs.base.utils.viewpager.PagerUtils;
 import com.jjs.base.widget.CustomViewPager;
 import com.jjs.base.widget.ReadMoreTextView;
-import com.jjs.demo.AAFragment;
-import com.jjs.demo.RxObserverDemo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,22 +38,6 @@ public class PagerAct extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, Intent data) {
-        new RxObserverDemo<String>() {
-            @Override
-            protected void _onSuccess(String s) {
-
-            }
-
-            @Override
-            protected void _onComplete() {
-                super._onComplete();
-            }
-
-            @Override
-            protected void _onError(String msg) {
-                super._onError(msg);
-            }
-        };
     }
 
 
@@ -88,8 +70,6 @@ public class PagerAct extends BaseActivity {
                 startActivity(new Intent(PagerAct.this, XXXX.class));
             }
         }).create();
-        addFragment(R.id.fff, new AAFragment(), "", false);
-
 
     }
 

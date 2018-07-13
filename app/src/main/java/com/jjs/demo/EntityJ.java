@@ -3,11 +3,11 @@ package com.jjs.demo;
 import java.util.List;
 
 /**
- * 说明：
+ * 说明：接口具体参数。code与msg由父类设定。observer有父类的父类判断
  * Created by jjs on 2018/7/2.
  */
 
-public class EntityJ extends AJBaseEntity {
+public class EntityJ extends BaseEntity {
 
     /**
      * b : 2
