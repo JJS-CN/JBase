@@ -56,7 +56,6 @@ public class CustomViewPager extends ViewPager {
      */
     @Override
     public void setCurrentItem(int item) {
-        // TODO Auto-generated method stub
         super.setCurrentItem(item, isCanMove);
     }
 }

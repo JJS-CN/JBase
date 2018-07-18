@@ -17,7 +17,7 @@ public class MvpActivityDemo extends BaseActivity<PP> implements VV {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_demo);
-          mPersenter = new PP(this);//进行实例化，this为PP编写时填入的view接口
+          mPersenter = new PP(this,this);//进行实例化，this为PP编写时填入的view接口
     }
 
     @Override
@@ -31,8 +31,4 @@ public class MvpActivityDemo extends BaseActivity<PP> implements VV {
     public void aa() {
     }
 
-    @Override
-    public void ResponseSuccess(int requestCode, String data) {
-
-    }
 }

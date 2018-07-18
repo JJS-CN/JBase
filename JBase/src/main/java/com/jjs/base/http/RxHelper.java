@@ -1,5 +1,6 @@
 package com.jjs.base.http;
 
+import com.jjs.base.mvp.BasePersenter;
 import com.jjs.base.widget.LoadingDialog;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.trello.rxlifecycle2.components.support.RxDialogFragment;
@@ -37,6 +38,12 @@ public class RxHelper {
         this.mRxDialogFragment = rxDialogFragment;
     }
 
+    public RxHelper(BasePersenter persenter) {
+        this.mRxAppCompatActivity = persenter.rxActivity;
+        this.mRxFragment = persenter.rxFragment;
+        this.mRxDialogFragment = persenter.rxDialogFragment;
+    }
+
     public static RxHelper getNewInstance(RxAppCompatActivity rxAppCompatActivity) {
         return new RxHelper(rxAppCompatActivity);
     }
@@ -49,6 +56,10 @@ public class RxHelper {
         return new RxHelper(rxDialogFragment);
     }
 
+    public void setShowDialog(boolean hasShowDialog) {
+        this.hasShowDialog = hasShowDialog;
+    }
+
     public <T> ObservableTransformer<T, T> bind() {
         return new ObservableTransformer<T, T>() {
             @Override
@@ -58,7 +69,7 @@ public class RxHelper {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
                                 if (hasShowDialog) {
-                                    //todo mvp不适用
+                                    //todo 只会存在一个dialog，需要多个还是只能通过调用activity内定义的形式来实现
                                     LoadingDialog.show(mRxAppCompatActivity != null ? mRxAppCompatActivity : mRxFragment != null ? mRxFragment.getActivity() : mRxDialogFragment != null ? mRxDialogFragment.getActivity() : null);
                                 }
                             }

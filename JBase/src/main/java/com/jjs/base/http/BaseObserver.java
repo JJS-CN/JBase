@@ -1,5 +1,9 @@
 package com.jjs.base.http;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.jjs.base.entity.JBaseEntity;
+import com.jjs.base.widget.LoadingDialog;
+
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -15,30 +19,7 @@ import io.reactivex.disposables.Disposable;
  * Created by aa on 2017/9/20.
  */
 
-public abstract class BaseObserver<T> implements Observer<T> {
-  /*  public static RxAppCompatActivity mRxActivity;
-    public static RxFragment mRxFragment;
-    public static RxDialogFragment mRxDialogFragment;
-
-    public BaseObserver(RxAppCompatActivity activity) {
-        this(activity, null, null);
-    }
-
-    public BaseObserver(RxFragment rxFragment) {
-        this(null, rxFragment, null);
-    }
-
-    public BaseObserver(RxDialogFragment dialogFragment) {
-        this(null, null, dialogFragment);
-    }
-
-    private BaseObserver(RxAppCompatActivity activity, RxFragment rxFragment, RxDialogFragment dialogFragment) {
-        Log.e("eeee", "2");
-        LoadingDialog.show(activity != null ? activity : rxFragment != null ? rxFragment.getActivity() : dialogFragment != null ? dialogFragment.getActivity() : null);
-        mRxActivity = activity;
-        mRxFragment = rxFragment;
-        mRxDialogFragment = dialogFragment;
-    }*/
+public abstract class BaseObserver<T extends JBaseEntity> implements Observer<T> {
 
     @Override
     public void onSubscribe(@NonNull Disposable d) {
@@ -47,12 +28,16 @@ public abstract class BaseObserver<T> implements Observer<T> {
 
     @Override
     public void onNext(@NonNull T t) {
-        _onNext(t);
+        if (t.isSuccess()) {
+            _onSuccess(t);
+        } else {
+            onError(new Throwable(t.message()));
+        }
     }
 
     @Override
     public void onError(@NonNull Throwable e) {
-       // LoadingDialog.dissmiss();
+        LoadingDialog.dissmiss();
         String errMsg = "";
         if (e instanceof SocketTimeoutException) {
             errMsg = "网络连接超时，请检查您的网络状态，稍后重试";
@@ -63,20 +48,19 @@ public abstract class BaseObserver<T> implements Observer<T> {
         } else {
             errMsg = e.getMessage();
         }
-        _onError(errMsg);
+        if (showToast()) {
+            ToastUtils.showShort(errMsg);
+        }
 
     }
 
     @Override
     public void onComplete() {
-   //  LoadingDialog.dissmiss();
+        LoadingDialog.dissmiss();
     }
 
-    protected abstract void _onNext(T data);
+    protected abstract void _onSuccess(T data);
 
-    protected abstract void _onComplete();
-
-    protected abstract void _onError(String msg);
 
     /**
      * 外部重写此方法，来控制是否展示错误提示；

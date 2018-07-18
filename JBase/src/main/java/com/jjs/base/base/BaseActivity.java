@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- *
  * 说明：基础activity，fragment添加隐藏显示操作、回退栈操作、防止多次按下操作,返回2次退出，返回监听；
  * 手动实例化P层并赋予给mPersenter变量，然后调用；
  * Butterkinfe.bind(this); 之后，手动赋予给变量 mUnbinder，将会自动在onDestroy中进行unbind；
@@ -88,7 +87,9 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
     /**
      * 对activity跳转返回进行判断，resultCode属于-1才处理
      */
-    protected abstract void onActivityResult(int requestCode, Intent data);
+    protected void onActivityResult(int requestCode, Intent data) {
+
+    }
 
 
     /**
@@ -150,7 +151,7 @@ public abstract class BaseActivity<P extends BasePersenter> extends RxAppCompatA
         if (resultCode == RESULT_OK) {
             onActivityResult(requestCode, data);
         } else {
-            Log.e("BaseActivity", "resultCode don't  -1");
+            Log.i("BaseActivity", "resultCode don't \"RESULT_OK\" or  \"-1\"");
         }
         /**
          * 进行Fragment的回调处理

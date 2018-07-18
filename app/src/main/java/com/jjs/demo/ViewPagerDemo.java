@@ -51,10 +51,10 @@ public class ViewPagerDemo extends BaseActivity {
                     @Override
                     public void accept(Long aLong) throws Exception {
                         ApiClient.getApi().test("", "")
-                                .compose(RxHelper.getNewInstance(ViewPagerDemo.this).<HttpResultDemo<EntityJ>>bind())
+                                .compose(RxHelper.getNewInstance(ViewPagerDemo.this).<EntityJ>bind())
                                 .subscribe(new RxObserverDemo<EntityJ>() {
                                     @Override
-                                    protected void _onSuccess(EntityJ entityJ) {
+                                    protected void _onSuccess(EntityJ data) {
 
                                     }
 
@@ -65,15 +65,6 @@ public class ViewPagerDemo extends BaseActivity {
                                 });
                     }
                 });
-
- /*       ApiClient.getApi().test("", "")
-                .compose(RxHelper.getNewInstance(this).<HttpResultDemo<EntityJ>>bind())
-                .subscribe(new RxObserverDemo<EntityJ>() {
-                    @Override
-                    protected void _onSuccess(EntityJ entityJ) {
-
-                    }
-                });*/
     }
 
     @OnClick({R.id.tv_Camera, R.id.tv_Album})
