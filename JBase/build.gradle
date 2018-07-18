@@ -57,30 +57,30 @@ dependencies {
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
     //rx全家桶
     api 'com.squareup.okhttp3:okhttp:3.10.0'
-
-    api "io.reactivex.rxjava2:rxjava:2.1.16"
+    api 'io.reactivex.rxjava2:rxjava:2.1.16'
     api 'io.reactivex.rxjava2:rxandroid:2.0.2'
-
     api 'com.squareup.retrofit2:retrofit:2.4.0'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
-
     api 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
     api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
     api 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
-
     //常用工具类
     api 'com.blankj:utilcode:1.17.2'
-    api "com.blankj:rxbus:1.1"
+    api 'com.blankj:rxbus:1.1'
     //图片请求
     api 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     //图片裁剪
-    api 'com.github.yalantis:ucrop:2.2.2'//(轻量级，图片质量不佳请更换下面的)
+    api 'com.github.yalantis:ucrop:2.2.2'
+    //(轻量级，图片质量不佳请更换下面的)
     // api 'com.github.yalantis:ucrop:2.2.2-native'
     //图片压缩
     api 'top.zibin:Luban:1.1.7'
     //图片选择
+    implementation files('libs/alipaySdk-20180601.jar')
+    //微信支付
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.4'
 }
 /*publish {
     //提交代码：gradlew clean build bintrayUpload -PbintrayUser=jjs19930123 -PbintrayKey=68176f4ec5dbe1be2d575917f799b7e5f787b811 -PdryRun=false
