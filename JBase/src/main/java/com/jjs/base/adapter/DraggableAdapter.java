@@ -1,4 +1,4 @@
-package com.jjs.base.utils.recyclerview;
+package com.jjs.base.adapter;
 
 import android.support.annotation.LayoutRes;
 

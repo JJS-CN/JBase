@@ -27,11 +27,11 @@ import java.security.MessageDigest;
 public class GlideUtils {
 
 
-    public static void load(Context mContext, Object path, ImageView imageView) {
+/*    public static void load(Context mContext, Object path, ImageView imageView) {
         Glide.with(mContext).load(path).into(imageView);
-    }
+    }*/
 
-    public static Builder loadBuild(@NonNull Context mContext, @NonNull Object path, @NonNull ImageView imageView) {
+    public static Builder load(@NonNull Context mContext, @NonNull Object path, @NonNull ImageView imageView) {
         return new Builder(mContext, path, imageView);
     }
 
