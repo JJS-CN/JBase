@@ -13,16 +13,13 @@ import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.Utils;
+import com.jjs.base.BaseStore;
 import com.jjs.base.Hook.HookFactory;
 import com.jjs.base.utils.UEHandler;
 
 import java.lang.ref.WeakReference;
 
 public abstract class BaseApplication extends Application {
-    public Class mLoginActivity;
-    public static boolean isDebug = false;//是否是debug模式，开关log打印信息
-    public boolean hasCrash = false;//是否需要全局异常捕获
-    public static String BaseUrl = ""; //服务器地址
     private static Application sInstance;
     private static WeakReference<Activity> mCurrentActivityWeakRef;
 
@@ -35,13 +32,13 @@ public abstract class BaseApplication extends Application {
         super.onCreate();
         sInstance = this;
         Utils.init(this);
-        LogUtils.getConfig().setLogSwitch(isDebug);
-        if (hasCrash) {
+        LogUtils.getConfig().setLogSwitch(BaseStore.isDebug);
+        if (BaseStore.hasCrash) {
             UEHandler.init();
         }
-        if (mLoginActivity != null) {
+        if (BaseStore.mLoginActivity != null) {
             // hook 登录跳转
-            ComponentName componentName = new ComponentName(getPackageName(), mLoginActivity.getName());
+            ComponentName componentName = new ComponentName(getPackageName(), BaseStore.mLoginActivity.getName());
             HookFactory.hookIActivityManager(Thread.currentThread().getContextClassLoader()
                     , componentName);
         }

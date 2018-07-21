@@ -1,5 +1,6 @@
 package com.jjs.base.http;
 
+import com.jjs.base.BaseStore;
 import com.jjs.base.base.BaseApplication;
 
 import okhttp3.OkHttpClient;
@@ -37,7 +38,7 @@ public class BaseClient {
     private Retrofit getRetrofit() {
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
-                    .baseUrl(BaseApplication.BaseUrl)
+                    .baseUrl(BaseStore.BaseUrl)
                     .client(buildOkHttp())
                     .addCallAdapterFactory(RxJavaFactory.getInstance())
                     .addConverterFactory(new GsonConverterFactory())

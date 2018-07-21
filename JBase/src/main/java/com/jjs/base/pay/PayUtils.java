@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.alipay.sdk.app.PayTask;
+import com.blankj.rxbus.RxBus;
+import com.jjs.base.BaseStore;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -19,7 +21,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 说明：
+ * 说明：微信or支付宝 支付基础类
  * Created by jjs on 2018/7/18.
  */
 
@@ -28,25 +30,24 @@ public class PayUtils {
     public void aliPay(final Activity activity, final String payInfo) {
         Observable.just(payInfo)
                 .subscribeOn(Schedulers.newThread())
-                .map(new Function<String, AliPayResult>() {
+                .map(new Function<String, PayResult>() {
                     @Override
-                    public AliPayResult apply(String s) throws Exception {
+                    public PayResult apply(String s) throws Exception {
                         PayTask alipay = new PayTask(activity);
                         Map<String, String> result = alipay.payV2(payInfo, true);
-                        return new AliPayResult(result);
+                        return new PayResult(result);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AliPayResult>() {
+                .subscribe(new Observer<PayResult>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(AliPayResult aliPayResult) {
-                        //todo   RxBus.getDefault().post();
-
+                    public void onNext(PayResult payResult) {
+                        RxBus.getDefault().post(payResult, BaseStore.Pay_Result);
                     }
 
                     @Override
@@ -80,7 +81,7 @@ public class PayUtils {
      * 生成签名,应对服务器加签失败的情况
      * 先生成sign，再调用wxPay传入
      */
-    public String genAppSign(String appid, String partnerId, String prepayId, String nonceStr, String timeStamp, String partnerkey) {
+    public String genWxAppSign(String appid, String partnerId, String prepayId, String nonceStr, String timeStamp, String partnerkey) {
 
         ArrayList<NameValuePair> list = new ArrayList<>();
         list.add(new NameValuePair("appid", appid));
@@ -108,10 +109,6 @@ public class PayUtils {
 
         private String name;
         private String value;
-
-        public NameValuePair() {
-
-        }
 
         public NameValuePair(String name, String value) {
             this.name = name;

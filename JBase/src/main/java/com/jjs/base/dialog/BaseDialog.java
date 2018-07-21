@@ -37,6 +37,13 @@ public class BaseDialog extends Dialog {
             mCustomListener.onCustom(viewHolder, BaseDialog.this);
         }
         setContentView(mCustomView);
+        if (getContext() instanceof Activity) {
+            Window window = this.getWindow();
+            Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = (int) (display.getWidth() * 0.8);
+            window.setAttributes(params);
+        }
     }
 
     public void setCustomListener(OnCustomListener customListener) {
@@ -50,12 +57,6 @@ public class BaseDialog extends Dialog {
     @Override
     public void show() {
         super.show();
-        if (getContext() instanceof Activity) {
-            Window window = this.getWindow();
-            Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
-            WindowManager.LayoutParams params = window.getAttributes();
-            params.width = (int) (display.getWidth() * 0.8);
-            window.setAttributes(params);
-        }
+
     }
 }
