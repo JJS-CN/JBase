@@ -32,7 +32,7 @@ public abstract class BaseInterceptor implements Interceptor {
     private Map<String, String> headerParamsMap = new HashMap<>();
 
 
-    protected abstract void _intercept(Request request) throws IOException;
+    protected abstract Request _intercept(Request request) throws IOException;
 
     public void addFieldParam(String key, String value) {
         fieldParamsMap.put(key, value);

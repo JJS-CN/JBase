@@ -1,6 +1,7 @@
 package com.jjs.base.http;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import okhttp3.Request;
 
@@ -11,17 +12,18 @@ import okhttp3.Request;
 
 public class FixedInterceptor extends BaseInterceptor {
     @Override
-    protected void _intercept(Request request) throws IOException {
+    protected Request _intercept(Request request) throws IOException {
         if (canInjectIntoBody(request)) {
             String[] urls = request.url().toString().split("\\?");
             if (urls.length >= 2) {
                 String[] params = urls[1].split("&");
                 for (int i = 0; i < params.length; i++) {
                     String[] keyValue = params[i].split("=");
-                    this.addFieldParam(keyValue[0], keyValue[1]);
+                    this.addFieldParam(URLEncoder.encode(keyValue[0], "UTF-8"), URLEncoder.encode(keyValue[1], "UTF-8"));
                 }
             }
             request = request.newBuilder().url(urls[0]).build();
         }
+        return request;
     }
 }

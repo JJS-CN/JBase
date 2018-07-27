@@ -11,8 +11,10 @@ import com.jjs.base.base.BaseApplication;
 
 public class APPDemo extends BaseApplication {
     {
-        BaseStore.BaseUrl="http://192.168.1.61:8920/";
+        BaseStore.BaseUrl = "http://192.168.1.61:8920/";
+        BaseStore.isDebug = true;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
