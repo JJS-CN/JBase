@@ -14,8 +14,9 @@ import retrofit2.http.POST;
 
 public class Api {
     public interface Test {
-        @POST("front/getLoginDiscount?username=中")
+        @POST("front/getLoginDiscount")
         @FormUrlEncoded
-        Observable<EntityJ> test(@Field("apikey") String sign, @Field("apikeys") String signs);
+        Observable<EntityJ> test(@Field("pai_name") String apiname, @Field("apikeys") String signs);
     }
+
 }
