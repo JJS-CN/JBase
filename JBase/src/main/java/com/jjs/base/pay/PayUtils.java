@@ -100,7 +100,6 @@ public class PayUtils {
         }
         sb.append("key=");
         sb.append(partnerkey);
-        //        sb.append("ab39f67f8093686e0bf5b4570ce163cf");
         String appSign = WxMD5.md5(sb.toString()).toUpperCase();
         return appSign;
     }
