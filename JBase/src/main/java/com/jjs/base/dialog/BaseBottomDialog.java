@@ -45,7 +45,7 @@ public class BaseBottomDialog extends BottomSheetDialogFragment {
             QuickHolder viewHolder = new QuickHolder(mRootView);
             mCustomListener.onCustom(viewHolder, this);
         }
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return mRootView;
     }
 
     public void setCustomListener(OnCustomListener customListener) {
