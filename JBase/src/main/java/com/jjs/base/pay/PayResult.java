@@ -23,7 +23,7 @@ public class PayResult {
 
     public PayResult(Map<String, String> result) {
         if (result == null) {
-            new NullPointerException("aliPay result is null");
+            throw new NullPointerException("aliPay result is null");
         }
         this.PAY_TYPE = 1;
         this.memo = result.get("memo");

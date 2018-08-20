@@ -17,6 +17,7 @@ public class ParallaxPageTransformer implements ViewPager.PageTransformer {
         this.bg_id = bg_id;
     }
 
+    @Override
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
         if (position < -1) { // [-Infinity,-1)
