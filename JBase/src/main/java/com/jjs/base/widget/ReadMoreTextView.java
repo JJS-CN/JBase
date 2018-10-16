@@ -71,6 +71,9 @@ public class ReadMoreTextView extends AppCompatTextView {
         this.trimMode = typedArray.getInt(R.styleable.ReadMoreTextView_trimMode, TRIM_MODE_LINES);
         typedArray.recycle();
         viewMoreSpan = new ReadMoreClickableSpan();
+        if (trimLines < 2) {
+            trimLines = 2;
+        }
         onGlobalLayoutLineEndIndex();
         setText();
     }

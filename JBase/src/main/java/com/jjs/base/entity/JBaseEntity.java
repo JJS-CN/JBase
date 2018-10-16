@@ -1,5 +1,7 @@
 package com.jjs.base.entity;
 
+import java.util.List;
+
 /**
  * 说明：接收数据 基础类中的基础类,需要继承此类并重写2个方法
  * Created by jjs on 2018/7/2.
@@ -12,5 +14,10 @@ public abstract class JBaseEntity {
 
     //错误内容
     public abstract String message();
+
+    //获取列表
+    public List<?> getList() {
+        return null;
+    }
 
 }

@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -20,7 +19,7 @@ import com.jjs.base.R;
 public class ShapeView extends android.support.v7.widget.AppCompatTextView {
     int solidColor, stroke_Color, touchColor, touchTextColor, normalTextColor, enableColor, enableTextColor;
     int cornesRadius, topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius, stroke_Width, strokeDashWidth, strokeDashGap, shapeType;
-    GradientDrawable gradientDrawable=new GradientDrawable();
+    GradientDrawable gradientDrawable = new GradientDrawable();
 
     public ShapeView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -111,6 +110,15 @@ public class ShapeView extends android.support.v7.widget.AppCompatTextView {
      */
     public ShapeView setSolidColor(@ColorInt int solidColor) {
         gradientDrawable.setColor(solidColor);
+        return this;
+    }
+
+    /**
+     * 设置边线颜色
+     */
+    public ShapeView setStrokeColor(@ColorInt int strokeColor) {
+        stroke_Width = strokeColor;
+        gradientDrawable.setStroke(stroke_Width, stroke_Color, strokeDashWidth, strokeDashGap);
         return this;
     }
 
